@@ -7,7 +7,9 @@
 
 ## Writing clients
 
-The skeleton for an automation/headless client can be found here in the `com.pnf.jebauto` package. For additional details, please refer to the [JEB2 Clients introduction guide](https://docs.google.com/document/d/1WB49DUmVlKX1qt9O3XyI3UZcXE4y_rTflbUqnAnKjWM/pub).
+Skeleton for an automation/headless client: [AutoClient class](https://github.com/pnfsoftware/jeb2-samplecode/blob/master/src/com/pnf/jebauto/AutoClient.java)
+
+For additional details, please refer to the [JEB2 Clients introduction guide](https://docs.google.com/document/d/1WB49DUmVlKX1qt9O3XyI3UZcXE4y_rTflbUqnAnKjWM/pub).
 
 ## Writing back-end extensions
 
@@ -21,6 +23,8 @@ The following documents highlights several areas related to writing parsers for 
 *Documents to be published*
 
 ### Plugins
+
+Skeleton for an engines plugin: [SamplesEnginesPlugin class](https://github.com/pnfsoftware/jeb2-samplecode/blob/master/src/com/pnf/plugintest/SampleEnginesPlugin.java)
 
 *Documents to be published*
 
