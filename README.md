@@ -3,7 +3,7 @@
 
 ## Architecture diagrams
 
-*To be published*
+[Slides](https://docs.google.com/presentation/d/1kU_ko8e8WlUH4dkXZguJ0Ke2ZfwUZV4JV01D7cChgIc/pub)
 
 ## Writing clients
 
