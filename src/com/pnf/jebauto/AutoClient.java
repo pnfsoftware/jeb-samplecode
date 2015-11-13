@@ -33,7 +33,7 @@ import com.pnfsoftware.jeb.core.dao.IDataProvider;
 import com.pnfsoftware.jeb.core.dao.IFileDatabase;
 import com.pnfsoftware.jeb.core.dao.IFileStore;
 import com.pnfsoftware.jeb.core.dao.impl.DataProvider;
-import com.pnfsoftware.jeb.core.dao.impl.SimpleFSFileDatabase;
+import com.pnfsoftware.jeb.core.dao.impl.JEB2FileDatabase;
 import com.pnfsoftware.jeb.core.dao.impl.SimpleFSFileStore;
 import com.pnfsoftware.jeb.core.input.FileInput;
 import com.pnfsoftware.jeb.core.properties.IConfiguration;
@@ -85,7 +85,7 @@ public class AutoClient {
         ICoreContext core = JebCoreService.getInstance(licenseKey);
 
         // create an engines context (project container)
-        IFileDatabase projectdb = new SimpleFSFileDatabase(baseDir);
+        IFileDatabase projectdb = new JEB2FileDatabase(baseDir);
         IFileStore filestore = new SimpleFSFileStore(baseDir);
         BaseConfiguration cfg = new BaseConfiguration();
 
