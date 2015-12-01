@@ -19,11 +19,17 @@
 package com.pnf.jebauto;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
 /**
- * Utility methods.
+ * Utility methods for headless JEB2 clients.
  * 
  * @author Nicolas Falliere
  * 
@@ -51,6 +57,37 @@ public class AutoUtil {
                 File f1 = new File(f, name);
                 retrieveFilesRecurse(f1, results);
             }
+        }
+    }
+
+    /**
+     * Create an Apache properties object out of a JEB2 configuration file.
+     * 
+     * @param path path to a JEB2 configuration file, such as jeb-client.cfg or jeb-engines.cfg
+     * @return
+     */
+    public static PropertiesConfiguration createPropertiesConfiguration(String path) {
+        File configfile = new File(path);
+
+        if(!configfile.isFile()) {
+            try {
+                configfile.createNewFile();
+            }
+            catch(IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        Parameters params = new Parameters();
+        FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<>(
+                PropertiesConfiguration.class).configure(params.properties().setFileName(path));
+        builder.setAutoSave(true);
+
+        try {
+            return builder.getConfiguration();
+        }
+        catch(ConfigurationException e) {
+            throw new RuntimeException(e);
         }
     }
 }
