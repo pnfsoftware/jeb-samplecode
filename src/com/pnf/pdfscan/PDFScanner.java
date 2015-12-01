@@ -41,8 +41,6 @@ import com.pnfsoftware.jeb.util.logging.ILogger;
  * Note: the heuristic used in this example is trivial: we are looking for X notifications having a
  * minimum suspicion level of Y. By default, (X, Y) is set to (2, 70).
  * 
- * @author Nicolas Falliere
- *
  */
 public class PDFScanner {
     static final ILogger logger = GlobalLog.getLogger(AutoClient.class);
@@ -71,12 +69,12 @@ public class PDFScanner {
             System.exit(-1);
         }
 
-        System.out.format("Scanning files, displaying suspicious files...\n");
+        System.out.format("Scanning files...\n");
 
         List<File> files = AutoUtil.retrieveFiles(argv[0]);
         long t0 = System.currentTimeMillis();
 
-        // simple heuristic: we are looking for at least one notification having a level POTENTIALLY_HARMFUL
+        // simple heuristic (see javadoc)
         PDFScanner scanner = new PDFScanner(2, 70);
         scanner.scanFiles(files);
 
