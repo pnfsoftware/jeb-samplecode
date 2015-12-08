@@ -46,10 +46,11 @@ class JEB2ExtraDocument(IScript):
     lines.add(Line('There are two hard problems in computer science: cache invalidation, naming things, and off-by-one errors.'))
     lines.add(Line('   - Phil Karlton (and others)'))
     extraDoc = StaticTextDocument(lines)
-    extraPres = UnitRepresentationAdapter(123, 'Quotes', False, extraDoc)
+    extraPres = UnitRepresentationAdapter(100, 'Quotes', False, extraDoc)
 
     # add the newly created representation to our unit, and notify clients
-    formatter.getDocumentPresentations().add(extraPres)
+    # the second argument indicates that the presentation should be persisted when saving the project
+    formatter.addPresentation(extraPres, True)
     unit.notifyListeners(JebEvent(J.UnitChange));
 
     # done - if you are running a UI client, the additional document should be displayed
