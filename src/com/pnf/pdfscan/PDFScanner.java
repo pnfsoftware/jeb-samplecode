@@ -65,7 +65,8 @@ public class PDFScanner {
         if(argv.length <= 0) {
             System.out.format("PDF scanner using JEB2 Business/Enterprise -- PNF Software (c) 2015\n");
             System.out.format("Usage:\n");
-            System.out.format("  [java] PDFScanner -Djeb.engcfg=<enginesCfgPath> -Djeb.lickey=<licenseKey> <location>\n");
+            System.out
+                    .format("  [java] PDFScanner -Djeb.engcfg=<enginesCfgPath> -Djeb.lickey=<licenseKey> <location>\n");
             System.exit(-1);
         }
 
@@ -101,9 +102,19 @@ public class PDFScanner {
         String baseDir = System.getProperty("user.home");
         IFileDatabase projectdb = new JEB2FileDatabase(baseDir);
         IFileStore filestore = new SimpleFSFileStore(baseDir);
+        IFileStore pluginstore = null;
         PropertiesConfiguration enginesConfig = AutoUtil.createPropertiesConfiguration(jebEnginesCfg);
         IConfiguration enginesConfigWrapper = new CommonsConfigurationWrapper(enginesConfig);
-        IDataProvider dataProvider = new DataProvider(null, projectdb, filestore, null, null, enginesConfigWrapper);
+        Object o = enginesConfigWrapper.getProperty(".PluginsFolder");
+        if(o == null) {
+            System.out.format("Your JEB engines configuration must contain a \".PluginsFolder\""
+                    + " property pointing to your JEB2 back-end plugins.\nTypically, "
+                    + "this is the \"coreplugins/\" folder within your installation directory.\n");
+            System.exit(-1);
+        }
+
+        IDataProvider dataProvider = new DataProvider(null, projectdb, filestore, pluginstore, null,
+                enginesConfigWrapper);
 
         // engines context
         IEnginesContext engctx = core.createEnginesContext(dataProvider, null);
@@ -151,7 +162,8 @@ public class PDFScanner {
 
     private boolean assessPdf(File file, IUnit unit) {
         int dangerCount = 0;
-        for(IUnitNotification n: unit.getNotifications()) {
+        List<? extends IUnitNotification> notifications = unit.getNotificationManager().getNotifications();
+        for(IUnitNotification n: notifications) {
             // suspicion level of a notification is in [0, 100]
             int level = n.getType().getLevel();
             System.out.format("- %d (%s): %s @ %s\n", level, n.getType().getDescription(), n.getDescription(),
