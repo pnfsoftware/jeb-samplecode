@@ -3,6 +3,8 @@ Sample client script for PNF Software' JEB2.
 
 Cluster DEX classes in order to rebuild an obfuscated+flattened code hierarchy.
 
+Requires Jython 2.7
+
 Refer to SCRIPTS.TXT for more information.
 """
 
