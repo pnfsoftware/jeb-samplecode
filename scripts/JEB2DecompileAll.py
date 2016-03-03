@@ -82,9 +82,10 @@ class JEB2DecompileAll(IScript):
       text = self.formatTextDocument(doc)
 
       filepath = os.path.join(outdir, subpath)
-      with open(filepath, 'w') as f:
-        f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
-        f.write(text.encode('utf-8'))
+      f = open(filepath, 'w')
+      f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
+      f.write(text.encode('utf-8'))
+      f.close()
 
     else:
       print('Does not know how to export source types: %s' % ext)
