@@ -2,9 +2,11 @@
 Sample client script for PNF Software' JEB2.
 Requires: JEB 2.1.3
 
-This script shows how to tag elements of an AST tree, and later on retrieve
-those tags from the Java text document output. String contants containing
-the word 'html' are tagged. Output example:
+This script shows how to "tag" elements of an AST tree, and later on retrieve
+those tags from the Java text document output (referred to as "marks").
+
+This code looks for Java units, and tags String contants containing the word
+'html'. Output example:
 
   ...
   <Java code >
@@ -12,8 +14,14 @@ the word 'html' are tagged. Output example:
   => Marks:
   17:59 - htmlTag (Potential HTML code found)
 
-Note: tags are not specific to Java units. This example simply demonstrates
-the usage of tags and output marks in that context.
+Tags are persisted in JDB2 database files.
+
+Note: tags are specific to Java units. However, marks are not (they are
+specific to text documents). The Java plugin simply renders tags as text
+marks. This example demonstrates usage of tags in that context.
+
+As of JEB 2.1.3, marks are not displayed by the official desktop RCP client.
+It is up to third-party code (clients, plugins, or scripts) to display them.
 
 Refer to SCRIPTS.TXT for more information.
 """
@@ -26,7 +34,7 @@ from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.units.code.java import IJavaConstant
 
 
-class JEB2TextTags(IScript):
+class JEB2JavaASTTags(IScript):
 
   def run(self, ctx):
     self.ctx = ctx
