@@ -20,10 +20,13 @@ import com.pnfsoftware.jeb.core.dao.impl.DataProvider;
 import com.pnfsoftware.jeb.core.dao.impl.JEB2FileDatabase;
 import com.pnfsoftware.jeb.core.dao.impl.SimpleFSFileStore;
 import com.pnfsoftware.jeb.core.input.FileInput;
+import com.pnfsoftware.jeb.core.output.text.ITextDocument;
+import com.pnfsoftware.jeb.core.output.text.TextDocumentUtil;
 import com.pnfsoftware.jeb.core.properties.IConfiguration;
 import com.pnfsoftware.jeb.core.properties.impl.CommonsConfigurationWrapper;
 import com.pnfsoftware.jeb.core.units.IUnit;
 import com.pnfsoftware.jeb.core.units.IUnitNotification;
+import com.pnfsoftware.jeb.core.units.UnitUtil;
 import com.pnfsoftware.jeb.core.units.WellKnownUnitTypes;
 import com.pnfsoftware.jeb.util.logging.GlobalLog;
 import com.pnfsoftware.jeb.util.logging.ILogger;
@@ -89,6 +92,8 @@ public class PDFScanner {
     private int cntScanned;
     private int cntSuspicious;
 
+    private boolean dumpJS = false;
+
     public PDFScanner(int thDangerCount, int thDangerLevel) {
         this.thDangerCount = thDangerCount;
         this.thDangerLevel = thDangerLevel;
@@ -138,6 +143,18 @@ public class PDFScanner {
                         if(assessPdf(file, unit)) {
                             System.out.format("=> +++ SUSPICIOUS PDF FILE +++\n");
                             cntSuspicious++;
+                        }
+                    }
+
+                    // ENABLE TO TRY: search and dump all extracted JS blobs
+                    if(dumpJS) {
+                        List<IUnit> jsUnits = UnitUtil.findDescendantsByFormatType(unit, "Javascript");
+                        System.out.format("*** %s ***\n", jsUnits);
+                        for(IUnit jsUnit: jsUnits) {
+                            ITextDocument textDoc = (ITextDocument)jsUnit.getFormatter().getPresentation(0)
+                                    .getDocument();
+                            String js = TextDocumentUtil.buildText(textDoc).toString();
+                            System.out.format("Javascript:\n %s \n", js);
                         }
                     }
                 }
