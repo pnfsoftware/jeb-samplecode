@@ -27,12 +27,25 @@ import com.pnfsoftware.jeb.util.logging.ILogger;
  * Note that this plugin can be used with any client, such as the official UI RCP client, or a
  * headless client.
  * <p>
- * How to use:
+ * How to use as a stand-alone Jar plugin:
  * <ul>
- * <li>Package as a Jar and drop in your coreplugins/ folder</li>
- * <li>OR: Compile and copy the *.class files in a folder, set the plugin as a dev plugin in the UI
- * client</li>
+ * <li>Navigate to the build/ folder</li>
+ * <li>Build the plugin using Ant:
+ * <code>ant -file build-andhook.xml -Dversion=1.0.0 clean build package</code></li>
+ * <li>Copy to your JEB coreplugins/ folder and start JEB</li>
  * </ul>
+ * <p>
+ * How to use in a development environment, via the RCP desktop client:
+ * <ul>
+ * <li>Set the plugin's *.class files folder and class name in the Development tab of the Options
+ * dialog</li>
+ * <li>(Instructions here: <a
+ * href="https://www.pnfsoftware.com/viewdoc?doc=jeb2-tutorial-plugin-1">JEB Dev Tutorial Part 1)</a>
+ * </li>
+ * <li>Restart JEB</a>
+ * </ul>
+ * <p>
+ * Then: open an APK; start a debugging session; run the plugin (eg, in UI: File, Engines menu.)
  * 
  * @author Nicolas Falliere
  *
