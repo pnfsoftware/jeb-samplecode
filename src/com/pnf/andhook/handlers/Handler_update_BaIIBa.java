@@ -6,7 +6,8 @@ import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerUnit;
 import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerVariable;
 
 /**
- * Hook for Cipher method: <pre>int update(byte[] input, int inputOffset, int inputLen, byte[] output)</pre>.
+ * Hook for Cipher method:
+ * <code>int update(byte[] input, int inputOffset, int inputLen, byte[] output)</code>.
  * 
  * @author Nicolas Falliere
  *
@@ -22,7 +23,7 @@ public class Handler_update_BaIIBa extends AbstractHandler {
     public void onEnter(IDebuggerUnit dbg, IDebuggerEventData data) {
         long tid = data.getThreadId();
 
-        IDebuggerThreadStackFrame f0 = dbg.getThreadById(tid).getFrames().get(0);
+        IDebuggerThreadStackFrame f0 = dbg.getThreadById(tid).getFrame(0);
         IDebuggerVariable p1 = f0.getInternalParameter(1, "[B");
         IDebuggerVariable p2 = f0.getInternalParameter(2, "I");
         IDebuggerVariable p3 = f0.getInternalParameter(3, "I");

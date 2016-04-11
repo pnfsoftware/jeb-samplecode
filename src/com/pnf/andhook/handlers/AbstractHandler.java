@@ -4,11 +4,10 @@ import java.util.List;
 
 import com.pnf.andhook.IHandler;
 import com.pnf.andhook.ThreadStore;
-import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerVariable;
 import com.pnfsoftware.jeb.core.units.code.debug.ITypedValue;
+import com.pnfsoftware.jeb.core.units.code.debug.impl.ValueArray;
 import com.pnfsoftware.jeb.core.units.code.debug.impl.ValueByte;
 import com.pnfsoftware.jeb.core.units.code.debug.impl.ValueInteger;
-import com.pnfsoftware.jeb.core.units.code.debug.impl.ValueObject;
 import com.pnfsoftware.jeb.util.Formatter;
 import com.pnfsoftware.jeb.util.logging.GlobalLog;
 import com.pnfsoftware.jeb.util.logging.ILogger;
@@ -50,20 +49,19 @@ public abstract class AbstractHandler implements IHandler {
     }
 
     public static byte[] readByteArray(ITypedValue v, int offset, int size) {
-        if(!(v instanceof ValueObject)) {
+        if(!(v instanceof ValueArray)) {
             throw new IllegalArgumentException();
         }
-        ValueObject o = (ValueObject)v;
+        ValueArray o = (ValueArray)v;
 
-        @SuppressWarnings("unchecked")
-        List<IDebuggerVariable> byteVariables = (List<IDebuggerVariable>)o.getValue();
+        List<? extends ITypedValue> byteVariables = o.getValue();
 
         int cnt = size < 0 ? byteVariables.size(): size;
         byte[] in = new byte[cnt];
 
         int i = 0;
-        for(IDebuggerVariable byteVar: byteVariables.subList(offset, offset + cnt)) {
-            in[i] = ((ValueByte)byteVar.getTypedValue()).getValue();
+        for(ITypedValue byteVar: byteVariables.subList(offset, offset + cnt)) {
+            in[i] = ((ValueByte)byteVar).getValue();
             i++;
         }
         return in;

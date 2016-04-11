@@ -6,7 +6,7 @@ import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerUnit;
 import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerVariable;
 
 /**
- * Hook for Cipher method: <pre>byte[] doFinal(byte[] input)</pre>.
+ * Hook for Cipher method: <code>byte[] doFinal(byte[] input)</code>.
  * 
  * @author Nicolas Falliere
  *
@@ -22,7 +22,7 @@ public class Handler_doFinal_Ba extends AbstractHandler {
     public void onEnter(IDebuggerUnit dbg, IDebuggerEventData data) {
         long tid = data.getThreadId();
 
-        IDebuggerThreadStackFrame f0 = dbg.getThreadById(tid).getFrames().get(0);
+        IDebuggerThreadStackFrame f0 = dbg.getThreadById(tid).getFrame(0);
         IDebuggerVariable p1 = f0.getInternalParameter(1, "[B");
         byte[] in = readByteArray(p1.getTypedValue());
         tls.put(tid, "in", in);
