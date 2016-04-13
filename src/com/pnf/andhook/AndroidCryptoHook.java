@@ -53,6 +53,8 @@ public class AndroidCryptoHook {
 
         hm = new HandlerManager(dbg, dex);
 
+        // sample hooks for 3 key encryption methods in the Cipher abstract class
+        // TODO: more methods, other classes/libs, hook native libs via the native debugger
         hm.register(new Handler_doFinal_Ba());
         hm.register(new Handler_doFinal_BaI());
         hm.register(new Handler_update_BaIIBa());
