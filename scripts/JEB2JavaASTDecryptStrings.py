@@ -48,7 +48,9 @@ class JEB2JavaASTDecryptStrings(IScript):
       javaClass = unit.getClassElement()
       if javaClass.getName().find(self.targetClass) >= 0:
         self.cstbuilder = unit.getFactories().getConstantFactory()
-        self.processClass(javaClass)
+        if self.processClass(javaClass):
+          # let client code know about those changes
+          unit.notifyListeners(JebEvent(J.UnitChange))
         break
 
 
@@ -82,17 +84,21 @@ class JEB2JavaASTDecryptStrings(IScript):
 
     if len(self.encbytes) == 0:
       print('Encrypted strings byte array not found')
-      return
+      return False
+
     print('%d bytes of encrypted data' % len(self.encbytes))
 
     if not self.mname_decrypt:
       print('Decryption method not found')
-      return
+      return False
+
     print('Decryption routine: %s' % self.mname_decrypt)
     
     for javaMethod in javaClass.getMethods():
       print('Decrypting strings in method: %s' % javaMethod.getName())
       self.decryptMethodStrings(javaMethod)
+
+    return True
 
 
   def getMethodRefs(self, unit, itemId):
