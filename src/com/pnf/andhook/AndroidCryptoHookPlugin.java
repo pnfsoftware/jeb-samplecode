@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 
-import com.pnfsoftware.jeb.client.DebuggerHelper;
 import com.pnfsoftware.jeb.core.AbstractEnginesPlugin;
 import com.pnfsoftware.jeb.core.IEnginesContext;
 import com.pnfsoftware.jeb.core.IPluginInformation;
@@ -14,6 +13,7 @@ import com.pnfsoftware.jeb.core.RuntimeProjectUtil;
 import com.pnfsoftware.jeb.core.Version;
 import com.pnfsoftware.jeb.core.units.code.android.IDexUnit;
 import com.pnfsoftware.jeb.core.units.code.debug.IDebuggerUnit;
+import com.pnfsoftware.jeb.core.util.DebuggerHelper;
 import com.pnfsoftware.jeb.util.CollectionUtil;
 import com.pnfsoftware.jeb.util.logging.GlobalLog;
 import com.pnfsoftware.jeb.util.logging.ILogger;

@@ -9,7 +9,6 @@ https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api
 Refer to SCRIPTS.TXT for more information.
 """
 
-from com.pnfsoftware.jeb.client import DecompilerHelper
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionXrefsData

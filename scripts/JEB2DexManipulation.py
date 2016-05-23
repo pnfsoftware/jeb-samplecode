@@ -8,7 +8,6 @@ Refer to SCRIPTS.TXT for more information.
 
 import os
 
-from com.pnfsoftware.jeb.client import DecompilerHelper
 from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.events import JebEvent, J
