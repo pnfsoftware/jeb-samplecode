@@ -12,7 +12,6 @@ import os
 
 from java.lang import Runnable, Thread
 
-from com.pnfsoftware.jeb.client import DecompilerHelper
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem

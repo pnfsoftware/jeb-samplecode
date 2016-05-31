@@ -9,7 +9,6 @@ https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api
 Refer to SCRIPTS.TXT for more information.
 """
 
-from com.pnfsoftware.jeb.client import DecompilerHelper
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionXrefsData
@@ -48,7 +47,9 @@ class JEB2JavaASTDecryptStrings(IScript):
       javaClass = unit.getClassElement()
       if javaClass.getName().find(self.targetClass) >= 0:
         self.cstbuilder = unit.getFactories().getConstantFactory()
-        self.processClass(javaClass)
+        if self.processClass(javaClass):
+          # let client code know about those changes
+          unit.notifyListeners(JebEvent(J.UnitChange))
         break
 
 
@@ -82,17 +83,21 @@ class JEB2JavaASTDecryptStrings(IScript):
 
     if len(self.encbytes) == 0:
       print('Encrypted strings byte array not found')
-      return
+      return False
+
     print('%d bytes of encrypted data' % len(self.encbytes))
 
     if not self.mname_decrypt:
       print('Decryption method not found')
-      return
+      return False
+
     print('Decryption routine: %s' % self.mname_decrypt)
     
     for javaMethod in javaClass.getMethods():
       print('Decrypting strings in method: %s' % javaMethod.getName())
       self.decryptMethodStrings(javaMethod)
+
+    return True
 
 
   def getMethodRefs(self, unit, itemId):
