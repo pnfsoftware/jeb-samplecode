@@ -18,7 +18,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 
 
-class JEB2DecompileOne(IScript):
+class JEB2DecompileMethod(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

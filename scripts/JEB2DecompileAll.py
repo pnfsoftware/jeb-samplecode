@@ -50,7 +50,7 @@ class JEB2DecompileAll(IScript):
       return
 
     outdir = os.path.join(self.outputDir, codeUnit.getName() + '_decompiled')
-    print('Output folder: %s' % os.getcwd())
+    print('Output folder: %s' % outdir)
 
     allClasses = codeUnit.getClasses()
     for c in allClasses:
