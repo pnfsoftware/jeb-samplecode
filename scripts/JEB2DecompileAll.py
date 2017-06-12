@@ -13,17 +13,22 @@ from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
+from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+
+from java.lang import Runnable
 
 
-class JEB2DecompileAll(IScript):
+class DecompileAll(Runnable):
 
-  def run(self, ctx):
+  def __init__(self, ctx):
     self.ctx = ctx
 
-    # customize this
-    self.outputDir = ctx.getBaseDirectory()
+  def run(self):
 
-    engctx = ctx.getEnginesContext()
+    # customize this
+    self.outputDir = self.ctx.getBaseDirectory()
+
+    engctx = self.ctx.getEnginesContext()
     if not engctx:
       print('Back-end engines not initialized')
       return
@@ -40,8 +45,6 @@ class JEB2DecompileAll(IScript):
     for codeUnit in codeUnits:
       self.decompileForCodeUnit(codeUnit)
 
-    print('Done.')
-
 
   def decompileForCodeUnit(self, codeUnit):
     decomp = DecompilerHelper.getDecompiler(codeUnit)
@@ -52,46 +55,49 @@ class JEB2DecompileAll(IScript):
     outdir = os.path.join(self.outputDir, codeUnit.getName() + '_decompiled')
     print('Output folder: %s' % outdir)
 
-    allClasses = codeUnit.getClasses()
-    for c in allClasses:
-      # do not decompile inner classes
-      if (c.getGenericFlags() & ICodeItem.FLAG_INNER) == 0:
-        a = c.getAddress()
+    if isinstance(codeUnit, INativeCodeUnit):
+      methods = codeUnit.getMethods()
+      for m in methods:
+        a = m.getAddress()
         srcUnit = decomp.decompile(a)
         if srcUnit:
           self.exportSourceUnit(srcUnit, outdir)
+    else:
+      allClasses = codeUnit.getClasses()
+      for c in allClasses:
+        # do not decompile inner classes
+        if (c.getGenericFlags() & ICodeItem.FLAG_INNER) == 0:
+          a = c.getAddress()
+          srcUnit = decomp.decompile(a)
+          if srcUnit:
+            self.exportSourceUnit(srcUnit, outdir)
 
 
   def exportSourceUnit(self, srcUnit, outdir):
     ext = srcUnit.getFileExtension()
 
-    if ext == 'java':
-      csig = srcUnit.getFullyQualifiedName()
-      subpath = csig[1:len(csig)-1] + '.java'
-      dirname = subpath[:subpath.rfind('/') + 1]
+    csig = srcUnit.getFullyQualifiedName()
+    subpath = csig[1:len(csig)-1] + '.java'
+    dirname = subpath[:subpath.rfind('/') + 1]
 
-      dirpath = os.path.join(outdir, dirname)
-      if not os.path.exists(dirpath):
-        os.makedirs(dirpath)
+    dirpath = os.path.join(outdir, dirname)
+    if not os.path.exists(dirpath):
+      os.makedirs(dirpath)
 
-      doc = self.getTextDocument(srcUnit)
-      if not doc:
-        print('The source text document was not found')
-        return False
-
-      text = self.formatTextDocument(doc)
-
-      filepath = os.path.join(outdir, subpath)
-      f = open(filepath, 'w')
-      f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
-      f.write(text.encode('utf-8'))
-      f.close()
-
-    else:
-      print('Does not know how to export source types: %s' % ext)
+    doc = self.getTextDocument(srcUnit)
+    if not doc:
+      print('The source text document was not found')
       return False
 
-    
+    text = self.formatTextDocument(doc)
+
+    filepath = os.path.join(outdir, subpath)
+    f = open(filepath, 'w')
+    f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
+    f.write(text.encode('utf-8'))
+    f.close()
+
+
   def getTextDocument(self, srcUnit):
     formatter = srcUnit.getFormatter()
     if formatter and formatter.getDocumentPresentations():
@@ -99,7 +105,7 @@ class JEB2DecompileAll(IScript):
       if isinstance(doc, ITextDocument):
         return doc
     return None
-  
+
 
   def formatTextDocument(self, doc):
     s = ''
@@ -109,3 +115,11 @@ class JEB2DecompileAll(IScript):
     for line in alldoc.getLines():
       s += line.getText().toString() + '\n'
     return s
+
+
+class JEB2DecompileAll(IScript):
+
+  def run(self, ctx):
+    ctx.executeAsync("Decompiling all...", DecompileAll(ctx))
+    print('Done.')
+
