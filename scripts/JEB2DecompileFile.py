@@ -32,6 +32,7 @@ class JEB2DecompileFile(IScript):
 
     argv = ctx.getArguments()
     if len(argv) < 2:
+      print('Provide an input file and the output folder')
       return
 
     self.inputFile = argv[0]
@@ -60,8 +61,6 @@ class JEB2DecompileFile(IScript):
     codeUnits = RuntimeProjectUtil.findUnitsByType(project, ICodeUnit, False)
     for codeUnit in codeUnits:
       self.decompileForCodeUnit(codeUnit)
-
-    print('Done.')
 
   def decompileForCodeUnit(self, codeUnit):
     decomp = DecompilerHelper.getDecompiler(codeUnit)
