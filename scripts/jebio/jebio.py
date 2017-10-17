@@ -15,6 +15,7 @@ import os
 import re
 import requests
 import sys
+import traceback
 
 #------------------------------------------------------------------------------
 #        1) update this global
@@ -40,12 +41,19 @@ def check(h, apikey=''):
   return r.json()
 
 def download(h, outpath=None, apikey=''):
+  if not h:
+    raise 'A hash must be provided'
   url = '%s/file/download?apikey=%s&h=%s' % (BASE, getApikey(apikey), h)
   r = requests.get(url)
-  if not r.ok:
+  if not r or not r.ok or not r.content:
     return None
   if not outpath:
-    outpath = re.findall('filename=(\S+)', r.headers.get('content-disposition'))[0]
+    try:
+      outpath = re.findall('filename=(\S+)', r.headers.get('content-disposition'))[0]
+    except Exception as e:
+      pass
+  if not outpath:
+    outpath = h + '.zip'
   with open(outpath, 'wb') as f:
     f.write(r.content)
   #if extract:  
@@ -80,19 +88,22 @@ if __name__ == '__main__':
       try:
         print('%s: %s' % (h, json.dumps(check(h), indent=4, sort_keys=True)))
       except Exception as e:
-        print('ERROR:', e)
+        traceback.print_exc()
   elif action == 'download':
     for h in sys.argv[2:]:
       try:
         outpath = download(h)
-        print('%s: downloaded to %s (password: "infected")' % (h, outpath))
+        if outpath:
+          print('%s: downloaded to %s (password: "infected")' % (h, outpath))
+        else:
+          print('%s: NOT found' % h)
       except Exception as e:
-        print('ERROR:', e)
+        traceback.print_exc()
   elif action == 'upload':
     for filepath in sys.argv[2:]:
       try:
         print('%s: %s' % (filepath, json.dumps(upload(filepath), indent=4, sort_keys=True)))
       except Exception as e:
-        print('ERROR:', e)
+        traceback.print_exc()
   else:
     usage()
