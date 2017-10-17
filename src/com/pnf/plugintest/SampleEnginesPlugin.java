@@ -22,7 +22,13 @@ public class SampleEnginesPlugin implements IEnginesPlugin {
 
     @Override
     public IPluginInformation getPluginInformation() {
-        return new PluginInformation("Sample Plugin", "A sample JEB2 plugin", "PNF Software", Version.create(1, 0));
+        return new PluginInformation("Sample Engines Plugin", "A sample JEB back-end plugin", "PNF Software",
+                Version.create(1, 0, 1));
+    }
+
+    @Override
+    public void load(IEnginesContext context) {
+        logger.info("Sample plugin is loaded");
     }
 
     @Override
