@@ -50,17 +50,16 @@ class JEB2CodeSave(IScript):
 
     d = {}
     for unit in units:
+      if not unit.isProcessed():
+        continue
+
       a = {}
       d[unit.getName()] = a
 
-      commentsmap = unit.getComments()
-      a['comments'] = {}
       a['renamed_classes'] = {}
       a['renamed_fields'] = {}
       a['renamed_methods'] = {}
-
-      for addr, comment in commentsmap.items():
-        a['comments'][addr] = comment
+      a['comments'] = {}
 
       for c in unit.getClasses():
         name0 = c.getName(False)
@@ -79,6 +78,9 @@ class JEB2CodeSave(IScript):
         name1 = m.getName(True)
         if name0 != name1:
           a['renamed_methods'][m.getSignature(False)] = name1
+
+      for addr, comment in unit.getComments().items():
+        a['comments'][addr] = comment
 
     data[prjname] = d
 

@@ -54,19 +54,23 @@ class JEB2CodeLoad(IScript):
       return
 
     for unit in units:
+      if not unit.isProcessed():
+        continue
+
       a = d.get(unit.getName(), None)
       if a:
-        comments = a['comments']
         renamed_classes = a['renamed_classes']
         renamed_fields = a['renamed_fields']
         renamed_methods = a['renamed_methods']
-        for addr, comment in comments.items():
-          unit.setComment(addr, comment)
+        comments = a['comments']
         for sig, name in renamed_classes.items():
           unit.getClass(sig).setName(name)
         for sig, name in renamed_fields.items():
           unit.getField(sig).setName(name)
         for sig, name in renamed_methods.items():
           unit.getMethod(sig).setName(name)
+        # note: comments are applied last since `addr` can be a refactored one here
+        for addr, comment in comments.items():
+          unit.setComment(addr, comment)
 
     print('Basic refactoring data was applied')
