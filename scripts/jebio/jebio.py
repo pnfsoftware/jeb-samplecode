@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 Python API wrapper to query the "JEB Malware Sharing Network".
 What is it? Go read https://www.pnfsoftware.com/blog/introducing-the-jeb-malware-sharing-network/
@@ -60,7 +62,7 @@ def download(h, outpath=None, apikey='', extract=False):
   if extract:
     from zipfile import ZipFile
     with ZipFile(outpath) as zipfile:
-      zipfile.extractall(pwd='infected')
+      zipfile.extractall(pwd=b'infected')
       outpath2 = zipfile.namelist()[0]
     os.unlink(outpath)
     outpath = outpath2
