@@ -1,9 +1,19 @@
 """
 Sample script for JEB Decompiler.
 
-Load an Ethereum EVM contract into JEB 3.0.8+ (build on or after Dec 10 2018); then make sure
-the GlobalAnalysis for EVM modules is enabled (it is by default), then run the script: File, Scripts, Run...
+===> How to use:
+Two modes:
+- Using the UI desktop client:\
+  - load an Ethereum EVM contract into JEB 3.0.8+ (build on or after Dec 10 2018);
+  - make sure the GlobalAnalysis for EVM modules is enabled (it is by default)
+  - then run the script: File, Scripts, Run...
+  - the script will process your loaded contract
+- Using the command line:
+  - run like: jeb_wincon.bat -c --srv2 --script=<THIS_SCRIPT> -- <YOUR_CONTRACT.evm-bytecode>
+  - the script will create a JEB project and process the contract file provided on the command line
+  - (make sure the contract file ends with the 'evm-bytecode' extension) 
 
+===> What is it:
 This script demonstrates how to retrieve the decompiled EVM code of an Ethereum contract.
 - The decompiled contract's Abstract Syntax Tree (AST) is walked and its node types are printed
 (reference: https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/asm/decompiler/ast/package-summary.html)
@@ -11,7 +21,7 @@ This script demonstrates how to retrieve the decompiled EVM code of an Ethereum 
 - The most refined Intermediate Representation (IR) code of each individual method is also displayed
 (reference: https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/asm/decompiler/ir/package-summary.html)
 
-Additional refs:
+===> Additional references:
 - highly recommended (else you will have much difficulty building upon the code below): follow the tutorials on www.pnfsoftware.com/jeb/devportal
 - for Native code and Native Decompilers: the com.pnfsoftware.jeb.core.units.code.asm package and sub-packages 
 - see apidoc at www.pnfsoftware.com/jeb/apidoc: Native code unit and co, Native decompiler unit and co.
@@ -24,11 +34,14 @@ Comments, questions, needs more details? message on us on Slack or support@pnfso
 """
 
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil, Artifact
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
+from com.pnfsoftware.jeb.core.input import FileInput
+
+from java.io import File
 
 class WalkEvmDecomp(IScript):
 
@@ -41,13 +54,32 @@ class WalkEvmDecomp(IScript):
 
     # retrieve the current project (must exist)
     projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
+    if projects:
+      project = projects[0]
+    else:
+      argv = ctx.getArguments()
+      if len(argv) < 1:
+        print('No project found, please provide an input contract file')
+        return
+
+      self.inputFile = argv[0]
+      print('Processing ' + self.inputFile + '...')
+      if not self.inputFile.endswith('.evm-bytecode'):
+        print('Warning: it is recommended your contract file has the evm-bytecode extension in order to guarantee processing by the EVM modules')
+
+      # create a project
+      project = engctx.loadProject('EVMProject')
+
+      # load and process the artifact
+      artifact = Artifact('EVMArtifact', FileInput(File(self.inputFile)))
+      project.processArtifact(artifact)
+
+      project = engctx.getProjects()[0]
 
     # retrieve the primary code unit (must be the result of an EVM contract analysis)
-    units = RuntimeProjectUtil.findUnitsByType(projects[0], INativeCodeUnit, False)
+    units = RuntimeProjectUtil.findUnitsByType(project, INativeCodeUnit, False)
     if not units:
+      print('No native code unit found')
       return
     unit = units[0]
     print('EVM unit: %s' % unit)
@@ -55,7 +87,10 @@ class WalkEvmDecomp(IScript):
     # GlobalAnalysis is assumed to be on: the contract is already decompiled
     # we retrieve a handle on the EVM decompiler ...
     decomp = DecompilerHelper.getDecompiler(unit)
-    print(decomp)
+    if not decomp:
+      print('No decompiler unit found')
+      return
+
     # ... and retrieve a handle on the decompiled contract's INativeSourceUnit
     src = decomp.decompile("DecompiledContract")
     print(src)
