@@ -44,7 +44,7 @@ class JEB2JavaASTDemo(IScript):
 
 
   def displayTree(self, e, level=0):
-    print('%s%s' % (level*'  ', e))
+    print('%s%s @ 0x%X' % (level*'  ', e, e.getPhysicalOffset()))
     if e:
       elts = e.getSubElements()
       for e in elts:
