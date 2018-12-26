@@ -2,7 +2,7 @@
 
 """
 [Deobfuscate WhatsApp Strings V2, (c) B. Kerler 2016]
-- Example JEB2 Plugin for >= V2.2.1 -
+- Example JEB Plugin for >= V2.2.1 -
 * Change key values from switch statements, run plugin using Scripts/Run scripts with Source Tab open, clicking into it (Bytecode Window won't work)*
 ** Tested with Whatsapp Version 4.5.1077 and 2.16.20 **
 """
@@ -14,7 +14,7 @@ from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass, IJavaArrayElt
 from com.pnfsoftware.jeb.core.events import JebEvent, J
 
-class JEB2WhatsAppStringDecryptor(IScript):
+class WhatsAppStringDecryptor(IScript):
   def run(self, ctx):
     self.keys = {}
 	

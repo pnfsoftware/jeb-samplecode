@@ -1,7 +1,7 @@
 """
-Sample UI client script for JEB2.
+Sample UI client script for JEB.
 
-This script demonstrates how to add and process additional artifacts into a JEB2 project.
+This script demonstrates how to add and process additional artifacts into a JEB project.
 
 Refer to SCRIPTS.TXT for more information.
 More online www.pnfsoftware.com
@@ -17,7 +17,7 @@ from com.pnfsoftware.jeb.core import Artifact
 from com.pnfsoftware.jeb.core.input import FileInput
 
 
-class JEB2AddArtifact(IScript):
+class AddArtifact(IScript):
 
   path = 'PATH_TO_FILE'
 

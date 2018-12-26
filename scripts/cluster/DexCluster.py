@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 
 Cluster DEX classes in order to rebuild an obfuscated+flattened code hierarchy.
 

@@ -1,5 +1,5 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
 Shows how to use message and dialog boxes.
 
@@ -10,7 +10,7 @@ from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.client.api import IconType, ButtonGroupType
 
 
-class JEB2RequestUserInput(IScript):
+class RequestUserInput(IScript):
 
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):

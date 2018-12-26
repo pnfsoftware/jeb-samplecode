@@ -1,5 +1,5 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
 Search all text documents produced by all units under the project root.
 
@@ -12,7 +12,7 @@ from com.pnfsoftware.jeb.core.output.text import ITextDocument
 import re
 
 
-class JEB2SearchAll(IScript):
+class SearchAll(IScript):
 
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):

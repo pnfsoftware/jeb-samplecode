@@ -1,7 +1,7 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
-This script is a JEB2 API port of the original JEB1 script 'ASTDecryptStrings.py'
+This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'
 Its purpose is to decrypt the strings protected by (older versions of) DexGuard-protected
 More details can be found here:
 https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
@@ -18,7 +18,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass
 
 
-class JEB2JavaASTDecryptStrings(IScript):
+class JavaASTDecryptStrings(IScript):
 
   def run(self, ctx):
     engctx = ctx.getEnginesContext()

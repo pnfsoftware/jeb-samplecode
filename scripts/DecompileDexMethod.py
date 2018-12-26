@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 
 This code shows how to decompile the class containing a target Dalvik method,
 and retrieve the associated decompiled Java AST method element.
@@ -18,7 +18,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 
 
-class JEB2DecompileMethod(IScript):
+class DecompileMethod(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

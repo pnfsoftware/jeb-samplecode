@@ -1,5 +1,5 @@
 """
-Sample export script  for PNF Software' JEB2.
+Sample export script  for PNF Software' JEB.
 
 This script exports all the function names, comments and signatures in JSON
 or MAP so the user can reimport them later on or use them with another tool.
@@ -77,7 +77,7 @@ def get_unit(ctx, unit_type):
     return unit
 
 
-class JEB2CustomizerExport(IScript):
+class CustomizerExport(IScript):
     """
     Script class.
     """

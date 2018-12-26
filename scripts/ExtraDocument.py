@@ -1,5 +1,5 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
 This script demonstrates how to generate an extra document for a unit.
 
@@ -17,7 +17,7 @@ from com.pnfsoftware.jeb.core.output.text.impl import Line, StaticTextDocument
 from com.pnfsoftware.jeb.core.events import JebEvent, J
 
 
-class JEB2ExtraDocument(IScript):
+class ExtraDocument(IScript):
   def run(self, ctx):
     engctx = ctx.getEnginesContext()
     if not engctx:

@@ -13,7 +13,7 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 from com.pnfsoftware.jeb.util.io import IO
 
-class JEB2DumpBinaryUnits(IScript):
+class DumpBinaryUnits(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

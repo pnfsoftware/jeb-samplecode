@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 Requires: JEB 2.1
 
 This script demos how to use the Java AST API.
@@ -16,7 +16,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 
 
-class JEB2JavaASTDemo(IScript):
+class JavaASTDemo(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

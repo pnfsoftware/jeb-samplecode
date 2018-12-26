@@ -1,5 +1,5 @@
 """
-Sample import script  for PNF Software' JEB2.
+Sample import script  for PNF Software' JEB.
 
 This script exports all the function names and comments
 so the user can reimport them later on or use them with
@@ -253,7 +253,7 @@ class ImportJson(Runnable):
 
 
 
-class JEB2CustomizerImport(IScript):
+class CustomizerImport(IScript):
     """
     Script class.
     """

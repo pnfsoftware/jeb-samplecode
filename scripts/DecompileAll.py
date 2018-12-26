@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 
 Find code units in a project and attempt to decompile all classes of such units.
 
@@ -117,7 +117,7 @@ class DecompileAll(Runnable):
     return s
 
 
-class JEB2DecompileAll(IScript):
+class DecompileAll(IScript):
 
   def run(self, ctx):
     ctx.executeAsync("Decompiling all...", DecompileAll(ctx))

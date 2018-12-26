@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 Requires: JEB 2.1.3
 
 This script shows how to "tag" elements of an AST tree, and later on retrieve
@@ -34,7 +34,7 @@ from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.units.code.java import IJavaConstant
 
 
-class JEB2JavaASTTags(IScript):
+class JavaASTTags(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

@@ -1,36 +1,32 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
-This script demonstrates how to run an asynchronous interruptible task that returns a value.
+This script demonstrates how to run asynchronous interruptible tasks within a UI client.
 
 Refer to SCRIPTS.TXT for more information.
 """
 
 import time
 
-from java.lang import Thread
-from java.util.concurrent import Callable
+from java.lang import Runnable, Thread
 
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 
 
-class JEB2AsyncTaskWithReturn(IScript):
+class AsyncTask(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
       return
-    r = ctx.executeAsyncWithReturn('Counting... and returning a value', SimpleTask())
-    print r
+    ctx.executeAsync('Counting...', SimpleTask())
 
 
-# note the use of Callable here
-class SimpleTask(Callable):
-  def call(self):
-    for i in range(5):
+class SimpleTask(Runnable):
+  def run(self):
+    for i in range(10):
       # react to user pressing Cancel
       if Thread.interrupted():
         print('The task was interrupted')
         break
       print('Counter: %d' % i)
       time.sleep(1)
-    return 123

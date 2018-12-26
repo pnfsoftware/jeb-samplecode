@@ -7,7 +7,7 @@ Refer to SCRIPTS.TXT for more information.
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 
-class JEB2ListUnits(IScript):
+class ListUnits(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

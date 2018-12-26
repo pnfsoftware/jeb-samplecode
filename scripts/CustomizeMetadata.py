@@ -1,5 +1,5 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 
 This script demonstrates how to manipulate the metadata of an interactive unit.
 
@@ -16,7 +16,7 @@ from com.pnfsoftware.jeb.core.units import IInteractiveUnit, MetadataGroup, Meta
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 
 
-class JEB2CustomizeMetadata(IScript):
+class CustomizeMetadata(IScript):
   def run(self, ctx):
     engctx = ctx.getEnginesContext()
     if not engctx:

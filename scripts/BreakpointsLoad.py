@@ -1,7 +1,7 @@
 """
 JEB script to reload previously saved breakpoints onto the current debugging session. (The session must be started first.)
 - Breakpoints file: [JEB]/bin/breakpoints.txt
-- See converse script to save breakpoints ot a file: JEB2BreakpointsSave.py
+- See converse script to save breakpoints ot a file: BreakpointsSave.py
 
 Refer to SCRIPTS.TXT for more information.
 """
@@ -15,7 +15,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 
 
-class JEB2BreakpointsLoad(IScript):
+class BreakpointsLoad(IScript):
   def run(self, ctx):
     engctx = ctx.getEnginesContext()
     if not engctx:

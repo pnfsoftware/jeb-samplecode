@@ -5,7 +5,7 @@ This script decompiles a given file using JEB. It can be run on the command-line
 
 How to run:
 - The command line below assumes that this file was dropped in your JEB's scripts/ folder
-- Command-line: java -jar ../bin/cl/jeb.jar --srv2 --script=JEB2DecompileFile.py -- FILE OUTPUT_DIR
+- Command-line: java -jar ../bin/cl/jeb.jar --srv2 --script=DecompileFile.py -- FILE OUTPUT_DIR
 
 For additional details, refer to:
 https://www.pnfsoftware.com/jeb2/manual/faq/#can-i-execute-a-jeb-python-script-from-the-command-line
@@ -27,7 +27,7 @@ from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 
 from java.io import File
 
-class JEB2DecompileFile(IScript):
+class DecompileFile(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

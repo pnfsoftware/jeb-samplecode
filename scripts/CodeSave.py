@@ -1,7 +1,7 @@
 """
 JEB script to save (persist) basic refactoring data of currently loaded code units.
 - Data file: [JEB]/bin/codedata.txt
-- See converse script to load and apply that data onto a fresh project: JEB2CodeLoad.py
+- See converse script to load and apply that data onto a fresh project: CodeLoad.py
 
 Requires: JEB 2.3.14.20180522+
 
@@ -17,7 +17,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 
 
-class JEB2CodeSave(IScript):
+class CodeSave(IScript):
   def run(self, ctx):
     engctx = ctx.getEnginesContext()
     if not engctx:

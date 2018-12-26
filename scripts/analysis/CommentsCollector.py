@@ -1,10 +1,10 @@
 """
-This JEB2 script shows how to collect all the comments and notes from a project and automatically generate a table document to show them.
+This JEB script shows how to collect all the comments and notes from a project and automatically generate a table document to show them.
 Author: Ruoxiao Wang
 
 How to use the script:
 (1) (Optional) Copy CommentsCollector.py to your jeb2 scripts folder
-(2) Start the JEB2 application and open an Android app
+(2) Start the JEB application and open an Android app
 (3) Double click the top level unit
 (4) Select: File -> Scripts -> Run Script -> CommentsCollector.py and click open
 (5) A table document contains all comments and notes will be created in the top-level unit.

@@ -1,7 +1,7 @@
 """
 JEB script to save (persist) the breakpoints (location and state) of the current debugging session to a file.
 - Breakpoints file: [JEB]/bin/breakpoints.txt
-- See converse script to reload breakpoints onto a debugging session: JEB2BreakpointsLoad.py
+- See converse script to reload breakpoints onto a debugging session: BreakpointsLoad.py
 
 The breakpoints file is JSON formatted and can be edited manually as well. Structure
 
@@ -46,7 +46,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 
 
-class JEB2BreakpointsSave(IScript):
+class BreakpointsSave(IScript):
   def run(self, ctx):
     engctx = ctx.getEnginesContext()
     if not engctx:

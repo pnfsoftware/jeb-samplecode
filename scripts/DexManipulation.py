@@ -1,5 +1,5 @@
 """
-Sample client script for PNF Software' JEB2.
+Sample client script for PNF Software' JEB.
 
 Demo of the DEX manipulation methods exposed in the specialized IDexUnit interface.
 
@@ -16,7 +16,7 @@ from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 from com.pnfsoftware.jeb.core.units.code.android.dex import IDexString
 
 
-class JEB2DexManipulation(IScript):
+class DexManipulation(IScript):
 
   def run(self, ctx):
     self.ctx = ctx

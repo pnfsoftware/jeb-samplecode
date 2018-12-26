@@ -1,5 +1,5 @@
 """
-This JEB2 script jumps to or displays an Android target resource (string, XML, etc.)
+This JEB script jumps to or displays an Android target resource (string, XML, etc.)
 referenced by an active resource ID item (interactive number).
 
 Open an APK; in a Dalvik or Java view, set the caret on a resource id; execute the script.

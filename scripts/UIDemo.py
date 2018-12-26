@@ -1,8 +1,8 @@
 """
-Sample UI client script for PNF Software' JEB2.
+Sample UI client script for PNF Software' JEB.
 Requires: JEB 2.1.4
 
-This script demonstrates how to use the JEB2 UI API to query and augment the views offered by JEB2 UI clients.
+This script demonstrates how to use the JEB UI API to query and augment the views offered by JEB UI clients.
 
 Refer to SCRIPTS.TXT for more information.
 """
@@ -16,7 +16,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil, IUnitFilter
 from com.pnfsoftware.jeb.core.units import IUnit
 
 
-class JEB2UIDemo(IScript):
+class UIDemo(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
