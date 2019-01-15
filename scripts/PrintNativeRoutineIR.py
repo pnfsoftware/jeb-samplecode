@@ -16,7 +16,7 @@ Two modes:
 This script demonstrates how to retrieve and print out the Intermediate Representation of a decompiled routine.
 
 ===> Additional references:
-- reference blog post: [TODO]
+- reference blog post: https://www.pnfsoftware.com/blog/jeb-native-pipeline-intermediate-representation/
 - highly recommended (else you will have much difficulty building upon the code below): follow the tutorials on www.pnfsoftware.com/jeb/devportal
 - for Native code and Native Decompilers: the com.pnfsoftware.jeb.core.units.code.asm package and sub-packages 
 - see API documentation at www.pnfsoftware.com/jeb/apidoc: Native code unit and co, Native decompiler unit and co.
