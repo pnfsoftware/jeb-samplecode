@@ -1,3 +1,3 @@
-A collection of sample scripts, plugins, and extensions for PNF Software's JEB.
+A collection of sample extension code (Python scripts & Java plugins) for [JEB Decompiler](https://www.pnfsoftware.com).
 
-Visit our [development portal](https://www.pnfsoftware.com/jeb2/devportal).
+Reference: Visit our [Developer Portal](https://www.pnfsoftware.com/jeb/devportal).

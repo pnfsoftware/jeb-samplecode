@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="build" name="jeb2-samplecode">
+
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+
+    <path id="jeb2-samplecode.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="../TESTBUILDS/3_business-741296147584833131-2.3-master/bin/cl/jeb.jar"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="jeb2-samplecode.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar">
+        <delete file="client.jar"/>
+        <jar destfile="client.jar">
+            <manifest>
+                <!--<attribute name="Class-Path" value="C:/Users/nicol/jeb2/TESTBUILDS/3_business-741296147584833131-2.3-master/bin/cl/jeb.jar"/>-->
+                <attribute name="Main-Class" value="com.pnf.jebauto.AutoClient"/>
+                <attribute name="Class-Path" value="jeb.jar"/>
+            </manifest>
+            <fileset dir="bin"/>
+            <!-- copy resources -->
+            <fileset dir="src" excludes="**/*.java"/>
+            <fileset dir="." includes="README.md"/>
+        </jar>
+    </target>
+
+</project>
