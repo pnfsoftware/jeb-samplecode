@@ -18,7 +18,7 @@ from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from java.lang import Runnable
 
 
-class DecompileAll(Runnable):
+class Decomp(Runnable):
 
   def __init__(self, ctx):
     self.ctx = ctx
@@ -120,6 +120,6 @@ class DecompileAll(Runnable):
 class DecompileAll(IScript):
 
   def run(self, ctx):
-    ctx.executeAsync("Decompiling all...", DecompileAll(ctx))
+    ctx.executeAsync("Decompiling all...", Decomp(ctx))
     print('Done.')
 
