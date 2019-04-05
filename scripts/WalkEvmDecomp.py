@@ -1,3 +1,8 @@
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
+from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
+from com.pnfsoftware.jeb.core.util import DecompilerHelper
 """
 Sample script for JEB Decompiler.
 
@@ -28,60 +33,26 @@ This script demonstrates how to retrieve the decompiled EVM code of an Ethereum 
 
 More to be published on the blog and technical papers.
 
-Refer to SCRIPTS.TXT for additional information on how to execute JEB scripts.
-
 Comments, questions, needs more details? message on us on Slack or support@pnfsoftware.com -- Nicolas Falliere
 """
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil, Artifact
-from com.pnfsoftware.jeb.core.units import INativeCodeUnit
-from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
-from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
-from com.pnfsoftware.jeb.core.util import DecompilerHelper
-from com.pnfsoftware.jeb.core.input import FileInput
-
-from java.io import File
-
 class WalkEvmDecomp(IScript):
 
   def run(self, ctx):
-    # retrieve JEB's engines from the provided IClientContext
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    # retrieve the current project (must exist)
-    projects = engctx.getProjects()
-    if projects:
-      project = projects[0]
-    else:
+    prj = ctx.getMainProject()
+    if not prj:
       argv = ctx.getArguments()
       if len(argv) < 1:
-        print('No project found, please provide an input contract file')
+        print('Please provide an input contract file')
         return
-
       self.inputFile = argv[0]
       print('Processing ' + self.inputFile + '...')
       if not self.inputFile.endswith('.evm-bytecode'):
         print('Warning: it is recommended your contract file has the evm-bytecode extension in order to guarantee processing by the EVM modules')
-
-      # create a project
-      project = engctx.loadProject('EVMProject')
-
-      # load and process the artifact
-      artifact = Artifact('EVMArtifact', FileInput(File(self.inputFile)))
-      project.processArtifact(artifact)
-
-      project = engctx.getProjects()[0]
+      ctx.open(self.inputFile)
+      prj = ctx.getMainProject()
 
     # retrieve the primary code unit (must be the result of an EVM contract analysis)
-    units = RuntimeProjectUtil.findUnitsByType(project, INativeCodeUnit, False)
-    if not units:
-      print('No native code unit found')
-      return
-    unit = units[0]
+    unit = prj.findUnit(INativeCodeUnit)
     print('EVM unit: %s' % unit)
 
     # GlobalAnalysis is assumed to be on: the contract is already decompiled

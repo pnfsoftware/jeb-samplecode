@@ -1,24 +1,14 @@
-"""
-Sample client script for PNF Software' JEB.
-
-Cluster DEX classes in order to rebuild an obfuscated+flattened code hierarchy.
-
-Requires Jython 2.7
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
 import os
-
 from java.lang import Runnable, Thread
-
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionCreatePackageData, ActionMoveToPackageData
-
-
+"""
+Sample client script for PNF Software' JEB.
+Cluster DEX classes in order to rebuild an obfuscated+flattened code hierarchy.
+"""
 class DexCluster(IScript):
 
   OUTDIR = 'C:/Users/Nicolas/jeb2/jeb2-rcpclient/scripts'
@@ -26,22 +16,15 @@ class DexCluster(IScript):
 
   def run(self, ctx):
     self.ctx = ctx
+
     # customize this
     self.outputDir = DexCluster.OUTDIR
 
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    codeUnit = RuntimeProjectUtil.findUnitsByType(projects[0], ICodeUnit, False)[0]
+    prj = ctx.getMainProject()
+    codeUnit = prj.findUnit(ICodeUnit)
 
     print('Clustering: %s' % codeUnit)
+
     self.clusterUnit(codeUnit, DexCluster.TARGETP)
 
     print('Done.')

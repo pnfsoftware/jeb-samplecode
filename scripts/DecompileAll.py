@@ -1,48 +1,36 @@
-"""
-Sample client script for PNF Software' JEB.
-
-Find code units in a project and attempt to decompile all classes of such units.
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
 import os
-
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
 from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
-from com.pnfsoftware.jeb.core.output.text import ITextDocument
+from com.pnfsoftware.jeb.core.output.text import TextDocumentUtil
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
-
 from java.lang import Runnable
+"""
+Sample UI client script for PNF Software' JEB.
+Find code units in a project and attempt to decompile all classes of such units.
+"""
+class DecompileAll(IScript):
+  def run(self, ctx):
+    ctx.executeAsync("Decompiling all...", Decomp(ctx))
+    print('Done.')
 
 
 class Decomp(Runnable):
-
   def __init__(self, ctx):
     self.ctx = ctx
 
   def run(self):
-
     # customize this
     self.outputDir = self.ctx.getBaseDirectory()
 
-    engctx = self.ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
+    prj = self.ctx.getMainProject()
     print('Decompiling code units of %s...' % prj)
 
-    codeUnits = RuntimeProjectUtil.findUnitsByType(prj, ICodeUnit, False)
-    for codeUnit in codeUnits:
+    # will decompile all Native and Dalvik code
+    # tweak the if-block in decompileForCodeUnit() to decompile only one of those
+    # or, eg if you want to decompile Dalvik only, use prj.findUnits(IDexUnit)
+    for codeUnit in prj.findUnits(ICodeUnit):
       self.decompileForCodeUnit(codeUnit)
 
 
@@ -84,42 +72,14 @@ class Decomp(Runnable):
     if not os.path.exists(dirpath):
       os.makedirs(dirpath)
 
-    doc = self.getTextDocument(srcUnit)
-    if not doc:
-      print('The source text document was not found')
-      return False
+    # source document (interactive text)
+    doc = srcUnit.getSourceDocument()
 
-    text = self.formatTextDocument(doc)
+    # convert it to a string
+    text = TextDocumentUtil.getText(doc)
 
     filepath = os.path.join(outdir, subpath)
     f = open(filepath, 'w')
     f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
     f.write(text.encode('utf-8'))
     f.close()
-
-
-  def getTextDocument(self, srcUnit):
-    formatter = srcUnit.getFormatter()
-    if formatter and formatter.getDocumentPresentations():
-      doc = formatter.getDocumentPresentations()[0].getDocument()
-      if isinstance(doc, ITextDocument):
-        return doc
-    return None
-
-
-  def formatTextDocument(self, doc):
-    s = ''
-    # retrieve the entire document -it's a source file,
-    # no need to buffer individual parts. 10 MLoC is enough 
-    alldoc = doc.getDocumentPart(0, 10000000)
-    for line in alldoc.getLines():
-      s += line.getText().toString() + '\n'
-    return s
-
-
-class DecompileAll(IScript):
-
-  def run(self, ctx):
-    ctx.executeAsync("Decompiling all...", Decomp(ctx))
-    print('Done.')
-

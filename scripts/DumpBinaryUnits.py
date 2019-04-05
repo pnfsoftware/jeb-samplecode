@@ -1,35 +1,18 @@
-"""
-Dump all binary units of a JEB opened project to files on disk.
-Output folder= [HOME]/JEB_PROJECT_BINARY_EXTRACTED
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
 import os
-
 from java.io import File
-
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 from com.pnfsoftware.jeb.util.io import IO
-
+"""
+Dump all binary units of a JEB opened project to files on disk.
+Output folder= [HOME]/JEB_PROJECT_BINARY_EXTRACTED
+"""
 class DumpBinaryUnits(IScript):
 
   def run(self, ctx):
-    self.ctx = ctx
-
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
     OUTDIR = IO.expandPath('~/JEB_PROJECT_BINARY_EXTRACTED')
-    prj = projects[0]
+
+    prj = ctx.getMainProject()
     print('=> Dumping binary units of project to directory: %s' % OUTDIR)
 
     for art in prj.getLiveArtifacts():

@@ -1,50 +1,18 @@
+import os
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 """
 Sample client script for PNF Software' JEB.
-Requires: JEB 2.1
-
-This script demos how to use the Java AST API.
-
-Refer to SCRIPTS.TXT for more information.
+This script demonstrates how to navigate and dump Java AST trees.
 """
-
-import os
-
-from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
-from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
-from com.pnfsoftware.jeb.core.output.text import ITextDocument
-
-
 class JavaASTDemo(IScript):
-
   def run(self, ctx):
-    self.ctx = ctx
-
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
-    print('Decompiling code units of %s...' % prj)
-
-    units = RuntimeProjectUtil.findUnitsByType(prj, IJavaSourceUnit, False)
-    for unit in units:
-      #self.decompileForCodeUnit(codeUnit)
-      #print(unit.getJavaClass())
+    prj = ctx.getMainProject()
+    for unit in prj.findUnits(IJavaSourceUnit):
       self.displayTree(unit.getClassElement())
 
-    print('Done.')
-
-
   def displayTree(self, e, level=0):
-    print('%s%s @ 0x%X' % (level*'  ', e, e.getPhysicalOffset()))
+    print('%s%s @ 0x%X' % (level*'  ', e.getElementType(), e.getPhysicalOffset()))
     if e:
       elts = e.getSubElements()
       for e in elts:

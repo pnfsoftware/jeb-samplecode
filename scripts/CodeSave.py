@@ -1,35 +1,17 @@
+import json
+import os
+import time
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil
+from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 """
 JEB script to save (persist) basic refactoring data of currently loaded code units.
 - Data file: [JEB]/bin/codedata.txt
 - See converse script to load and apply that data onto a fresh project: CodeLoad.py
-
-Requires: JEB 2.3.14.20180522+
-
-Refer to SCRIPTS.TXT for more information.
 """
-
-import json
-import os
-import time
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units.code import ICodeUnit
-
-
 class CodeSave(IScript):
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
+    prj = ctx.getMainProject()
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

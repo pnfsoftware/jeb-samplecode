@@ -1,21 +1,10 @@
-"""
-Sample UI client script for PNF Software' JEB.
-Requires: JEB 2.1.4
-
-This script demonstrates how to use the JEB UI API to query and augment the views offered by JEB UI clients.
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
-import time
-
-from java.lang import Runnable, Thread
-
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil, IUnitFilter
 from com.pnfsoftware.jeb.core.units import IUnit
-
-
+"""
+Sample UI client script for PNF Software' JEB.
+This script demonstrates how to use the JEB UI API to query views and fragments by JEB UI clients.
+"""
 class UIDemo(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
@@ -23,7 +12,7 @@ class UIDemo(IScript):
       return
 
     # show which unit view is currently focused
-    v = ctx.getFocusedView()  # needs 2.1.4
+    v = ctx.getFocusedView()
     print('Focused view: %s' % v)
 
     # enumerate all unit views (views representing units) and fragments within those views
@@ -41,14 +30,11 @@ class UIDemo(IScript):
       views[1].setFocus()
 
     # opening the first certificate unit we find (in an APK, there should be one)
-    engctx = ctx.getEnginesContext()
-    projects = engctx.getProjects()
+    prj = ctx.getMainProject()
     unitFilter = UnitFilter('cert')
-    units = RuntimeProjectUtil.filterUnits(projects[0], unitFilter)
+    units = RuntimeProjectUtil.filterUnits(prj, unitFilter)
     if units:
       ctx.openView(units.get(0))
-
-    # done
 
 
 class UnitFilter(IUnitFilter):

@@ -1,3 +1,9 @@
+import json
+import os
+import time
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil
+from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 """
 JEB script to save (persist) the breakpoints (location and state) of the current debugging session to a file.
 - Breakpoints file: [JEB]/bin/breakpoints.txt
@@ -33,32 +39,10 @@ Example:
   ]
  }
 }
-
-Refer to SCRIPTS.TXT for more information.
 """
-
-import json
-import os
-import time
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
-
-
 class BreakpointsSave(IScript):
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
+    prj = ctx.getMainProject()
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

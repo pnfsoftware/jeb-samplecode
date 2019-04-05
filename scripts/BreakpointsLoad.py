@@ -1,33 +1,17 @@
+import json
+import os
+import time
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil
+from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 """
 JEB script to reload previously saved breakpoints onto the current debugging session. (The session must be started first.)
 - Breakpoints file: [JEB]/bin/breakpoints.txt
 - See converse script to save breakpoints ot a file: BreakpointsSave.py
-
-Refer to SCRIPTS.TXT for more information.
 """
-
-import json
-import os
-import time
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
-
-
 class BreakpointsLoad(IScript):
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
+    prj = ctx.getMainProject()
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

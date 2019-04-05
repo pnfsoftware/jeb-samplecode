@@ -1,34 +1,23 @@
-# -*- coding: utf-8 -*-
-
-"""
-This script decompiles a given file using JEB. It can be run on the command-line using JEB's built-in Jython interpreter.
-
-How to run:
-- The command line below assumes that this file was dropped in your JEB's scripts/ folder
-- Command-line: java -jar ../bin/cl/jeb.jar --srv2 --script=DecompileFile.py -- FILE OUTPUT_DIR
-
-For additional details, refer to:
-https://www.pnfsoftware.com/jeb2/manual/faq/#can-i-execute-a-jeb-python-script-from-the-command-line
-"""
-
 import os
 import sys
-
-from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
-from com.pnfsoftware.jeb.core import JebCoreService, ICoreContext, Artifact, RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.dao import IFileDatabase
-from com.pnfsoftware.jeb.core.dao.impl import JEB2FileDatabase
-from com.pnfsoftware.jeb.core.input import FileInput
+from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
+from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
+from com.pnfsoftware.jeb.core.output.text import TextDocumentUtil
+"""
+This script decompiles a given file using JEB. It can be run on the command-line using JEB's built-in Jython interpreter.
 
-from java.io import File
+How to run (eg, on Windows):
+  $ jeb_wincon.bat -c --srv2 --script=DecompileFile.py -- INPUT_FILE OUTPUT_DIR
 
+For additional details, refer to:
+https://www.pnfsoftware.com/jeb2/manual/faq/#can-i-execute-a-jeb-python-script-from-the-command-line
+"""
 class DecompileFile(IScript):
-
   def run(self, ctx):
     self.ctx = ctx
 
@@ -40,32 +29,17 @@ class DecompileFile(IScript):
     self.inputFile = argv[0]
     self.outputDir = argv[1]
 
-    print('Decompiling ' + self.inputFile + '...')
+    print('Processing file: ' + self.inputFile + '...')
+    ctx.open(self.inputFile)
 
-    engctx = ctx.getEnginesContext()
-
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-    
-    # Create a project
-    project = engctx.loadProject('PlaceholderProjectName')
-
-    if not project:
-      print('Failed to open a new project')
-      return
-
-    # Add the input file as a project artifact
-    artifact = Artifact('PlaceholderArtifactName',FileInput(File(self.inputFile)))
-    project.processArtifact(artifact)
-
-    # Decompile code units
-    codeUnits = RuntimeProjectUtil.findUnitsByType(project, ICodeUnit, False)
-    for codeUnit in codeUnits:
-      self.decompileForCodeUnit(codeUnit)
+    prj = ctx.getMainProject()
+    # note: replace IDexUnit by ICodeUnit to decompile all code (incl. native)
+    # replace IDexUnit by INativeCodeUnit to decompile native code only
+    for codeUnit in prj.findUnits(IDexUnit):
+      self.decompileCodeUnit(codeUnit)
 
 
-  def decompileForCodeUnit(self, codeUnit):
+  def decompileCodeUnit(self, codeUnit):
     # make sure the code unit is processed
     if not codeUnit.isProcessed():
       if not codeUnit.process():
@@ -112,34 +86,11 @@ class DecompileFile(IScript):
     if not os.path.exists(dirpath):
       os.makedirs(dirpath)
 
-    doc = self.getTextDocument(srcUnit)
-    if not doc:
-      print('The source text document was not found')
-      return False
-
-    text = self.formatTextDocument(doc)
+    doc = srcUnit.getSourceDocument()
+    text = TextDocumentUtil.getText(doc)
 
     filepath = os.path.join(outdir, filename)
     f = open(filepath, 'w')
     f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
     f.write(text.encode('utf-8'))
     f.close()
-
-    
-  def getTextDocument(self, srcUnit):
-    formatter = srcUnit.getFormatter()
-    if formatter and formatter.getDocumentPresentations():
-      doc = formatter.getDocumentPresentations()[0].getDocument()
-      if isinstance(doc, ITextDocument):
-        return doc
-    return None
-  
-
-  def formatTextDocument(self, doc):
-    s = ''
-    # retrieve the entire document -it's a source file,
-    # no need to buffer individual parts. 10 MLoC is enough 
-    alldoc = doc.getDocumentPart(0, 10000000)
-    for line in alldoc.getLines():
-      s += line.getText().toString() + '\n'
-    return s

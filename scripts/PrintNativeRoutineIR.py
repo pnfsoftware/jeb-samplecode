@@ -1,10 +1,14 @@
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
+from com.pnfsoftware.jeb.core.util import DecompilerHelper
 """
 Sample script for JEB Decompiler.
 
 ===> How to use:
 Two modes:
 - Using the UI desktop client:
-  - load a binary file into JEB 3.0.8+
+  - load a binary file into JEB
   - make sure GlobalAnalysis for code plugins is enabled (it is by default)
   - then run the script: File, Scripts, Run...
   - the script will process your loaded executable
@@ -21,58 +25,25 @@ This script demonstrates how to retrieve and print out the Intermediate Represen
 - for Native code and Native Decompilers: the com.pnfsoftware.jeb.core.units.code.asm package and sub-packages 
 - see API documentation at www.pnfsoftware.com/jeb/apidoc: Native code unit and co, Native decompiler unit and co.
 
-Refer to SCRIPTS.TXT for additional information on how to execute JEB scripts.
-
 Comments, questions, needs more details? message on us on Slack or support@pnfsoftware.com -- Nicolas Falliere
 """
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil, Artifact
-from com.pnfsoftware.jeb.core.units import INativeCodeUnit
-from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
-from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
-from com.pnfsoftware.jeb.core.util import DecompilerHelper
-from com.pnfsoftware.jeb.core.input import FileInput
-
-from java.io import File
-
 class PrintNativeRoutineIR(IScript):
-
   def run(self, ctx):
-    # retrieve JEB's engines from the provided IClientContext
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    # retrieve the current project (must exist)
-    projects = engctx.getProjects()
-    if projects:
-      project = projects[0]
-    else:
+    # retrieve the current project or create one and load the input file
+    prj = ctx.getMainProject()
+    if not prj:
       argv = ctx.getArguments()
       if len(argv) < 1:
-        print('No project found, please provide an input contract file')
+        print('No project found, please provide an input binary')
         return
 
       self.inputFile = argv[0]
       print('Processing ' + self.inputFile + '...')
-
-      # create a project
-      project = engctx.loadProject('Project')
-
-      # load and process the artifact
-      artifact = Artifact('Artifact', FileInput(File(self.inputFile)))
-      project.processArtifact(artifact)
-
-      project = engctx.getProjects()[0]
+      ctx.open(self.inputFile)
+      prj.getMainProject()
 
     # retrieve the primary code unit (must be the result of an EVM contract analysis)
-    units = RuntimeProjectUtil.findUnitsByType(project, INativeCodeUnit, False)
-    if not units:
-      print('No native code unit found')
-      return
-    unit = units[0]
+    unit = prj.findUnit(INativeCodeUnit)
     print('Native code unit: %s' % unit)
 
     # GlobalAnalysis is assumed to be on (default)
@@ -82,7 +53,7 @@ class PrintNativeRoutineIR(IScript):
       return
 
     # retrieve a handle on the method we wish to examine
-    method = unit.getInternalMethods().get(0)#('sub_1001929')
+    method = unit.getInternalMethods().get(0)
     src = decomp.decompile(method.getName(True))
     if not src:
       print('Routine was not decompiled')

@@ -1,25 +1,16 @@
+import time
+from java.lang import Runnable, Thread
+from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
 Sample UI client script for PNF Software' JEB.
-
 This script demonstrates how to run asynchronous interruptible tasks within a UI client.
-
-Refer to SCRIPTS.TXT for more information.
 """
-
-import time
-
-from java.lang import Runnable, Thread
-
-from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
-
-
 class AsyncTask(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
       return
     ctx.executeAsync('Counting...', SimpleTask())
-
 
 class SimpleTask(Runnable):
   def run(self):

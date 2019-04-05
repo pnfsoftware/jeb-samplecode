@@ -1,14 +1,3 @@
-"""
-Sample UI client script for PNF Software' JEB.
-
-This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'
-Its purpose is to decrypt the strings protected by (older versions of) DexGuard-protected
-More details can be found here:
-https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionXrefsData
@@ -16,34 +5,28 @@ from com.pnfsoftware.jeb.core.events import JebEvent, J
 from com.pnfsoftware.jeb.core.output import AbstractUnitRepresentation, UnitRepresentationAdapter
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass
-
-
+"""
+Sample UI client script for PNF Software' JEB.
+This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'
+Its purpose is to decrypt the strings protected by (older versions of) DexGuard-protected
+More details can be found here:
+https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
+"""
 class JavaASTDecryptStrings(IScript):
-
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    prj = projects[0]
+    prj = ctx.getMainProject()
     print('Decompiling code units of %s...' % prj)
 
-    self.codeUnit = RuntimeProjectUtil.findUnitsByType(prj, ICodeUnit, False)[0]
-    print(self.codeUnit)
+    # first code unit
+    self.codeUnit = prj.findUnit(ICodeUnit)
+    print('Code unit: %s' % self.codeUnit)
 
     # the encryption keys could be determined by analyzing the decryption method
     self.targetClass = 'MainActivity'
     self.keys = [409, 62, -8]
 
     # enumerate the decompiled classes, find and process the target class
-    units = RuntimeProjectUtil.findUnitsByType(prj, IJavaSourceUnit, False)
-    for unit in units:
+    for unit in prj.findUnits(IJavaSourceUnit):
       javaClass = unit.getClassElement()
       if javaClass.getName().find(self.targetClass) >= 0:
         self.cstbuilder = unit.getFactories().getConstantFactory()

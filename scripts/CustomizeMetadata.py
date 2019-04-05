@@ -1,40 +1,17 @@
-"""
-Sample UI client script for PNF Software' JEB.
-
-This script demonstrates how to manipulate the metadata of an interactive unit.
-
-Refer to SCRIPTS.TXT for more information.
-"""
-
 import time
-
 from java.util import ArrayList
-
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units import IInteractiveUnit, MetadataGroup, MetadataGroupType
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
-
-
+"""
+Sample UI client script for PNF Software' JEB.
+This script demonstrates how to manipulate the metadata of a code unit.
+"""
 class CustomizeMetadata(IScript):
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    # get the first code unit available (code units re interactive units)
-    units = RuntimeProjectUtil.findUnitsByType(projects[0], ICodeUnit, False)
-    if not units:
-      print('No unit available')
-      return
-
-    unit = units[0]
+    # pick the first code unit offered by the project
+    unit = ctx.getMainProject().findUnit(ICodeUnit)
     print('Unit: %s' % unit)
 
     # the metadata manager is optional (a unit may choose to not provide one)
