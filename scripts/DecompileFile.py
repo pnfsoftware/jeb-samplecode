@@ -90,7 +90,6 @@ class DecompileFile(IScript):
     text = TextDocumentUtil.getText(doc)
 
     filepath = os.path.join(outdir, filename)
-    f = open(filepath, 'w')
-    f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
-    f.write(text.encode('utf-8'))
-    f.close()
+    with open(filepath, 'wb') as f:
+      f.write('// Decompiled by JEB v%s\n\n' % self.ctx.getSoftwareVersion())
+      f.write(text.encode('utf-8'))
