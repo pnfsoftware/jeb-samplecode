@@ -22,7 +22,6 @@ class ListenToDexChangeEvents(IScript):
 
     # remove stale listeners a previous execution of this script may have added
     for listener in dex.getListeners():
-      print(listener)
       try:
         # note: a check isinstance(listener, SampleListener) will not work here
         # since class objects are different every time the script is run
