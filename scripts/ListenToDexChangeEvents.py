@@ -22,13 +22,10 @@ class ListenToDexChangeEvents(IScript):
 
     # remove stale listeners a previous execution of this script may have added
     for listener in dex.getListeners():
-      try:
-        # note: a check isinstance(listener, SampleListener) will not work here
-        # since class objects are different every time the script is run
-        if listener.IN_SCRIPT:  
-          dex.removeListener(listener)
-      except:
-        pass
+      # note: a check isinstance(listener, SampleListener) will not work here
+      # since class objects are different every time the script is run
+      if hasattr(listener, 'IN_SCRIPT'):
+        dex.removeListener(listener)
 
     # add a fresh listener
     dex.addListener(SampleListener(ctx))
@@ -36,14 +33,14 @@ class ListenToDexChangeEvents(IScript):
 
 
 class SampleListener(IEventListener):
-  IN_SCRIPT = 1
-
   def __init__(self, ctx):
     self.ctx = ctx
+    self.IN_SCRIPT = 1
 
   def onEvent(self, e):
     if isinstance(e, JebEvent) and e.type == J.UnitChange and e.data != None:
       print('++++ %s' % e.data)
+      # demo: pick out CommentUpdate changes - refer to UnitChangeEventData for other types
       if e.data.type == UnitChangeEventData.CommentUpdate:
         msg = 'New comment at %s (unit %s):\nValue:"%s"\nPrevious:"%s"' % (e.data.location, e.data.target, e.data.value, e.data.previousValue)
         self.ctx.displayMessageBox('Comment update', msg, None, None)
