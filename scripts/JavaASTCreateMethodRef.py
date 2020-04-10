@@ -11,7 +11,7 @@ Execute the script.
 
 The script shows how to use the Java factory to create an external method reference (also available for fields),
 create a new statement (here, a call to 'new String("...")'), and replace an arbitrary selected statement
-(index 0 in the currently selected method) y the new statement.
+(index 0 in the currently selected method) by the new statement.
 
 Requirement: JEB 3.14
 """

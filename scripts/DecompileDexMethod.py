@@ -6,9 +6,9 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 """
-Sample client script for PNF Software' JEB.
-This code shows how to decompile the class containing a target Dalvik method,
-and retrieve the associated decompiled Java AST method element.
+*** DEPRECATED ***
+This script is largely inefficient. Use IDexDecompilerUnit.decompileMethod(msig, context) to decompile a specific method.
+Refer to the sample script DecompileSingleMethod.py.
 """
 class DecompileDexMethod(IScript):
 
@@ -16,10 +16,11 @@ class DecompileDexMethod(IScript):
   targetMethod = 'Lcom/pnfsoftware/raasta/AppHelp;->onCreate(Landroid/os/Bundle;)V'
 
   def run(self, ctx):
+    raise Exception('DEPRECATED')
+
     self.ctx = ctx
 
     dex = ctx.getMainProject().findUnit(IDexUnit)
-
     javaMethod = self.getDecompiledMethod(dex, targetMethod)
     if not javaMethod:
       print('The method was not found or was not decompiled')

@@ -11,7 +11,7 @@ Cluster DEX classes in order to rebuild an obfuscated+flattened code hierarchy.
 """
 class DexCluster(IScript):
 
-  OUTDIR = 'C:/Users/Nicolas/jeb2/jeb2-rcpclient/scripts'
+  OUTDIR = 'CUSTOMIZE_THIS'
   TARGETP = 'o.'  # customize
 
   def run(self, ctx):

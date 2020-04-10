@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from com.pnfsoftware.jeb.util.encoding.IntegerLEB128 import DecodedInt
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core.units.code.asm.processor import AbstractProcessor
 """
 Sample client script for PNF Software's JEB.
 More samples are available on our website and within the scripts/ folder.

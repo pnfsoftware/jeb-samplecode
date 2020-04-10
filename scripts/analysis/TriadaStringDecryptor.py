@@ -11,7 +11,7 @@ The script can be tested on Triada Application MD5 592fa585b64412e31b3da77b1e825
 *** CUSTOMIZE the attributes TARGET_CLASS_NAME, TARGET_CLASS_NAME_MAIN, DECRYPTOR_1_NAME_KEY, DECRYPTOR_2_NAME_KEY and DECRYPTOR_MAIN_KEY to decrypt strings located in other classes ***
 
 How to run the script:
-(1) (Optional) Copy TriadaStringDecryptor.py to your jeb2 scripts folder
+(1) (Optional) Copy TriadaStringDecryptor.py to your jeb scripts/ folder
 (2) Start the JEB application and open the Triada file
 (3) Open the target class (path: com/zmpk/a/a)
 (4) Press Q to decompile the class
