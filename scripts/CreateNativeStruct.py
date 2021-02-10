@@ -1,10 +1,12 @@
+#?description=Create a native structure type of the provided size, filled with integer primitives
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 from com.pnfsoftware.jeb.util.encoding import Conversion
 """
-Script for JEB Decompiler.
+Sample script for JEB Decompiler.
 This script is a UI helper to quickly create a native structure type of a given size.
 The structure will be filled with int32 primitives, and padded with one optional int16 and optional int8, if necessary.
 """

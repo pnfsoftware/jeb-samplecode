@@ -1,9 +1,12 @@
+#?description=
+#?shortcut=
+#?nolist
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.output import ItemClassIdentifiers
-from com.pnfsoftware.jeb.core.units import UnitUtil, MetadataGroup, MetadataGroupType, AddressPrefixMetadataGroup
+from com.pnfsoftware.jeb.core.units import MetadataGroup, MetadataGroupType, AddressPrefixMetadataGroup
 """
-Package/Class/Method coloring scripting.
+Package/Class/Method coloring scrip.
 We use the AddressPrefixMetadataGroup object to store metadata information, displayed in a text navbar.
 """
 class DexColorPackage(IScript):
@@ -23,7 +26,7 @@ class DexColorPackage(IScript):
     if not mm:
       print('The unit does not have a metadata manager')
       return
-    g = mm.getGroupByName(AddressPrefixMetadataGroup.NAME)
+    g = mm.getGroupByName(AddressPrefixMetadataGroup.DEFAULT_NAME)
     if not g:
       g = AddressPrefixMetadataGroup(unit)
       mm.addGroup(g)
@@ -40,4 +43,5 @@ class DexColorPackage(IScript):
       else:
         success = g.setData(a, ItemClassIdentifiers.INFO_NORMAL)
       print('%s: %s' % (a, success))
-    UnitUtil.notifyGenericChange(unit)
+
+    unit.notifyGenericChange()

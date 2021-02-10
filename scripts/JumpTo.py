@@ -1,8 +1,8 @@
+#?nolist
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
-
 """
-Sample showing:
+Sample script for JEB Decompiler.
 - how a script can be invoked after a cmdline-provided file has been processed by the JEB UI client
 - currently, this script simply searches for a Dex code unit, attempts to find a disassembly fragment for it, and navigate to the cmdline-provided address
 
@@ -19,11 +19,14 @@ class JumpTo(IScript):
     if len(ctx.getArguments()) < 2:
       return
 
+    prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     # arg[0] is the InputFile
     addr = ctx.getArguments()[1]
     print('Will jump to: %s' % addr)
 
-    dexunit = ctx.getMainProject().findUnit(IDexUnit)
+    dexunit = prj.findUnit(IDexUnit)
     if dexunit:
       f = ctx.findFragment(dexunit, 'Disassembly', True)
       if f:

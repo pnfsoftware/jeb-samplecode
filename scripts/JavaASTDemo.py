@@ -1,15 +1,20 @@
+#?description=Show how to navigate and dump Java AST trees
+#?shortcut=
 import os
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 """
-Sample client script for PNF Software' JEB.
-This script demonstrates how to navigate and dump Java AST trees.
+Sample script for JEB Decompiler.
 """
 class JavaASTDemo(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     for unit in prj.findUnits(IJavaSourceUnit):
-      self.displayTree(unit.getClassElement())
+      c = unit.getClassElement()
+      for m in c.getMethods():
+        self.displayTree(m)
 
   def displayTree(self, e, level=0):
     print('%s%s @ 0x%X' % (level*'  ', e.getElementType(), e.getPhysicalOffset()))

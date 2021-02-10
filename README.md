@@ -1,8 +1,10 @@
-# Sample extensions (Python scripts & Java plugins) for [JEB Decompiler](https://www.pnfsoftware.com).
+# Sample code (Python scripts & Java plugins) for [JEB Decompiler](https://www.pnfsoftware.com).
 
 ## JEB Script Development Recommendations
 
 JEB Client extensions (*scripts*) should be written in Python. (We may add support for scripts written in Java in the future.)
+
+Feel free to use the built-in editor in JEB (hotkey F2; then, Edit or Create a Script...)
 
 If you are using Sublime Text 3, we published a ST3 extension to make JEB script writing easier.
 Install the `jeb_scriptdev_helper` package using PackageControl or by cloning [that repository](https://github.com/pnfsoftware/jeb_scriptdev_helper) into your Sublime's 'Packages' folder:

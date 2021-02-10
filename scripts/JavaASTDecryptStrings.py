@@ -1,20 +1,24 @@
+#?description=Script for https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionXrefsData
-from com.pnfsoftware.jeb.core.events import JebEvent, J
 from com.pnfsoftware.jeb.core.output import AbstractUnitRepresentation, UnitRepresentationAdapter
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass
 """
-Sample UI client script for PNF Software' JEB.
+Sample script for JEB Decompiler.
 This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'
 Its purpose is to decrypt the strings protected by (older versions of) DexGuard-protected
 More details can be found here:
 https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
 """
 class JavaASTDecryptStrings(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     print('Decompiling code units of %s...' % prj)
 
     # first code unit
@@ -32,7 +36,7 @@ class JavaASTDecryptStrings(IScript):
         self.cstbuilder = unit.getFactories().getConstantFactory()
         if self.processClass(javaClass):
           # let client code know about those changes
-          unit.notifyListeners(JebEvent(J.UnitChange))
+          unit.notifyGenericChange()
         break
 
 

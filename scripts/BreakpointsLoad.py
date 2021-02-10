@@ -1,3 +1,5 @@
+#?description=Reload previously saved breakpoints onto the current debugging session. (The session must be started first.)
+#?shortcut=
 import json
 import os
 import time
@@ -5,13 +7,18 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 """
-JEB script to reload previously saved breakpoints onto the current debugging session. (The session must be started first.)
+Sample script for JEB Decompiler.
+
+Reload previously saved breakpoints onto the current debugging session. The session must be started first.
 - Breakpoints file: [JEB]/bin/breakpoints.txt
 - See converse script to save breakpoints ot a file: BreakpointsSave.py
 """
 class BreakpointsLoad(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

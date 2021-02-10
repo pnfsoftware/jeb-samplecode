@@ -1,3 +1,5 @@
+#?description=Show how to "tag" elements of an AST tree, and later on retrieve those tags from the Java text document output (referred to as "marks").
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
@@ -5,7 +7,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.units.code.java import IJavaConstant
 """
-Sample client script for PNF Software' JEB.
+Sample script for JEB Decompiler.
 
 This script shows how to "tag" elements of an AST tree, and later on retrieve
 those tags from the Java text document output (referred to as "marks").
@@ -29,8 +31,10 @@ marks are not displayed by the official desktop RCP client.
 It is up to third-party code (clients, plugins, or scripts) to display them.
 """
 class JavaASTTags(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
 
     for unit in prj.findUnits(IJavaSourceUnit):
       self.processSourceTree(unit.getClassElement())

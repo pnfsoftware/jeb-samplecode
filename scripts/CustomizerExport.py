@@ -1,20 +1,19 @@
+#?description=Export all the function names, comments and signatures in JSON or MAP so the user can reimport them later on or use them with another tool
+#?shortcut=
+import json
+import os
+from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil
+from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+from com.pnfsoftware.jeb.core.units.codeobject import ICodeObjectUnit, CodeObjectUnitUtil, IPECOFFUnit, IELFUnit
 """
-Sample export script  for PNF Software' JEB.
+Sample script for JEB Decompiler.
 
 This script exports all the function names, comments and signatures in JSON
 or MAP so the user can reimport them later on or use them with another tool.
 
 Refer to SCRIPTS.TXT for more information.
 """
-
-import json
-import os
-
-from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units import INativeCodeUnit
-from com.pnfsoftware.jeb.core.units.codeobject import ICodeObjectUnit
-from com.pnfsoftware.jeb.core.units.codeobject import CodeObjectUnitUtil
 
 SECTIONS_HEADER = " Start         Length     Name                   Class"
 SYMBOLS_HEADER = "Address         Publics by Value"

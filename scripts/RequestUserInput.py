@@ -1,8 +1,9 @@
+#?description=Demo how to invoke common dialog boxes
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.client.api import IconType, ButtonGroupType
 """
-Sample UI client script for PNF Software' JEB.
-Shows how to use message and dialog boxes.
+Sample script for JEB Decompiler.
 """
 class RequestUserInput(IScript):
   def run(self, ctx):
@@ -13,3 +14,5 @@ class RequestUserInput(IScript):
     value = ctx.displayQuestionBox('Input', 'Enter a random string', '3')
     if value != None:
       ctx.displayMessageBox('Information', 'The value was %s' % value, IconType.INFORMATION, ButtonGroupType.OK)
+
+    # other dialogs: see IGraphicalClientContext.displayXxx() methods

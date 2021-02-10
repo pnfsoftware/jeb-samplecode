@@ -1,17 +1,16 @@
+#?description=Android APK cross-reference navigation from Resource XML units to DEX Disassembly unit
 #?shortcut=Shift+X
-
-# Android APK cross-reference navigation from Resource XML units to DEX Disassembly unit
-# Nicolas Falliere, PNF Software
-# Usage:
-# - Position the caret on a resource id in XML (eg, '  <public id="0x7f05000d" ...')
-# - Press Shift+X, select your target xref, and press Enter to navigate to it
-
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
-from com.pnfsoftware.jeb.core import IPlugin, Version
+from com.pnfsoftware.jeb.core import IPlugin
 from com.pnfsoftware.jeb.core.units.code.android.dex import IDalvikInstruction
 from com.pnfsoftware.jeb.util.encoding import Conversion
-
+"""
+Sample script for JEB Decompiler.
+Usage:
+- Position the caret on a resource id in XML (eg, '  <public id="0x7f05000d" ...')
+- Press Shift+X, select your target xref, and press Enter to navigate to it
+"""
 class AndroidXrefResId(IScript):
 
   def run(self, ctx):
@@ -46,13 +45,10 @@ class AndroidXrefResId(IScript):
     # building a database of integer immediate usage location
     # map: int_imm -> list_of_usage_addresses
     # opti: to avoid rebuilding the map each time the script is called, we cache it in the client transient store
-    # (needs JEB 3.4+)
-    jeb34 = ctx.getSoftwareVersion() >= Version.create(3, 4, 0, 0, 1)
-    immdb = None
-    if jeb34: immdb = ctx.getTransientStore().get('intImmDb')
+    immdb = ctx.getTransientStore().get('intImmDb')
     if immdb == None:
       immdb = {}
-      if jeb34: ctx.getTransientStore().put('intImmDb', immdb)
+      ctx.getTransientStore().put('intImmDb', immdb)
       for m in dex.getMethods():
         if m.isInternal():
           ci = m.getData().getCodeItem()

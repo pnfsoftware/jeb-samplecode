@@ -1,12 +1,16 @@
+#?description=List all units (as well as their byte sizes) of the currently opened project
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 """
-Sample script that lists all units (as well as their byte sizes) present in the currently opened JEB project .
+Sample script for JEB Decompiler.
 """
 class ListUnits(IScript):
 
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     print('=> Listing units int project "%s":' % prj.getName())
     for art in prj.getLiveArtifacts():
       for unit in art.getUnits():

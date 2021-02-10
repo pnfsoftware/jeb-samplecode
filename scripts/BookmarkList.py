@@ -1,26 +1,21 @@
-#?shortcut=Mod1+Mod3+D
-
+#?description=(deprecated) List bookmarks saved by BookmarkSet
+#?shortcut=
+#?deprecated
 import datetime
 import json
 import time
 from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
-from com.pnfsoftware.jeb.core import Version, RuntimeProjectUtil
-from com.pnfsoftware.jeb.core.units import UnitUtil
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from BookmarkSet import BookmarkSet
 """
-JEB Decompiler script for JEB 3.8+ / Nicolas Falliere
-What: list bookmarks saved by BookmarkSet.
-How: invoke via CTRL+ALT+D on Win/Linux or COMMAND+ALT+D on macOS
-  (can be customized by changing the first line of this script)
-See also: companion script BookmarkSet.py
+Sample script for JEB Decompiler.
 """
 class BookmarkList(IScript):
-  def run(self, ctx):
-    if ctx.getSoftwareVersion() < Version.create(3, 8):
-      print('You need JEB 3.8+ to run this script!')
-      return
 
+  def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     bmstr = prj.getData(BookmarkSet.BMKEY)
     if not bmstr:
       ctx.displayMessageBox('Bookmarks', 'No recorded boolmarks yet!', IconType.INFORMATION, None)

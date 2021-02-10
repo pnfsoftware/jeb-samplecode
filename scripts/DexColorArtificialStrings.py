@@ -1,12 +1,16 @@
+#?description=Visualize artificial (e.g. decrypted) strings in the navbar
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.output import ItemClassIdentifiers
-from com.pnfsoftware.jeb.core.units import UnitUtil, MetadataGroup, MetadataGroupType, AddressPrefixMetadataGroup
+from com.pnfsoftware.jeb.core.units import MetadataGroup, MetadataGroupType, AddressPrefixMetadataGroup
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 from com.pnfsoftware.jeb.core.units.code.android.dex import DexPoolType
 """
+Sample script for JEB Decompiler.
 This script will update the navbar and generate colors where artificial strings are being used.
 Note: artificial strings are strings that were not originally present in the dex pool(s), e.g. auto-decrypted strings.
+Demo: open com.parental.control.v4.apk; run a Global Analysis; execute the script
 """
 class DexColorArtificialStrings(IScript):
   def run(self, ctx):
@@ -41,4 +45,4 @@ class DexColorArtificialStrings(IScript):
           if pos >= 0: a = a[:pos]
           success = g.setData(a, ItemClassIdentifiers.STRING_GENERATED)
 
-    UnitUtil.notifyGenericChange(unit)
+    unit.notifyGenericChange()

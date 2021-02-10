@@ -1,18 +1,17 @@
+#?description=Write memory bytes of a native unit
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.util.encoding import Conversion
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
-from com.pnfsoftware.jeb.core.units import UnitUtil
 """
-Script for JEB Decompiler
-Write memory bytes of a native unit.
+Sample script for JEB Decompiler
 """
 class EditNativeBytes(IScript):
 
   # ctx:IGraphicalClientContext
   def run(self, ctx):
     f = ctx.getFocusedFragment()
-    if not f:
-      return
+    assert f, 'Need a focused fragment'
 
     text = ctx.displayQuestionBox("Write byte", "Address:", "")
     if not text:
@@ -30,4 +29,4 @@ class EditNativeBytes(IScript):
 
     u.undefineItem(addr)
     u.getMemory().writeByte(addr, val)
-    UnitUtil.notifyGenericChange(u)
+    u.notifyGenericChange()

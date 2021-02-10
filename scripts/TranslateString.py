@@ -1,3 +1,4 @@
+#?description=Localize the selected string to English. Optionally use GCP to perform the translation (see the script to set up your API key).
 #?shortcut=Mod1+Shift+T
 
 import json
@@ -9,8 +10,9 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.util.net import Net
 from com.pnfsoftware.jeb.core.units import IInteractiveUnit
 """
+Sample script for JEB Decompiler.
 Localize strings to English. The translated string is also registered as a comment if the unit supports it.
-Optionally use Google services to perform the translation.
+Optionally use Google services to perform the translation: GCP key is expected to be found in the GCP_API_KEY env.var.
 """
 class TranslateString(IScript):
   def run(self, ctx):

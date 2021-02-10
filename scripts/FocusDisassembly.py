@@ -1,9 +1,10 @@
+#?description=Focus the first view found that contains a fragment named 'Disassembly', and select and focus that fragment.
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 """
-This sample script is to be run in a UI context, such as within the JEB desktop client.
-It will focus the first view found to contain a fragment named 'Disassembly', and select+focus that fragment.
+Sample script for JEB Decompiler.
 """
-class FocusDisas(IScript):
+class FocusDisassembly(IScript):
   def run(self, ctx):
     success = focusDisassemblyFragment(ctx)
     print('Focused Disassembly fragment: %s' % success)

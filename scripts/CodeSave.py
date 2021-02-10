@@ -1,3 +1,5 @@
+#?description=Save basic refactoring data of the project's code units into a file
+#?shortcut=
 import json
 import os
 import time
@@ -5,13 +7,16 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 """
-JEB script to save (persist) basic refactoring data of currently loaded code units.
+Sample script for JEB Decompiler.
 - Data file: [JEB]/bin/codedata.txt
 - See converse script to load and apply that data onto a fresh project: CodeLoad.py
 """
 class CodeSave(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

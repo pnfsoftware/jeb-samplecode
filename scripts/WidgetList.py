@@ -1,7 +1,8 @@
+#?description=Display a sample list box
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
-Sample UI client script for PNF Software' JEB.
-Display a sample list box.
+Sample script for JEB Decompiler.
 """
 class WidgetList(IScript):
   def run(self, ctx):

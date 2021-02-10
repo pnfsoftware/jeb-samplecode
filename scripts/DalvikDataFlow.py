@@ -1,7 +1,9 @@
+#?description=Examine Dalvik method Control Flow Graph (CFG) and perform data flow analysis on the graph to look at register definition locations and their uses, and register use locations and their definitions
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 """
-Script for JEB Decompiler.
+Sample script for JEB Decompiler.
 
 Sample script showing how to examine Dalvik method Control Flow Graph (CFG) and perform
 data flow analysis on the graph to look at register definition locations and their uses,
@@ -18,10 +20,10 @@ class DalvikDataFlow(IScript):
 
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     dex = prj.findUnit(IDexUnit)
-    if not dex:
-      print('Open a DEX unit')
-      return
+    assert prj, 'Need a dex unit'
 
     addr = ctx.getFocusedView().getActiveFragment().getActiveAddress()
     pos = addr.find('+')

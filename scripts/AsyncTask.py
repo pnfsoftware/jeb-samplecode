@@ -1,9 +1,10 @@
+#?description=Run an asynchronous interruptible task
+#?shortcut=
 import time
 from java.lang import Runnable, Thread
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
-Sample UI client script for PNF Software' JEB.
-This script demonstrates how to run asynchronous interruptible tasks within a UI client.
+Sample script for JEB Decompiler.
 """
 class AsyncTask(IScript):
   def run(self, ctx):

@@ -1,16 +1,20 @@
+#?description=Search for a string pattern across all text documents produced by all units under the project root
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, IconType, ButtonGroupType
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 import re
 """
-Search for a string pattern across all text documents produced by all units under the project root.
+Sample script for JEB Decompiler.
 """
 class SearchAll(IScript):
+
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
       return
 
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
 
     searchstring = ctx.displayQuestionBox('Search All Existing Units', 'Regex pattern to be searched across all units: ', '')
     self.pattern = re.compile(searchstring, re.I)
@@ -32,6 +36,7 @@ class SearchAll(IScript):
       searchResults = self.searchTextDocument(doc, self.pattern)
       for lineIndex, matchText, fullText in searchResults:
         print('Found in unit: %s (%s) on line %d : "%s" (full text: "%s")' % (unit.getName(), unit.getFormatType(), lineIndex, matchText, fullText))
+      doc.dispose()
 
     # recurse over children units
     for c in unit.getChildren():

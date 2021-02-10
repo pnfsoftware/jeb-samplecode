@@ -1,13 +1,15 @@
+#?description=List methods of all dex units found in the current project
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 """
-Script for JEB Decompiler.
-Sample script used to list methods of all found DEX unit.
+Sample script for JEB Decompiler.
 """
 class DexListMethods(IScript):
 
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
     for codeUnit in prj.findUnits(IDexUnit):
       self.processDex(codeUnit)
 

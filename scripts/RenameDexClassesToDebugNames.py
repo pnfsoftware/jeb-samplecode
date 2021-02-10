@@ -1,12 +1,16 @@
+#?description=Rename dex classes to the optionl names provided in the debug metadata
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
-from com.pnfsoftware.jeb.core.events import JebEvent, J
 """
-Sample client script for PNF Software' JEB.
+Sample script for JEB Decompiler.
 """
 class RenameDexClassesToDebugNames(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     for unit in prj.findUnits(IDexUnit):
       self.process(unit)
 
@@ -24,4 +28,4 @@ class RenameDexClassesToDebugNames(IScript):
             print('Renamed class %s to %s' % (name, debugName))
             cnt += 1
     if cnt > 0:
-      dex.notifyListeners(JebEvent(J.UnitChange))
+      dex.notifyGenericChange()

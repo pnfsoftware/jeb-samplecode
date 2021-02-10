@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-<project basedir="." default="build" name="jeb2-samplecode">
+<project basedir="." default="build" name="jeb-samplecode">
 
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
 
-    <path id="jeb2-samplecode.classpath">
+    <path id="jeb-samplecode.classpath">
         <pathelement location="bin"/>
         <pathelement location="../TESTBUILDS/3_business-741296147584833131-2.3-master/bin/cl/jeb.jar"/>
     </path>
@@ -32,7 +32,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="jeb2-samplecode.classpath"/>
+            <classpath refid="jeb-samplecode.classpath"/>
         </javac>
     </target>
 

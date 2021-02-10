@@ -1,10 +1,11 @@
+#?description=Run an asynchronous interruptible task that returns a value
+#?shortcut=
 import time
 from java.lang import Thread
 from java.util.concurrent import Callable
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
-Sample UI client script for PNF Software' JEB.
-This script demonstrates how to run an asynchronous interruptible task that returns a value.
+Sample script for JEB Decompiler.
 """
 class AsyncTaskWithReturn(IScript):
   def run(self, ctx):

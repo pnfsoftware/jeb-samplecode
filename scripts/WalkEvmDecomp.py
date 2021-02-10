@@ -1,15 +1,20 @@
+#?description=Retrieve the decompiled EVM code of an Ethereum contract
+#?shortcut=
+#?deprecated=refer to PrintNativeRoutineIR.py to see how GENDEC's IR can be navigated
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
 """
+DEPRECATED - see note above.
+
 Sample script for JEB Decompiler.
 
 ===> How to use:
 Two modes:
 - Using the UI desktop client:\
-  - load an Ethereum EVM contract into JEB 3.0.8+ (build on or after Dec 10 2018);
+  - load an Ethereum EVM contract
   - make sure the GlobalAnalysis for EVM modules is enabled (it is by default)
   - then run the script: File, Scripts, Run...
   - the script will process your loaded contract

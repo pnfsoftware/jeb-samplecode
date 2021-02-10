@@ -1,7 +1,11 @@
+#?description=Retrieve and print out the Intermediate Representation of routine decompiled by GENDEC
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+from com.pnfsoftware.jeb.core.units.code import IDecompilerUnit, DecompilationContext
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
+DecompilationContext
 """
 Sample script for JEB Decompiler.
 
@@ -44,6 +48,9 @@ class PrintNativeRoutineIR(IScript):
 
     # retrieve the primary code unit (must be the result of an EVM contract analysis)
     unit = prj.findUnit(INativeCodeUnit)
+    if not unit:
+      print('No native code unit found')
+      return
     print('Native code unit: %s' % unit)
 
     # GlobalAnalysis is assumed to be on (default)
@@ -54,17 +61,17 @@ class PrintNativeRoutineIR(IScript):
 
     # retrieve a handle on the method we wish to examine
     method = unit.getInternalMethods().get(0)
-    src = decomp.decompile(method.getName(True))
-    if not src:
+
+    ctx = DecompilationContext(IDecompilerUnit.FLAG_KEEP_IR);
+    decm = decomp.decompile(method, ctx)
+    if not decm:
       print('Routine was not decompiled')
       return
-    print(src)
-    
-    decompTargets = src.getDecompilationTargets()
-    print(decompTargets)
 
-    decompTarget = decompTargets.get(0)
-    ircfg = decompTarget.getContext().getCfg()
+    # IDecompiledMethod
+    print(decm)
+    
+    ircfg = decm.getIRContext().getCfg()
     # CFG object reference, see package com.pnfsoftware.jeb.core.units.code.asm.cfg
     print("+++ IR-CFG for %s +++" % method)
-    print(ircfg.formatSimple())
+    print(ircfg.format())

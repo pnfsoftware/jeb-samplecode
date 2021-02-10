@@ -1,27 +1,18 @@
-#?shortcut=Mod1+D
-
+#?description=(deprecated) Set and reset bookmarks
+#?shortcut=
+#?deprecated
 import datetime
 import json
 import time
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core import Version
 from com.pnfsoftware.jeb.core.units import UnitUtil
 """
-JEB Decompiler script for JEB 3.8+ / Nicolas Falliere
-What: set, modify, or remove a bookmark.
-How: position the caret in any view (text, tree, table) of any unit or document,
-  then invoke via CTRL+D on Win/Linux or Command+D on macOS to bookmark that position
-  (can be customized by changing the first line of this script)
-See also: companion script BookmarkSet.py
+Sample script for JEB Decompiler.
 """
 class BookmarkSet(IScript):
   BMKEY = 'BOOKMARKS'
 
   def run(self, ctx):
-    if ctx.getSoftwareVersion() < Version.create(3, 8):
-      print('You need JEB 3.8+ to run this script!')
-      return
-
     f = ctx.getFocusedFragment()
     if not f:
       print('Set the focus on a UI fragment, and position the caret at the location you would like to bookmark.')

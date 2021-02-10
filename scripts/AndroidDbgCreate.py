@@ -1,23 +1,20 @@
+#?description=Create a debugger unit for an APK object
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
 from com.pnfsoftware.jeb.core.units.code.debug.impl import DebuggerSetupInformation
 from com.pnfsoftware.jeb.core.util import DebuggerHelper
 """
 Script for JEB Decompiler.
-This script demonstrates how to create a debugger unit for an APK object.
 """
 class AndroidDbgCreate(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
-    if not prj:
-      print 'No project'
-      return
+    assert prj, 'Need a project'
 
     # let's retrieve the primary apk unit loaded in the project, if there is one
     apk = prj.findUnit(IApkUnit)
-    if not prj:
-      print 'No APK opened'
-      return
+    assert apk, 'Need an APK unit'
 
     # a debugger unit is the child of another unit
     dbg = DebuggerHelper.getDebugger(apk, True)

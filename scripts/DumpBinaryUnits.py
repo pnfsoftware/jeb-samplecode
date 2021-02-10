@@ -1,3 +1,5 @@
+#?description=Dump all binary units of the opened project to files on disk
+#?shortcut=
 import os
 from java.io import File
 from com.pnfsoftware.jeb.client.api import IScript
@@ -13,6 +15,8 @@ class DumpBinaryUnits(IScript):
     OUTDIR = IO.expandPath('~/JEB_PROJECT_BINARY_EXTRACTED')
 
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     print('=> Dumping binary units of project to directory: %s' % OUTDIR)
 
     for art in prj.getLiveArtifacts():

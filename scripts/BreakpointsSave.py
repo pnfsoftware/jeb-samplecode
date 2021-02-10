@@ -1,3 +1,5 @@
+#?description=Save breakpoints (location and state) of the current debugging session to a file
+#?shortcut=
 import json
 import os
 import time
@@ -5,7 +7,9 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.debug import IDebuggerUnit
 """
-JEB script to save (persist) the breakpoints (location and state) of the current debugging session to a file.
+Sample script for JEB Decompiler.
+
+Save (persist) the breakpoints (location and state) of the current debugging session to a file.
 - Breakpoints file: [JEB]/bin/breakpoints.txt
 - See converse script to reload breakpoints onto a debugging session: BreakpointsLoad.py
 
@@ -41,8 +45,11 @@ Example:
 }
 """
 class BreakpointsSave(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     prjname = prj.getName()
 
     prgdir = ctx.getProgramDirectory()

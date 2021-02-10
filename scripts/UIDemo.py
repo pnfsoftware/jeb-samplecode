@@ -1,8 +1,10 @@
+#?description=Demo on how to use the JEB UI-API to query views and fragments (when run in the GUI client)
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil, IUnitFilter
 from com.pnfsoftware.jeb.core.units import IUnit
 """
-Sample UI client script for PNF Software' JEB.
+Sample script for JEB Decompiler.
 This script demonstrates how to use the JEB UI API to query views and fragments by JEB UI clients.
 """
 class UIDemo(IScript):
@@ -31,10 +33,11 @@ class UIDemo(IScript):
 
     # opening the first certificate unit we find (in an APK, there should be one)
     prj = ctx.getMainProject()
-    unitFilter = UnitFilter('cert')
-    units = RuntimeProjectUtil.filterUnits(prj, unitFilter)
-    if units:
-      ctx.openView(units.get(0))
+    if prj:
+      unitFilter = UnitFilter('cert')
+      units = RuntimeProjectUtil.filterUnits(prj, unitFilter)
+      if units:
+        ctx.openView(units.get(0))
 
 
 class UnitFilter(IUnitFilter):

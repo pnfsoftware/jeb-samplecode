@@ -1,20 +1,23 @@
+#?description=Enumerate the IJavaIdentifiers (parameters, local vars) of IJavaMethod objects of a decompiled IJavaClass. Rename some identifiers. List all identifiers.
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 """
-Sample client script for PNF Software' JEB.
-
-Enumerate the IJavaIdentifiers (parameters, local vars) of IJavaMethod objects of a decompiled IJavaClass. Rename some identifiers.
-List all identifiers 
-
-Requires JEB 3.9+
-
+Sample script for JEB Decompiler.
+Enumerate the IJavaIdentifiers (parameters, local vars) of IJavaMethod objects of a decompiled IJavaClass. Rename some identifiers. List all identifiers 
 """
 class JavaListIdentifiers(IScript):
 
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
+    f = ctx.getFocusedFragment()
+    assert f, 'Need a focused fragment'
 
     # assume a fragment is focused, assumed it is backed by an IUnit
-    unit = ctx.getFocusedFragment().getUnit()
+    unit = f.getUnit()
+    if not isinstance(unit, IJavaSourceUnit): return
 
     # assume the unit is an IJavaSourceUnit
     c = unit.getClassElement()

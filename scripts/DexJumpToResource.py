@@ -1,34 +1,22 @@
+#?description=Jump to or display an Android target resource (string, XML, etc.) referenced by an active resource ID item (interactive number)
+#?shortcut=
+from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, IUnitView
+from com.pnfsoftware.jeb.core.units import IUnit, IXmlUnit
+from com.pnfsoftware.jeb.core import RuntimeProjectUtil, IUnitFilter
+import org.w3c.dom.Document
 """
+Sample script for JEB Decompiler.
+
 This JEB script jumps to or displays an Android target resource (string, XML, etc.)
 referenced by an active resource ID item (interactive number).
 
 Open an APK; in a Dalvik or Java view, set the caret on a resource id; execute the script.
 """
-
-from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, IUnitView
-from com.pnfsoftware.jeb.core.units import IUnit, IXmlUnit
-from com.pnfsoftware.jeb.core import RuntimeProjectUtil, IUnitFilter
-
-import org.w3c.dom.Document
-
 class DexJumpToResource(IScript):
 
   def run(self, ctx):
-    engctx = ctx.getEnginesContext()
-    if not engctx:
-      print('Back-end engines not initialized')
-      return
-
-    projects = engctx.getProjects()
-    if not projects:
-      print('There is no opened project')
-      return
-
-    if not isinstance(ctx, IGraphicalClientContext):
-      print('This script must be run within a graphical client')
-      return
-
-    prj = projects[0]
+    prj = ctx.getMainProject()
+    assert prj, 'Need a project'
 
     self.activeItemValue = self.getActiveItem(ctx)
     if self.activeItemValue:
@@ -47,11 +35,11 @@ class DexJumpToResource(IScript):
           self.value = None
           doc = self.getTargetDoc(prj, self.typeC + 's.xml')
           self.getValue(doc, self.typeC + 's.xml', ctx)
-          if len(self.value) > 200:
-            self.value = self.value[:200] + '...'
-          ctx.displayMessageBox(self.activeItemValue, "Value: " + self.value, None, None) # Show the value directly
+          ctx.displayText("Id: " + self.activeItemValue, "Value: " + self.value, False)
         else:
           self.jumpToTargetFile(prj, ctx) # Open the target file
+
+      # TODO: dispose docs
 
 
   def getActiveItem(self, ctx):

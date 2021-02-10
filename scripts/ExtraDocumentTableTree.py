@@ -1,3 +1,5 @@
+#?description=Generate extra tabl and tree documents for the first found interactive unit (new tabs: Demo Tree, Demo Table)
+#?shortcut=
 from java.util import ArrayList, Arrays
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
@@ -5,15 +7,16 @@ from com.pnfsoftware.jeb.core.output import AbstractUnitRepresentation, UnitRepr
 from com.pnfsoftware.jeb.core.output.table.impl import StaticTableDocument, TableRow, Cell
 from com.pnfsoftware.jeb.core.output.tree.impl import StaticTreeDocument, Node, KVNode
 from com.pnfsoftware.jeb.core.units import IInteractiveUnit
-from com.pnfsoftware.jeb.core.units import UnitUtil
 """
-Sample UI client script for PNF Software' JEB.
-This script demonstrates how to generate extra table and tree documents for a unit.
+Sample script for JEB Decompiler.
 """
 class ExtraDocumentTableTree(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
+    assert prj, 'Need a project'
+
     unit = prj.findUnit(IInteractiveUnit)
+    assert unit, 'Need a unit'
     print('Unit: %s' % unit)
 
     # retrieve the formatter, which is a producer of unit representations
@@ -43,7 +46,7 @@ class ExtraDocumentTableTree(IScript):
     # the second argument indicates that the presentation should be persisted when saving the project
     formatter.addPresentation(extraPres0, True)
     formatter.addPresentation(extraPres1, True)
-    UnitUtil.notifyGenericChange(unit)
+    unit.notifyGenericChange()
 
     # done - if you are running a UI client, the additional document should be displayed
     # in a fragment view (eg, sub-tab in the case of the official RCP client)

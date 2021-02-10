@@ -1,21 +1,17 @@
-from com.pnfsoftware.jeb.client.api import IScript, IconType, ButtonGroupType
-from com.pnfsoftware.jeb.core import Version
+#?description=Decompile a single method.
+#?shortcut=
+from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
-from com.pnfsoftware.jeb.core.units import UnitUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, IDecompilerUnit, DecompilationContext, DecompilationOptions
 """
-This UI script is used to decompile a *single* method.
+Sample script for JEB Decompiler.
 The class containing the target method is itself not decompiled; inner classes of the method, if any, are not decompiled either.
 The decompiled code is displayed in a text box.
 """
-class DecompileSingleDexMethod(IScript):
+class DecompileSingleMethod(IScript):
 
   def run(self, ctx):
     self.ctx = ctx
-
-    if ctx.getSoftwareVersion() < Version.create(3, 17, 0, 0, 1):
-      print('You need JEB 3.17+ to run this script!')
-      return
 
     f = ctx.getFocusedFragment()
     if not f:
@@ -42,7 +38,7 @@ class DecompileSingleDexMethod(IScript):
     # here, we're creating an Options object to:
     # - override the decompiler settings (if any), and cap method decompilation to 30 seconds
     # - prevent the decompilation of inner classes or any deferred decompilations: we decompile the target and only the target
-    opt = DecompilationOptions.Builder().newInstance().flags(IDecompilerUnit.FLAG_NO_INNER_DECOMPILATION|IDecompilerUnit.FLAG_NO_DEFERRED_DECOMPILATION).maxTimePerMethod(30000).build()
+    opt = DecompilationOptions.Builder.newInstance().flags(IDecompilerUnit.FLAG_NO_INNER_DECOMPILATION|IDecompilerUnit.FLAG_NO_DEFERRED_DECOMPILATION).maxTimePerMethod(30000).build()
     if not decomp.decompileMethod(m.getSignature(), DecompilationContext(opt)):
       print('Failed decompiling method')
       return

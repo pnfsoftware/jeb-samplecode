@@ -1,7 +1,9 @@
+#?description=Create and use adb (Android Debug Bridge) wrappers and adb utility objects
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android.adb import AdbWrapperFactory, AdbWrapperFactory, AndroidDeviceUtil
 """
-Script for JEB Decompiler.
+Sample script for JEB Decompiler.
 This script shows how to create and use Android Debug Bridge (adb) wrappers and adb utility objects.
 Reference: AdbWrapperFactory, AdbWrapper, AndroidDeviceUtil
 """
