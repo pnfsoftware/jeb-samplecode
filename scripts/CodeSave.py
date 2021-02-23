@@ -66,7 +66,7 @@ class CodeSave(IScript):
         if name0 != name1:
           a['renamed_methods'][m.getSignature(False)] = name1
 
-      for addr, comment in unit.getComments().items():
+      for addr, comment in unit.getPrimaryComments().items():
         a['comments'][addr] = comment
 
     data[prjname] = d

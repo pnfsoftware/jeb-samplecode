@@ -24,8 +24,15 @@ class AddCustomNativeTypes(IScript):
       };
     '''    
     typeman = unit.getTypeManager()
+
+    # method 1: craft the type manually, using the ITypeManager
     tInt = typeman.getType('int')
     tS1 = typeman.createStructure('MyStruct1')
     typeman.addStructureField(tS1, 'a', tInt)
     typeman.addStructureField(tS1, 'b', TypeUtil.buildArrayType(typeman, 'unsigned char', 2, 3))
     print('Added type: %s' % tS1)
+
+    # method 2: parse a C-type, using a typeman-provided parser
+    buf = 'enum SomeEnum {A,B,C};'
+    tSomeEnum = typeman.getParser().parseTypesRaw(buf)
+    print('Added type: %s' % tSomeEnum)
