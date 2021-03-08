@@ -5,7 +5,7 @@ import sys
 import time
 from com.pnfsoftware.jeb.util.io import IO
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
-from com.pnfsoftware.jeb.core.units import INativeCodeUnit
+from com.pnfsoftware.jeb.core.units import INativeCodeUnit, UnitUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
@@ -32,8 +32,12 @@ class DecompileFile(IScript):
   def run(self, ctx):
     self.ctx = ctx
 
-    self.decompileDex = True
+    self.decompileDex = False
     self.decompileNative = False
+
+    if not self.decompileDex and not self.decompileNative:
+      print('Warning! Both decompileDex and decompileNative are set to false. Adjust your script and run it again.')
+      return
 
     if isinstance(ctx, IGraphicalClientContext):
       self.outputDir = ctx.displayFolderSelector('Output folder')
@@ -74,25 +78,28 @@ class DecompileFile(IScript):
       return
 
     outdir = os.path.join(self.outputDir, codeUnit.getName() + '_decompiled')
-    print('Output folder: %s' % outdir)
+    print('Output folder: %s' % outdir)  # created only if necessary, i.e. some contents was exported
 
-    if (isinstance(codeUnit, INativeCodeUnit) and self.decompileNative) or (isinstance(codeUnit, IDexUnit) and self.decompileDex):
-      # DecompilerExporter object
-      exp = decomp.getExporter()
-      exp.setOutputFolder(IO.createFolder(outdir))
-      # limit to 1 minute max per method
-      exp.setMethodTimeout(1 * 60000)
-      # limit to 15 minutes (total)
-      exp.setTotalTimeout(15 * 60000)
-      # set a callback to output real-time information about what's being decompiled
-      class DecompCallback(ProgressCallbackAdapter):
-        def message(self, msg):
-          print('%d/%d: %s' % (self.getCurrent(), self.getTotal(), msg))
-      exp.setCallback(DecompCallback())
-      # decompile & export
-      if not exp.export():
-        cnt = len(exp.getErrors())
-        i = 1
-        for sig, err in exp.getErrors().items():
-          print('%d/%d DECOMPILATION ERROR: METHOD %s: %s' % (i, cnt, sig, err))
-          i += 1
+    if not((isinstance(codeUnit, INativeCodeUnit) and self.decompileNative) or (isinstance(codeUnit, IDexUnit) and self.decompileDex)):
+      print('Skipping code unit: %s' % UnitUtil.buildFullyQualifiedUnitPath(codeUnit))
+      return
+
+    # DecompilerExporter object
+    exp = decomp.getExporter()
+    exp.setOutputFolder(IO.createFolder(outdir))
+    # limit to 1 minute max per method
+    exp.setMethodTimeout(1 * 60000)
+    # limit to 15 minutes (total)
+    exp.setTotalTimeout(15 * 60000)
+    # set a callback to output real-time information about what's being decompiled
+    class DecompCallback(ProgressCallbackAdapter):
+      def message(self, msg):
+        print('%d/%d: %s' % (self.getCurrent(), self.getTotal(), msg))
+    exp.setCallback(DecompCallback())
+    # decompile & export
+    if not exp.export():
+      cnt = len(exp.getErrors())
+      i = 1
+      for sig, err in exp.getErrors().items():
+        print('%d/%d DECOMPILATION ERROR: METHOD %s: %s' % (i, cnt, sig, err))
+        i += 1
