@@ -1,10 +1,11 @@
 #?description=Refactor a dex class, i.e. rename and repackage automatically (if necessary)
-#?shortcut=Shift+N
-
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 from com.pnfsoftware.jeb.core.units.code.android.dex import IDexClass
-
+"""
+Sample script for JEB Decompiler.
+"""
 class DexClassRefactor(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
@@ -34,7 +35,7 @@ class DexClassRefactor(IScript):
       psig = r[0:pos+1]
       cname = r[pos+1:-1]
 
-    #print(psig, cname)
+    print('Renaming class to: %s' % cname)
     o.setName(cname)
 
     pkg = dex.getPackage(psig)

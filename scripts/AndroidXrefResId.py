@@ -1,5 +1,5 @@
 #?description=Android APK cross-reference navigation from Resource XML units to DEX Disassembly unit
-#?shortcut=Shift+X
+#?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
 from com.pnfsoftware.jeb.core import IPlugin
@@ -9,7 +9,9 @@ from com.pnfsoftware.jeb.util.encoding import Conversion
 Sample script for JEB Decompiler.
 Usage:
 - Position the caret on a resource id in XML (eg, '  <public id="0x7f05000d" ...')
-- Press Shift+X, select your target xref, and press Enter to navigate to it
+- Run the script, select your target xref, and press Enter to navigate to it
+Hint: set a shortcut entry in the metadata line at the top of this file, e.g. Shift+X,
+to allow the execution of this script via hotkeys.
 """
 class AndroidXrefResId(IScript):
 

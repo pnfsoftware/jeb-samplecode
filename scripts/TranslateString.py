@@ -1,5 +1,5 @@
 #?description=Localize the selected string to English. Optionally use GCP to perform the translation (see the script to set up your API key).
-#?shortcut=Mod1+Shift+T
+#?shortcut=
 
 import json
 import os
