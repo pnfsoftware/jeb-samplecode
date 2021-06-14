@@ -9,10 +9,9 @@ This file can be used as a library or as a stand-alone script. In the latter cas
 make sure to update the APIKEY global variable or set up a JEBIO_APIKEY environment variable.
 
 Dependency: requests ('pip install requests' if you don't have it)
-
-Version 1 - Oct 12 2017 (Nicolas Falliere)
 '''
 import getopt
+import hashlib
 import json
 import os
 import re
@@ -38,55 +37,80 @@ def getApikey(apikey):
     return APIKEY
   raise 'Your need a JEB.IO API key to execute this command.'
 
-def check(h, apikey=''):
+def check(h, apikey='', verbose=False):
   url = '%s/file/check?apikey=%s&h=%s' % (BASE, getApikey(apikey), h)
+  if verbose: print('Query: %s...' % url)
   r = requests.get(url)  
   return r.json()
 
-def download(h, outpath=None, apikey='', extract=False):
+def download(h, apikey='', extract=False, verbose=False):
   if not h:
     raise 'A hash must be provided'
-  url = '%s/file/download?apikey=%s&h=%s' % (BASE, getApikey(apikey), h)
+
+  r = check(h, apikey=apikey, verbose=verbose)
+  if not r or r['code'] != 0:
+    return None
+  if verbose: print('File entry: %s' % r)
+  
+  h0 = r.get('sha256hash')
+  if h0 and os.path.isfile(h0):
+    with open(h0, 'rb') as f:
+      m = hashlib.sha256()
+      m.update(f.read())
+      actual_hash = m.hexdigest()
+      if actual_hash.lower() == h0.lower():
+        if verbose: print('File already downloaded')
+        return h0
+
+  url = '%s/file/download?apikey=%s&h=%s' % (BASE, getApikey(apikey), h0)
+  if verbose: print('Query: %s...' % url)
   r = requests.get(url)
   if not r or not r.ok or not r.content:
     return None
-  if not outpath:
-    try:
-      outpath = re.findall('filename=(\S+)', r.headers.get('content-disposition'))[0]
-    except Exception as e:
-      pass
-  if not outpath:
-    outpath = h + '.zip'
+
+  #if not outpath:
+  #  try:
+  #    outpath = re.findall('filename=(\S+)', r.headers.get('content-disposition'))[0]
+  #  except Exception as e:
+  #    pass
+  #if not outpath:
+  #  outpath = h + '.zip'
+
+  outpath = h0 + '.zip'
   with open(outpath, 'wb') as f:
     f.write(r.content)
+
   if extract:
+    if verbose: print('Extracting %s...' % outpath)
     from zipfile import ZipFile
     with ZipFile(outpath) as zipfile:
       zipfile.extractall(pwd=b'infected')
       outpath2 = zipfile.namelist()[0]
     os.unlink(outpath)
     outpath = outpath2
+
   return outpath
 
-def upload(filepath, apikey=''):  
+def upload(filepath, apikey='', verbose=False):  
   url = '%s/file/upload?apikey=%s' % (BASE, getApikey(apikey))
   files = {'ufile': open(filepath, 'rb')}
+  if verbose: print('Query: %s...' % url)
   r = requests.post(url, files=files)
   return r.json()
 
 def usage():
   p = os.path.split(sys.argv[0])[-1]
-  print('JEB.IO/"Malware Sharing Network" back-end API wrapper (c) PNF Software, 2017-2018.')
+  print('JEB.IO/"Malware Sharing Network" back-end API wrapper (c) PNF Software, 2017-2021.')
   print('This file can be used as a library or as a stand-alone script to check file hashes as well as download and upload files.')
   print('Usage:')
   print('  %s mode options' % p)
   print('  where mode is one of \'check\', \'download\', or \'upload\'')
   print('Details:')
-  print('  %s (check|download|upload) [-d] <filehash|filepath>' % p)
-  print('  %s (check|download) [-d] -f <file.txt>' % p)
+  print('  %s (check|download|upload) [-x] <filehash|filepath>' % p)
+  print('  %s (check|download) [-x] -f <file.txt>' % p)
   print('Options:')
   print('  -v  : extra verbose')
-  print('  -x  : extract downloaded files (only in \'download\' mode')
+  print('  -x  : extract downloaded files (only in \'download\' mode)')
   print('Example:')
   print('  %s check 42aaa93a894a69bfcbc21823b09e4ea9f723c428' % p)
   sys.exit(-1)
@@ -121,7 +145,9 @@ if __name__ == '__main__':
     else:
       usage()
 
-  hlist.extend(args)
+  for arg in args:
+    hlist.extend(arg.split(','))
+  #hlist.extend(args)
   hlist = list(set(hlist))
 
   if verbose:
@@ -132,13 +158,13 @@ if __name__ == '__main__':
   if action == 'check':
     for h in hlist:
       try:
-        print('%s: %s' % (h, json.dumps(check(h), indent=4, sort_keys=True)))
+        print('%s: %s' % (h, json.dumps(check(h, verbose=verbose), indent=4, sort_keys=True)))
       except Exception as e:
         traceback.print_exc()
   elif action == 'download':
     for h in hlist:
       try:
-        outpath = download(h, extract=extract)
+        outpath = download(h, extract=extract, verbose=verbose)
         if outpath:
           if extract:
             print('%s: downloaded to %s' % (h, outpath))
@@ -151,7 +177,7 @@ if __name__ == '__main__':
   elif action == 'upload':
     for filepath in hlist:
       try:
-        print('%s: %s' % (filepath, json.dumps(upload(filepath), indent=4, sort_keys=True)))
+        print('%s: %s' % (filepath, json.dumps(upload(filepath, verbose=verbose), indent=4, sort_keys=True)))
       except Exception as e:
         traceback.print_exc()
   else:
