@@ -1,0 +1,1 @@
+Sample back-end script plugins. To be dropped in JEB/coreplugins/scripts.
