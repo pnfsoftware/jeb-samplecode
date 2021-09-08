@@ -8,8 +8,8 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass
 """
 Sample script for JEB Decompiler.
-This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'
-Its purpose is to decrypt the strings protected by (older versions of) DexGuard-protected
+This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'.
+Its purpose is to decrypt the strings protected by the app protector.
 More details can be found here:
 https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
 """
