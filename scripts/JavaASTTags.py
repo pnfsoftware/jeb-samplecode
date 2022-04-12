@@ -27,8 +27,10 @@ Note: tags are specific to Java units. However, marks are not (they are
 specific to text documents). The Java plugin simply renders tags as text
 marks. This example demonstrates usage of tags in that context.
 
-marks are not displayed by the official desktop RCP client.
+Marks are not displayed by the desktop GUI client.
 It is up to third-party code (clients, plugins, or scripts) to display them.
+
+Revision note: Script updated on April 12 2022.
 """
 class JavaASTTags(IScript):
 
@@ -37,27 +39,32 @@ class JavaASTTags(IScript):
     assert prj, 'Need a project'
 
     for unit in prj.findUnits(IJavaSourceUnit):
-      self.processSourceTree(unit.getClassElement())
+      self.processClassTree(unit.getClassElement())
       doc = unit.getSourceDocument()
       javaCode, formattedMarks = self.formatTextDocument(doc)
-      print(javaCode)
+      #print(javaCode)
       if(formattedMarks):
         print('=> Marks:')
         print(formattedMarks)
 
-  def processSourceTree(self, e):
+  def processClassTree(self, e_class):
+    for e in e_class.getMethods():
+      self.processEltTree(e)
+
+  def processEltTree(self, e):
     if e:
       self.analyzeNode(e)
       elts = e.getSubElements()
       for e in elts:
-        self.processSourceTree(e)
+        self.processEltTree(e)
 
   # demo
   def analyzeNode(self, e):
     if isinstance(e, IJavaConstant):
       if e.isString():
         if e.getString().find('html') >= 0:
-          e.getTagMap().put('htmlTag', 'Potential HTML code found')
+          print('TAGGING: %s' % e)
+          e.addTag('htmlTag', 'Potential HTML code found')
 
   def formatTextDocument(self, doc):
     javaCode, formattedMarks = '', ''
@@ -67,6 +74,9 @@ class JavaASTTags(IScript):
     for lineIndex, line in enumerate(alldoc.getLines()):
       javaCode += line.getText().toString() + '\n'
       for mark in line.getMarks():
-        # 0-based line and column indexes
-        formattedMarks += '%d:%d - %s (%s)\n' % (lineIndex, mark.getOffset(), mark.getName(), mark.getObject())
+        # the mark name is the tag attribute's key 
+        if mark.getName() == 'htmlTag':
+          # 0-based line and column indexes
+          # the mark object is the tag attribute's value 
+          formattedMarks += '%d:%d %s\n' % (lineIndex, mark.getOffset(), mark.getObject())
     return javaCode, formattedMarks
