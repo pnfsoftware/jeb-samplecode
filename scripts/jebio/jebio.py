@@ -37,6 +37,13 @@ def getApikey(apikey):
     return APIKEY
   raise 'Your need a JEB.IO API key to execute this command.'
 
+# default hash algorithm: sha256
+def hashfile(path):
+  with open(path, 'rb') as f:
+    m = hashlib.sha256()
+    m.update(f.read())
+    return m.hexdigest().lower()
+
 def check(h, apikey='', verbose=False):
   url = '%s/file/check?apikey=%s&h=%s' % (BASE, getApikey(apikey), h)
   if verbose: print('Query: %s...' % url)
@@ -177,7 +184,7 @@ if __name__ == '__main__':
   elif action == 'upload':
     for filepath in hlist:
       try:
-        print('%s: %s' % (filepath, json.dumps(upload(filepath, verbose=verbose), indent=4, sort_keys=True)))
+        print('%s: %s: %s' % (filepath, hashfile(filepath), json.dumps(upload(filepath, verbose=verbose), indent=4, sort_keys=True)))
       except Exception as e:
         traceback.print_exc()
   else:
