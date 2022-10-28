@@ -1,3 +1,5 @@
-The root folder contains the sample scripts provided in JEB software packages (scripts/samples/).
+Sample scripts for JEB Decompiler.
 
-Other sample scripts are located in the sub-folders (analysis, cluster, etc.).
+Currently, client scripts must be written with a Python 2.7 syntax.
+
+Scripts can be run in a GUI client or in headless mode.

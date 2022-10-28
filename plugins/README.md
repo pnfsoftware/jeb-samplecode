@@ -1,3 +1,3 @@
-Sample JEB plugins code (skeletons).
+Sample back-end plugins for JEB.
 
-Real open-sourced plugins are stored in individual repositories on this GitHub account.
+Back-end plugins go in the `coreplugins/` folder.

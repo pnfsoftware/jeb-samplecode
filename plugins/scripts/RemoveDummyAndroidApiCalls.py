@@ -2,10 +2,8 @@ from com.pnfsoftware.jeb.core.units.code.java import JavaOperatorType
 from com.pnfsoftware.jeb.core.units.code.android.ir import AbstractDOptimizer, IDVisitor
 
 '''
-This JEB's dexdec IR optimizer will attempt to resolve artificial Android library invocations added
-by DexGuard (version > ~spring 2021), designed to hamper the string auto-decryption process.
-
-TODO: add support for more Android Framework routines.
+This JEB's dexdec IR optimizer will attempt to resolve artificial Android library invocations
+added by app protectors, designed to hamper the string auto-decryption process.
 
 This Python plugin is executed during the decompilation pipeline of a method.
 Needs JEB 4.4 or above.
@@ -21,7 +19,6 @@ Example:
     return out.toString();
   }
 
-  // adapted and simplified from a sample protected by DexGuard, collected in June 2021
   public String get() {
     int key = 0x100 - android.graphics.Color.red(0);  // 0x100 - 0 = 0x100, the key value
     return a("ifmmp", key);                           // would return "hello""
@@ -44,7 +41,7 @@ For additional information regarding dexdec IR optimizer plugins, refer to:
 - the API documentation: https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/android/ir/package-summary.html
 '''
 
-class DGReplaceApiCalls(AbstractDOptimizer):  # note that we extend AbstractDOptimizer for convenience, instead of implementing IDOptimizer from scratch
+class RemoveDummyAndroidApiCalls(AbstractDOptimizer):  # note that we extend AbstractDOptimizer for convenience, instead of implementing IDOptimizer from scratch
   def perform(self):
     # create our instruction visitor
     vis = AndroidUtilityVisitor(self.ctx)
