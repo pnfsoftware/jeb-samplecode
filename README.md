@@ -1,6 +1,6 @@
-# Sample code (Python scripts & Java plugins) for [JEB Decompiler](https://www.pnfsoftware.com).
+# Sample code for [JEB Decompiler](https://www.pnfsoftware.com).
 
-## JEB Script Development Recommendations
+## Script Development Recommendations
 
 JEB Client extensions (*scripts*) should be written in Python. (We may add support for scripts written in Java in the future.)
 
