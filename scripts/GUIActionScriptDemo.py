@@ -9,7 +9,7 @@ Demo how to chain GUI actions without blocking the UI thread.
 Refer to GUIActionScriptSkeleton.py for details about scripting GUI actions.
 """
 CTX = None
-PATH_TO_SOME_FILE = r'C:\Users\nicol\jeb2\jeb3-core\core\testdata\dex\raasta-classes.dex'  # TODO: CUSTOMIZE
+PATH_TO_SOME_FILE = r''  # TODO: CUSTOMIZE
 
 class GUIActionScriptDemo(IScript):
   def run(self, ctx):
