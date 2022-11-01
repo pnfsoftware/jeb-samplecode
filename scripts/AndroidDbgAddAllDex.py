@@ -1,4 +1,4 @@
-#?description=Look for all DEX units in the project and registers them to the current Android debugging session
+#?description=Search for DEX units in the project and register them to the current Android debugging session
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil

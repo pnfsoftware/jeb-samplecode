@@ -8,6 +8,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 """
 Sample script for JEB Decompiler.
+
 - Data file: [JEB]/bin/codedata.txt
 - See converse script to load and apply that data onto a fresh project: CodeLoad.py
 """

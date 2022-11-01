@@ -4,6 +4,7 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 """
 Sample script for JEB Decompiler.
+
 Enumerate the IJavaIdentifiers (parameters, local vars) of IJavaMethod objects of a decompiled IJavaClass. Rename some identifiers. List all identifiers 
 """
 class JavaListIdentifiers(IScript):

@@ -10,9 +10,11 @@ class DexListMethods(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
+
+    # replace IDexUnit by ICodeUnit to find all code units (that includes dex units as well)
     for codeUnit in prj.findUnits(IDexUnit):
       self.processDex(codeUnit)
 
   def processDex(self, unit):
     for m in unit.getMethods():
-      print m.getSignature(True)
+      print m.getSignature()

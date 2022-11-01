@@ -5,6 +5,9 @@ from com.pnfsoftware.jeb.core.output.text import ITextDocument
 import re
 """
 Sample script for JEB Decompiler.
+
+Note that better search facilities exist in the GUI client,
+such as the Omnibox (F3) or Quick-Search (CTR+Q or CMD+Q).
 """
 class SearchAll(IScript):
 

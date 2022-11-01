@@ -1,23 +1,19 @@
 #?description=Display Run-Time Type Information as a graph showing inheritance relationships between classes
 #?shortcut=
-
 from com.pnfsoftware.jeb.client.api import IScript, GraphDialogExtensions
 from com.pnfsoftware.jeb.client.api.GraphDialogExtensions import EdgeStyle, VertexShape
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 from com.pnfsoftware.jeb.core.util import Digraph
 from com.pnfsoftware.jeb.core.input import IInput
 from com.pnfsoftware.jeb.util.io import IO
+"""
+Sample script for JEB Decompiler.
 
-'''
 Display class inheritance graph built from Run-Time Type Information extracted by JEB.
-
 This script parses JEB's RTTI text output, provided as 'run-time type information' unit. 
-
 Each line follows the pattern:
-
 class BaseClassName : public|private [virtual] ParentClassName1, ...;
-
-'''
+"""
 IGNORE_STD = True # True to ignore C++ std classes (when used as base class)
 CLASS_SEPARATOR = ' : '
 PARENT_SEPARATOR = ', '

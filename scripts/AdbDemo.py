@@ -4,8 +4,6 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android.adb import AdbWrapperFactory, AdbWrapperFactory, AndroidDeviceUtil
 """
 Sample script for JEB Decompiler.
-This script shows how to create and use Android Debug Bridge (adb) wrappers and adb utility objects.
-Reference: AdbWrapperFactory, AdbWrapper, AndroidDeviceUtil
 """
 class AdbDemo(IScript):
   def run(self, ctx):

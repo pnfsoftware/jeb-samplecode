@@ -8,6 +8,7 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
 """
 Sample script for JEB Decompiler.
+
 Note that dexdec's events can be seen in a Decompiler's unit node (Project Explorer view), "Events" tab
 """
 class DexListDecompilationEvents(IScript):

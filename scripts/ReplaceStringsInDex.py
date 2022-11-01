@@ -7,12 +7,14 @@ from com.pnfsoftware.jeb.core.units.code.android.dex import IDexString
 """
 Sample script for JEB Decompiler.
 """
-class DexManipulation(IScript):
+class ReplaceStringsInDex(IScript):
+
   def run(self, ctx):
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
-    for codeUnit in prj.findUnits(IDexUnit):
-      self.processDex(codeUnit)
+
+    for dex in prj.findUnits(IDexUnit):
+      self.processDex(dex)
 
   def processDex(self, dex):
     # replace DEX strings

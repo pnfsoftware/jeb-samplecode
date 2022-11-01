@@ -1,12 +1,13 @@
 #?description=Android APK cross-reference navigation from Resource XML units to DEX Disassembly unit
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
-from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
 from com.pnfsoftware.jeb.core import IPlugin
+from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
 from com.pnfsoftware.jeb.core.units.code.android.dex import IDalvikInstruction
 from com.pnfsoftware.jeb.util.encoding import Conversion
 """
 Sample script for JEB Decompiler.
+
 Usage:
 - Position the caret on a resource id in XML (eg, '  <public id="0x7f05000d" ...')
 - Run the script, select your target xref, and press Enter to navigate to it

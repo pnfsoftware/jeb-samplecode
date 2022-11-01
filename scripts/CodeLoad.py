@@ -1,6 +1,5 @@
 #?description=Reload and apply basic refactoring data on loaded code units
 #?shortcut=
-
 import json
 import os
 import time

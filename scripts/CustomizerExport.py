@@ -11,8 +11,6 @@ Sample script for JEB Decompiler.
 
 This script exports all the function names, comments and signatures in JSON
 or MAP so the user can reimport them later on or use them with another tool.
-
-Refer to SCRIPTS.TXT for more information.
 """
 
 SECTIONS_HEADER = " Start         Length     Name                   Class"

@@ -1,4 +1,4 @@
-#?description=(deprecated) Set and reset bookmarks
+#?description=Set and reset custom bookmarks
 #?shortcut=
 #?deprecated
 import datetime
@@ -8,6 +8,9 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import UnitUtil
 """
 Sample script for JEB Decompiler.
+
+For demo purposes only, this script should not be used to list bookmarks.
+JEB uses its own bookmarks facility for projects.
 """
 class BookmarkSet(IScript):
   BMKEY = 'BOOKMARKS'

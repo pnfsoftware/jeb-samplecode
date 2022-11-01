@@ -5,7 +5,6 @@ from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 """
 Sample script for JEB Decompiler.
-API reference: ITypeManager, IPrimitiveTypeManager, TypeUtil and co.
 """
 class AddCustomNativeTypes(IScript):
   def run(self, ctx):
@@ -13,7 +12,7 @@ class AddCustomNativeTypes(IScript):
     assert prj, 'Need a project'
 
     unit = prj.findUnit(INativeCodeUnit)
-    assert unit, 'Need a naive code unit'
+    assert unit, 'Need a native code unit'
 
     print('Will create type for native unit: %s' % unit)
     ''' create the following type:

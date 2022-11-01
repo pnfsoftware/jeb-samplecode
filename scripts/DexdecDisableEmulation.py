@@ -1,9 +1,10 @@
-#?description=Demo how to use the property manager programmatically
+#?description=Change the propertis of a dexdec instance programmatically
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units.code.android import IDexDecompilerUnit
 """
 Sample script for JEB Decompiler.
+
 Reference doc to review:
 - IPropertyDefinitionManager
 - IPropertyManager

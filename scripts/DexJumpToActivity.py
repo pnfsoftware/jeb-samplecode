@@ -6,6 +6,7 @@ from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 """
 Sample script for JEB Decompiler.
+
 This JEB UI script allows the user to jump from an activity name (selected in the Android XML
 Manifest) to its corresponding bytecode definition in the DEX disassembly fragment.
 """

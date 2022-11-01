@@ -1,11 +1,10 @@
-#?description=Retrieve and print out the Intermediate Representation of routine decompiled by GENDEC
+#?description=Retrieve and print out the IR (Intermediate Representation) of a routine decompiled by GENDEC
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code import IDecompilerUnit, DecompilationContext
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
-DecompilationContext
 """
 Sample script for JEB Decompiler.
 

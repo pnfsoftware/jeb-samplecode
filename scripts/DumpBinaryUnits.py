@@ -6,6 +6,8 @@ from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
 from com.pnfsoftware.jeb.util.io import IO
 """
+Sample script for JEB Decompiler.
+
 Dump all binary units of a JEB opened project to files on disk.
 Output folder= [HOME]/JEB_PROJECT_BINARY_EXTRACTED
 """

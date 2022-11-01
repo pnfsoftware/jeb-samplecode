@@ -6,6 +6,10 @@ from com.pnfsoftware.jeb.core.actions import ActionXrefsData
 from com.pnfsoftware.jeb.core.actions import Actions
 """
 Sample script for JEB Decompiler.
+
+This script lists xrefs using the most generic way, that is, via Actions.QUERY_XREFS.
+Note that some units offer specialized ways to query cross-reference.
+Example: IDexUnit's getCrossReferences() and getReferenceManager()
 """
 class ListCrossReferences(IScript):
   def run(self, ctx):

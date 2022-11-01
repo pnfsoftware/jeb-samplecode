@@ -1,4 +1,4 @@
-#?description=(deprecated) List bookmarks saved by BookmarkSet
+#?description=List custom bookmarks saved by BookmarkSet
 #?shortcut=
 #?deprecated
 import datetime
@@ -9,6 +9,9 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from BookmarkSet import BookmarkSet
 """
 Sample script for JEB Decompiler.
+
+For demo purposes only, this script should not be used to list bookmarks.
+JEB uses its own bookmarks facility for projects.
 """
 class BookmarkList(IScript):
 

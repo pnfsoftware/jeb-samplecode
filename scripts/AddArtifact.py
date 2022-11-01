@@ -1,4 +1,4 @@
-#?description=Add and process additional artifacts into a JEB project
+#?description=Add and analyze an additional artifact into an existing project
 #?shortcut=
 from java.io import File
 from com.pnfsoftware.jeb.client.api import IScript
@@ -6,12 +6,13 @@ from com.pnfsoftware.jeb.core import Artifact
 from com.pnfsoftware.jeb.core.input import FileInput
 """
 Sample script for JEB Decompiler.
-This script demonstrates how to add and process additional artifacts into a JEB project.
 """
 class AddArtifact(IScript):
-  path = 'PATH_TO_FILE'  # customize
+  path = ''  # UPDATE
 
   def run(self, ctx):
+    assert path, 'Specify the artifact path in the demo script'
+
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
 
@@ -21,4 +22,3 @@ class AddArtifact(IScript):
 
     la = prj.processArtifact(a)
     print(la)
-

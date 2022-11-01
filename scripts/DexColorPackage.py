@@ -6,6 +6,8 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.output import ItemClassIdentifiers
 from com.pnfsoftware.jeb.core.units import MetadataGroup, MetadataGroupType, AddressPrefixMetadataGroup
 """
+Sample script for JEB Decompiler.
+
 Package/Class/Method coloring scrip.
 We use the AddressPrefixMetadataGroup object to store metadata information, displayed in a text navbar.
 """

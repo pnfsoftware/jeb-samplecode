@@ -6,12 +6,13 @@ from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 """
 Sample script for JEB Decompiler.
 
-Open an APK/DEX, decompile any class or method; in the Decompiled view, position the caret somewhere in a method.
-Execute the script.
-
 The script shows how to use the Java factory to create an external method reference (also available for fields),
 create a new statement (here, a call to 'new String("...")'), and replace an arbitrary selected statement
 (index 0 in the currently selected method) by the new statement.
+
+- Open an APK/DEX, decompile any class or method
+- In the Decompiled view, position the caret somewhere in a method
+- Execute the script
 """
 class JavaASTCreateMethodRef(IScript):
 

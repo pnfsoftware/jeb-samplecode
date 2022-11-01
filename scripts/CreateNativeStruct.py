@@ -7,6 +7,7 @@ from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 from com.pnfsoftware.jeb.util.encoding import Conversion
 """
 Sample script for JEB Decompiler.
+
 This script is a UI helper to quickly create a native structure type of a given size.
 The structure will be filled with int32 primitives, and padded with one optional int16 and optional int8, if necessary.
 """

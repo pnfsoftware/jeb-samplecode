@@ -5,16 +5,17 @@ from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 """
 Sample script for JEB Decompiler.
 
-Sample script showing how to examine Dalvik method Control Flow Graph (CFG) and perform
-data flow analysis on the graph to look at register definition locations and their uses,
-and register use locations and their definitions.
+This script is showing how to examine Dalvik method Control Flow Graph (CFG) and perform
+data flow analysis (DFA) on the graph to look at register definition locations and their
+uses, and register use locations and their definitions.
 
 What is Data Flow Analysis: a starting point at https://en.wikipedia.org/wiki/Data-flow_analysis
-API documentation: start with https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/android/controlflow/CFG.html
+API documentation: start with https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/IDFA3.html
 
-Key methods: doDataFlowAnalysis(), getFullDefUseChains(), getFullUseDefChains(), getSimpleDefUseChains(), getSimpleUseDefChains()
-
-How to use this sample script: open a DEX file, position the caret somewhere on a Dalvik instruction in the Disassembly view
+How to use this sample script:
+- open a DEX file
+- position the caret somewhere on a Dalvik instruction in the Disassembly view
+- run the script to see the uses and/or definitions of the registers manipulated by the instruction
 """
 class DalvikDataFlow(IScript):
 
@@ -42,18 +43,18 @@ class DalvikDataFlow(IScript):
     print('Method: %s, Offset: 0x%X' % (mname, off))
 
     cfg = m.getData().getCodeItem().getControlFlowGraph()
-    cfg.doDataFlowAnalysis()
+    dfa = cfg.doDataFlowAnalysis()
     print('CFG for method was retrieved, DFA was performed')
 
     insn = cfg.getInstructionAt(off)
     print('Instruction on caret: %s' % insn)
 
     # DU-map: instruction -> map(register, list(instructions using the defined register))
-    dumap = cfg.getFullDefUseChains().get(insn)
-    for regid, using_insnlist in dumap.items():
-      print('[du] r%d: %s' % (regid, ['0x%X: %s' % (insn.getOffset(), insn.format(None)) for insn in using_insnlist]))
+    dumap = dfa.getDefUseChains(insn.getOffset())
+    for regid, addrlist in dumap.items():
+      print('[du] r%d: used at %s' % (regid, ','.join(['0x%X ' % (addr) for addr in addrlist])))
 
     # UD-map: instruction -> map(register, list(instructions using the defined register))
-    udmap = cfg.getFullUseDefChains().get(insn)
-    for regid, defining_insnlist in udmap.items():
-      print('[ud] r%d: %s' % (regid, ['<init>' if insn == None else '0x%X: %s' % (insn.getOffset(), insn.format(None)) for insn in defining_insnlist]))
+    udmap = dfa.getUseDefChains(insn.getOffset())
+    for regid, addrlist in udmap.items():
+      print('[ud] r%d: defined at %s' % (regid, ','.join(['0x%X ' % (addr) for addr in addrlist])))

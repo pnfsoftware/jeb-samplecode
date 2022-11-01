@@ -1,4 +1,4 @@
-#?description=Generate extra tabl and tree documents for the first found interactive unit (new tabs: Demo Tree, Demo Table)
+#?description=Generate extra table and tree documents for the first found interactive unit
 #?shortcut=
 from java.util import ArrayList, Arrays
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
@@ -9,8 +9,10 @@ from com.pnfsoftware.jeb.core.output.tree.impl import StaticTreeDocument, Node, 
 from com.pnfsoftware.jeb.core.units import IInteractiveUnit
 """
 Sample script for JEB Decompiler.
+
+Will create 2 documents named 'Demo Tree' and 'Demo Table'
 """
-class ExtraDocumentTableTree(IScript):
+class CreateExtraDocumentTableTree(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
     assert prj, 'Need a project'

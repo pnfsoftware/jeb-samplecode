@@ -8,9 +8,14 @@ from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
 from com.pnfsoftware.jeb.core.units.code.android.dex import DexPoolType
 """
 Sample script for JEB Decompiler.
+
 This script will update the navbar and generate colors where artificial strings are being used.
-Note: artificial strings are strings that were not originally present in the dex pool(s), e.g. auto-decrypted strings.
-Demo: open com.parental.control.v4.apk; run a Global Analysis; execute the script
+Artificial strings are strings that were not originally present in the dex pool(s), e.g. auto-decrypted strings.
+
+Demo:
+- open com.parental.control.v4.apk
+- run a Global Analysis
+- execute the script
 """
 class DexColorArtificialStrings(IScript):
   def run(self, ctx):

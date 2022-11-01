@@ -7,9 +7,9 @@ from com.pnfsoftware.jeb.core.units.code.asm.type import TypeUtil
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.util import DecompilerHelper
 """
-DEPRECATED - see note above.
-
 Sample script for JEB Decompiler.
+
+!!! DEPRECATED !!! see note above.
 
 ===> How to use:
 Two modes:

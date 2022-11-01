@@ -5,6 +5,7 @@ from com.pnfsoftware.jeb.core.units import UnitUtil, WellKnownUnitTypes
 from com.pnfsoftware.jeb.core.output.text import TextDocumentUtil
 """
 Sample script for JEB Decompiler.
+
 This script relies on the PDF plugin to enumerate and dump decoded stream documents stored in the Stream sub-units of a parsed PDF unit.
 The PDF plugin does not implement a specific sub-interface of IUnit (API), mostly because it is an open-source plugin, available on GitHub.
 The script below uses hardcoded unit types and document types to retrieve the objects to be dumped.
@@ -21,7 +22,7 @@ class PdfListStreams(IScript):
     if unit.getFormatType() != WellKnownUnitTypes.typePdf:
       raise Exception('Expected a PDF file')
 
-    # [OPTIONAL] refer to https://github.com/pnfsoftware/jeb2-plugin-pdf/tree/master/src/main/java/com/pnf/plugin/pdf
+    # [OPTIONAL] refer to https://github.com/pnfsoftware/jeb-plugin-pdf/tree/master/src/main/java/com/pnf/plugin/pdf
     # the unit retrieved is of the IPdfUnit type, and has additional methods, eg getStatistics() provide a PdfSTatistics object
     print 'Encrypted:', unit.getStatistics().isEncrypted()
 

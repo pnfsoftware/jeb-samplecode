@@ -5,6 +5,7 @@ from com.pnfsoftware.jeb.core.util import DecompilerHelper
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, IDecompilerUnit, DecompilationContext, DecompilationOptions
 """
 Sample script for JEB Decompiler.
+
 The class containing the target method is itself not decompiled; inner classes of the method, if any, are not decompiled either.
 The decompiled code is displayed in a text box.
 """

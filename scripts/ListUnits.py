@@ -1,4 +1,4 @@
-#?description=List all units (as well as their byte sizes) of the currently opened project
+#?description=List all units of the currently opened project
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core.units import IBinaryUnit

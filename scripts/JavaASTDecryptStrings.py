@@ -1,5 +1,6 @@
 #?description=Script for https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
 #?shortcut=
+#?deprecated
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.actions import Actions, ActionContext, ActionXrefsData
@@ -8,10 +9,18 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaStaticField, IJavaNewArray, IJavaConstant, IJavaCall, IJavaField, IJavaMethod, IJavaClass
 """
 Sample script for JEB Decompiler.
+
+!!! IMPORTANT !!!
+It is almost always preferable to perform dex deobfuscation of any kind (including string decryption)
+at the IR level, using dexdec's IR API. Refer to this blog post for details:
+https://www.pnfsoftware.com/blog/writing-dexdec-ir-optimizer-plugins/
+API reference:
+https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/android/ir/package-summary.html
+
+(Original notes follow)
 This script is a JEB API port of the original JEB v1 script 'ASTDecryptStrings.py'.
 Its purpose is to decrypt the strings protected by the app protector.
-More details can be found here:
-https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
+More details can be found here: https://www.pnfsoftware.com/blog/decompiled-java-code-manipulation-using-jeb-api-part-2-decrypting-strings/
 """
 class JavaASTDecryptStrings(IScript):
 

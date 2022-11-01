@@ -1,4 +1,4 @@
-#?description=Generate an extra document for the first found interactive unit (new tab: Quotes)
+#?description=Generate an extra document for the first found interactive unit
 #?shortcut=
 from java.util import ArrayList
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
@@ -8,8 +8,10 @@ from com.pnfsoftware.jeb.core.output.text.impl import Line, StaticTextDocument
 from com.pnfsoftware.jeb.core.units import IInteractiveUnit
 """
 Sample script JEB Decompiler.
+
+The newly-created document is called 'Quotes'.
 """
-class ExtraDocument(IScript):
+class CreateExtraDocument(IScript):
   def run(self, ctx):
     prj = ctx.getMainProject()
     assert prj, 'Need a project'

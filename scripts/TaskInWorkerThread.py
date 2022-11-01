@@ -1,4 +1,4 @@
-#?description=Run an asynchronous interruptible task
+#?description=Run an interruptible task in a worker thread
 #?shortcut=
 import time
 from java.lang import Runnable, Thread
@@ -6,12 +6,14 @@ from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
 Sample script for JEB Decompiler.
 """
-class AsyncTask(IScript):
+class TaskInWorkerThread(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
       return
+    # will start a worker thread and run the task; a pop-up will be shown to provide a way to interrupt the task
     ctx.executeAsync('Counting...', SimpleTask())
+    print('Done.')
 
 class SimpleTask(Runnable):
   def run(self):

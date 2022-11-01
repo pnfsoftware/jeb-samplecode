@@ -8,7 +8,7 @@ from com.pnfsoftware.jeb.core.units.codeobject import ICodeObjectUnit, IPECOFFUn
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler.exceptions import DecompilerException
 from java.lang import Runnable
 """
-Sample import script  for PNF Software' JEB.
+Sample script for JEB Decompiler.
 
 This script exports all the function names and comments
 so the user can reimport them later on or use them with
@@ -16,8 +16,6 @@ another tool.
 
 Takes only the filename as input.
 The result will be stored in JEB's root folder.
-
-Refer to SCRIPTS.TXT for more information.
 """
 
 # MAP headers

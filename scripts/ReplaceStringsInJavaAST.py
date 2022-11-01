@@ -1,4 +1,4 @@
-#?description=Java AST manipulation demo: Find the first Java unit, replace String immediates by random string
+#?description=Find the first decompiled Java unit and replace String immediates by random string
 #?shortcut=
 import time
 from com.pnfsoftware.jeb.client.api import IScript
@@ -6,7 +6,7 @@ from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaConst
 """
 Sample script for JEB Decompiler.
 """
-class ASTReplStringsTest(IScript):
+class ReplaceStringsInJavaAST(IScript):
 
   def run(self, ctx):
     prj = ctx.getMainProject()
@@ -14,6 +14,7 @@ class ASTReplStringsTest(IScript):
 
     src = prj.findUnit(IJavaSourceUnit)
     assert src, 'Need a java source unit (decompiled)'
+
     print('Processing %s' % src)
 
     self.replcnt = 0

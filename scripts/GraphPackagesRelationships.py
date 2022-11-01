@@ -6,6 +6,8 @@ from com.pnfsoftware.jeb.core.units.code import ICodeUnit, CodeUtil
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit, DalvikCallgraphBuilder
 from com.pnfsoftware.jeb.core.util import Digraph
 """
+Sample script for JEB Decompiler.
+
 Build callgraph between unknown routines (whose name start with 'sub_') 
 and routines from specific packages (whose names are prefixed by known package names).
 

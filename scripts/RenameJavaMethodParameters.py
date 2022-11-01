@@ -6,6 +6,7 @@ from com.pnfsoftware.jeb.core import IPlugin
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, JavaElementType
 """
 Sample script for JEB Decompiler.
+
 This script demonstrates how to rename method parameters of decompiled Java methods.
 In the example below, generic parameter names ('argX') are renamed based on their type.
 """

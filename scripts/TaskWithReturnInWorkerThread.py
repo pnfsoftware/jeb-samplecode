@@ -1,4 +1,4 @@
-#?description=Run an asynchronous interruptible task that returns a value
+#?description=Run an interruptible task in a worker thread
 #?shortcut=
 import time
 from java.lang import Thread
@@ -7,11 +7,12 @@ from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
 Sample script for JEB Decompiler.
 """
-class AsyncTaskWithReturn(IScript):
+class TaskWithReturnInWorkerThread(IScript):
   def run(self, ctx):
     if not isinstance(ctx, IGraphicalClientContext):
       print('This script must be run within a graphical client')
       return
+    # will start a worker thread and run the task; a pop-up will be shown to provide a way to interrupt the task
     r = ctx.executeAsyncWithReturn('Counting... and returning a value', SimpleTask())
     print r
 

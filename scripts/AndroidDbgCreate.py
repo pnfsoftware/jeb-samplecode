@@ -5,7 +5,7 @@ from com.pnfsoftware.jeb.core.units.code.android import IApkUnit, IDexUnit
 from com.pnfsoftware.jeb.core.units.code.debug.impl import DebuggerSetupInformation
 from com.pnfsoftware.jeb.core.util import DebuggerHelper
 """
-Script for JEB Decompiler.
+Sample script for JEB Decompiler.
 """
 class AndroidDbgCreate(IScript):
   def run(self, ctx):
