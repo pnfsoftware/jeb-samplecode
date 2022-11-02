@@ -111,9 +111,11 @@ public class VirustotalReportPlugin extends AbstractEnginesPlugin {
         processAll(engctx);
     }
 
+    private static final String propfqn = ".VirusTotalApiKey";
+
     private String getApiKey(IEnginesContext engctx) {
         try {
-            return engctx.getPropertyManager().getString(".VirusTotalApiKey");
+            return engctx.getPropertyManager().getString(propfqn);
         }
         catch(Exception e) {
             return null;
@@ -122,7 +124,7 @@ public class VirustotalReportPlugin extends AbstractEnginesPlugin {
 
     private boolean setApiKey(IEnginesContext engctx, String key) {
         try {
-            engctx.getPropertyManager().setString(".VirusTotalApiKey", key);
+            engctx.getPropertyManager().setString(propfqn, key);
             return true;
         }
         catch(Exception e) {
@@ -166,7 +168,7 @@ public class VirustotalReportPlugin extends AbstractEnginesPlugin {
         }
 
         logger.debug("Verifying SHA-256 hash on VirustTotal: %s", h);
-        String url = String.format("https://www.virustotal.com/vtapi/v2/file/report?apikey=%s&resource=%s", apikey, h);
+        String url = Strings.ff("https://www.virustotal.com/vtapi/v2/file/report?apikey=%s&resource=%s", apikey, h);
         String jsonResponse;
 
         jsonResponse = engctx.getNetworkUtility().query(url);
@@ -176,12 +178,12 @@ public class VirustotalReportPlugin extends AbstractEnginesPlugin {
 
         // "response_code" and "verbose_msg" are the only keys guaranteed to be present
         // ref: https://www.virustotal.com/en/documentation/public-api/
-        if(!o.containsKey("response_code")) {
+        Long responseCode = (Long)o.get("response_code");
+        if(responseCode == null) {
             logger.debug("Invalid VT answer: %s", url);
             return false;
         }
 
-        Long responseCode = (Long)o.get("response_code");
         if(responseCode == 0L) {
             UnitUtil.logInfo(unit, null, true, logger, "VT: unknown file");
         }
