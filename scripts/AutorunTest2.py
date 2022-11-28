@@ -1,0 +1,19 @@
+#?description=This client script will be autorun at start-up (1) with priority 5
+#?autorun=1
+#?autorun_priority=5
+from com.pnfsoftware.jeb.client.api import IScript
+"""
+Sample script for JEB Decompiler..
+Values for the metadata key autorun (CSL):
+  0 (no autorun), 1 (after start-up), 2 (after project creation), 3 (after project reloaded) [default:0]
+Values for the metadata key autorun_priority:
+  any floating value, a high value means a high priority [default:0]
+
+NOTE the priority of this script: it was set to 5.
+It will be executed before AutorunTest1, whose priority is a default 0.
+
+Requires JEB 4.22+
+"""
+class AutorunTest2(IScript):
+  def run(self, ctx):
+    print('AutorunTest2: This script was automatically executed by the client')
