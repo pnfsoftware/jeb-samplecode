@@ -3,7 +3,10 @@
 #?autorun_priority=5
 from com.pnfsoftware.jeb.client.api import IScript
 """
+*** TO ENABLE THIS SCRIPT, REMOVE THE .DISABLED extension ***
+
 Sample script for JEB Decompiler..
+
 Values for the metadata key autorun (CSL):
   0 (no autorun), 1 (after start-up), 2 (after project creation), 3 (after project reloaded) [default:0]
 Values for the metadata key autorun_priority:
