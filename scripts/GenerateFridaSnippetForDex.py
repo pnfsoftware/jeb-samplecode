@@ -3,7 +3,7 @@
 
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import Artifact
-from com.pnfsoftware.jeb.core.units.code.android import IDexUnit
+from com.pnfsoftware.jeb.core.units.code.android import IDexUnit, IDexDecompilerUnit
 
 '''
 Python script for JEB Decompiler.
@@ -17,8 +17,14 @@ class GenerateFridaSnippetForDex(IScript):
   def run(self, ctx):
     addr = ctx.getFocusedAddress()
     unit = ctx.getFocusedUnit()
-    if not addr or not isinstance(unit, IDexUnit):
+    if not addr or not unit:
       print("Position the caret on a Dex method inside a text fragment")
+      return
+
+    if isinstance(unit.getParent(), IDexDecompilerUnit):
+      unit = unit.getParent().getParent()  # the parent of dexdec is a dex
+    elif not isinstance(unit, IDexUnit):
+      print("Canot retrieve the Dex unit")
       return
 
     # clear the bytecode position if the caret inside a method (as opposed to being on the method's header)
