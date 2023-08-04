@@ -1,4 +1,4 @@
-#?description=
+#?description=Rename a Java field to its source variable's name, in a field assignment statement.
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit

@@ -29,7 +29,7 @@ class GraphPackagesRelationships(IScript):
     assert prj, 'Need a project'
 
     code = prj.findUnit(INativeCodeUnit)
-    assert code, 'Need a code unit'
+    assert code, 'Need a native code unit'
 
     g = Digraph.create()
     model = code.getCodeModel()

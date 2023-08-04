@@ -25,7 +25,7 @@ class DexJumpToResource(IScript):
 
       doc = self.getTargetDoc(prj, 'public.xml')
       if not doc:
-        print("*** Target XML does not exist ***")
+        print('Cannot find public.xml')
         return
 
       self.getValue(doc, 'public.xml', ctx)
@@ -45,7 +45,6 @@ class DexJumpToResource(IScript):
   def getActiveItem(self, ctx):
     curItem = ctx.getFocusedView().getActiveFragment().getActiveItem()
     if curItem == None:
-      print("*** Cannot get the value ***")
       return None
     # hack: only work for 32-bit numbers, may be disabled in the future
     activeItemVal = str(hex(curItem.getItemId() & 0xFFFFFFFF))[:-1]
@@ -66,31 +65,28 @@ class DexJumpToResource(IScript):
   def getValue(self, doc, targetXML, ctx):
     #print(targetXML)
     if (targetXML == 'public.xml'):
-      xmlLists = doc.getElementsByTagName("public");
+      xmlLists = doc.getElementsByTagName('public');
       for i in range(xmlLists.getLength()):
         node = xmlLists.item(i)
-        if(self.activeItemValue == str(node.getAttribute("id"))):
-          self.name = node.getAttribute("name")
-          self.typeC = node.getAttribute("type")
+        if(self.activeItemValue == str(node.getAttribute('id'))):
+          self.name = node.getAttribute('name')
+          self.typeC = node.getAttribute('type')
           return
-      print("*** It does not belong to public.xml ***")
     if (targetXML == 'ids.xml'):
-      xmlLists = doc.getElementsByTagName("item");
+      xmlLists = doc.getElementsByTagName('item');
       for i in range(xmlLists.getLength()):
         node = xmlLists.item(i)
-        if(self.name == str(node.getAttribute("name"))):
+        if(self.name == str(node.getAttribute('name'))):
           self.value = node.getTextContent()
           return
-      print("*** It does not belong to ids.xml ***")
     if (targetXML == 'strings.xml'):
-      xmlLists = doc.getElementsByTagName("string");
+      xmlLists = doc.getElementsByTagName('string');
       for i in range(xmlLists.getLength()):
         node = xmlLists.item(i)
-        if(self.name == str(node.getAttribute("name"))):
+        if(self.name == str(node.getAttribute('name'))):
           self.value = node.getTextContent()
           return
-      print("*** It does not belong to strings.xml ***")
-    print('*** Cannot find target XML file ***')
+    print('Cannot find target XML file')
 
 
   def jumpToTargetFile(self, prj, ctx):
@@ -99,7 +95,6 @@ class DexJumpToResource(IScript):
     if unit:
       ctx.openView(unit)
       return
-    print("*** Cannot find target file ***")
 
 
 class UnitFilterByName(IUnitFilter):

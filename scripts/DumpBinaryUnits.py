@@ -14,11 +14,11 @@ Output folder= [HOME]/JEB_PROJECT_BINARY_EXTRACTED
 class DumpBinaryUnits(IScript):
 
   def run(self, ctx):
-    OUTDIR = IO.expandPath('~/JEB_PROJECT_BINARY_EXTRACTED')
-
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
 
+    #OUTDIR = IO.expandPath('~/JEB_PROJECT_BINARY_EXTRACTED')
+    OUTDIR = ctx.displayFolderSelector('Target folder where the dumped files will be written')
     print('=> Dumping binary units of project to directory: %s' % OUTDIR)
 
     for art in prj.getLiveArtifacts():

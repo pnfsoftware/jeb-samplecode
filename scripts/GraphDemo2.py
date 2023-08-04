@@ -1,4 +1,4 @@
-#?description=Advanced use of the displayGraph() API method, making use of the graph extension
+#?description=Advanced use of displayGraph() to display the callgraph
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, GraphDialogExtensions
 from com.pnfsoftware.jeb.core.units import UnitAddress

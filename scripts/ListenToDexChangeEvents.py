@@ -11,6 +11,8 @@ Sample script JEB Decompiler.
 This script shows how to listen to unit-emitted UnitChange events.
 Specifically, the script sets up a listener for changes emitted by a DEX unit.
 Refer to IDexUnit and UnitChangeEventData API documentation for details.
+
+Run the script a second time to remove all listeners
 """
 class ListenToDexChangeEvents(IScript):
 
@@ -27,6 +29,8 @@ class ListenToDexChangeEvents(IScript):
       # since class objects are different every time the script is run
       if hasattr(listener, 'IN_SCRIPT'):
         dex.removeListener(listener)
+        print('Stopped listening to UnitChange events on: %s' % dex)
+        return
 
     # add a fresh listener
     dex.addListener(SampleListener(ctx))

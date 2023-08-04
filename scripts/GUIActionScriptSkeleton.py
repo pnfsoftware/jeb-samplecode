@@ -1,4 +1,4 @@
-#?description=
+#?description=Demo how to chain GUI actions without blocking the UI thread.
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
 from java.lang import Runnable

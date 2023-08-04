@@ -26,7 +26,7 @@ class ApkManifestView(IScript):
     print(TextDocumentUtil.getText(doc))
 
     # 2) retrieve the org.w3c.dom.Document
-    doc = man.getDocument()
+    xmldoc = man.getDocument()
     # ...
 
-    doc.dispose()
+    doc.dispose()  # always dispose unit-generated documents

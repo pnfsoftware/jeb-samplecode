@@ -8,6 +8,9 @@ from com.pnfsoftware.jeb.core.units import IInteractiveUnit, MetadataGroup, Meta
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit
 """
 Sample script JEB Decompiler.
+
+Customize the metadata of a code unit (and see rendering in the metadata overview bar in GUI).
+The beginning of every class will be marked and rendered as a light green in the navigation bar.
 """
 class CustomizeMetadata(IScript):
 

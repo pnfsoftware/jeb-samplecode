@@ -4,21 +4,22 @@ from java.io import File
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import Artifact
 from com.pnfsoftware.jeb.core.input import FileInput
+import os
 """
 Sample script for JEB Decompiler.
 """
 class AddArtifact(IScript):
-  path = ''  # UPDATE
 
   def run(self, ctx):
-    assert path, 'Specify the artifact path in the demo script'
-
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
 
-    artifactFile = File(self.path)
+    path = ctx.displayFileOpenSelector('Select a file to be added to the project')
+    assert path and os.path.isfile(path), 'Need a valid artifact file path'
+
+    artifactFile = File(path)
     a = Artifact(artifactFile.getName(), FileInput(artifactFile))
-    print(a)
+    print('Adding: %s' % a)
 
     la = prj.processArtifact(a)
     print(la)
