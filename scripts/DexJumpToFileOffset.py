@@ -33,7 +33,7 @@ class DexJumpToFileOffset(IScript):
     target_addr = None
     for m in dex.getMethods():
       if m.isInternal():
-        code = m.getData().getCode()
+        code = m.getData().getCodeItem()
         if code:
           if code.getDexFileIndex() + 1 == dexidx:
             start = code.getInstructionsOffset()
