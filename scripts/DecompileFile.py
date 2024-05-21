@@ -93,7 +93,7 @@ class DecompileFile(IScript):
     exp.setTotalTimeout(15 * 60000)
     # set a callback to output real-time information about what's being decompiled
     class DecompCallback(ProgressCallbackAdapter):
-      def message(self, msg):
+      def message(self, _id, msg):
         print('%d/%d: %s' % (self.getCurrent(), self.getTotal(), msg))
     exp.setCallback(DecompCallback())
     # decompile & export
