@@ -3,7 +3,7 @@
 from com.pnfsoftware.jeb.client.api import IScript, GraphDialogExtensions
 from com.pnfsoftware.jeb.client.api.GraphDialogExtensions import EdgeStyle, VertexShape
 from com.pnfsoftware.jeb.core.units import IBinaryUnit
-from com.pnfsoftware.jeb.core.util import Digraph
+from com.pnfsoftware.jeb.util.graph import Digraph
 from com.pnfsoftware.jeb.core.input import IInput
 from com.pnfsoftware.jeb.util.io import IO
 """

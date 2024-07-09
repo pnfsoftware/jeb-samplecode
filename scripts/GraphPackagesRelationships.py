@@ -4,7 +4,7 @@ from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext, Gra
 from com.pnfsoftware.jeb.core.units import UnitAddress, INativeCodeUnit
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, CodeUtil
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit, DalvikCallgraphBuilder
-from com.pnfsoftware.jeb.core.util import Digraph
+from com.pnfsoftware.jeb.util.graph import Digraph
 """
 Sample script for JEB Decompiler.
 

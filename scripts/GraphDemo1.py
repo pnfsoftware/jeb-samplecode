@@ -1,7 +1,7 @@
 #?description=Basic use of the displayGraph() API method, which does not make use of the graph extension
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
-from com.pnfsoftware.jeb.core.util import Digraph
+from com.pnfsoftware.jeb.util.graph import Digraph
 """
 Sample script for JEB Decompiler.
 """
