@@ -37,10 +37,10 @@ class GraphDemo2(IScript):
         return UnitAddress(code, addr)
       def getVertexMark(self, vertexId):
         addr = b.getAddressForVertexId(vertexId)
-        return code.getPrimaryComment(addr) == 'MARKED'
+        return code.getInlineComment(addr) == 'MARKED'
       def processVertexMark(self, vertexId, mark):
         addr = b.getAddressForVertexId(vertexId)
-        code.setPrimaryComment(addr, 'MARKED' if mark else '')
+        code.setInlineComment(addr, 'MARKED' if mark else '')
         return True
 
     ctx.displayGraph('Callgraph', g, Ext())
