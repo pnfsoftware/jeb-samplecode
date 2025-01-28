@@ -19,7 +19,7 @@ Two modes:
   - then run the script: File, Scripts, Run...
   - the script will process your loaded contract
 - Using the command line:
-  - run like: jeb_wincon.bat -c --srv2 --script=<THIS_SCRIPT> -- <YOUR_CONTRACT.evm-bytecode>
+  - run like: jeb_wincon.bat -c --script=<THIS_SCRIPT> -- <YOUR_CONTRACT.evm-bytecode>
   - the script will create a JEB project and process the contract file provided on the command line
   - (make sure the contract file ends with the 'evm-bytecode' extension) 
 

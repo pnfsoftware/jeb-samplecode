@@ -60,6 +60,6 @@ class CodeLoad(IScript):
           unit.getMethod(sig).setName(name)
         # note: comments are applied last since `addr` can be a refactored one here
         for addr, comment in comments.items():
-          unit.setPrimaryComment(addr, comment)
+          unit.setInlineComment(addr, comment)
 
     print('Basic refactoring data was applied')

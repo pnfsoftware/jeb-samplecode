@@ -3,7 +3,6 @@
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 """
 Sample script for JEB Decompiler.
-Requires JEB>=5.12.
 """
 class RequestUserInputWithForm(IScript):
   def run(self, ctx):

@@ -16,7 +16,7 @@ Two modes:
   - then run the script: File, Scripts, Run...
   - the script will process your loaded executable
 - Using the command line:
-  - run like: jeb_wincon.bat -c --srv2 --script=<THIS_SCRIPT> -- <BINARY_FILE>
+  - run like: jeb_wincon.bat -c --script=<THIS_SCRIPT> -- <BINARY_FILE>
   - the script will create a JEB project and process the file provided on the command line
 
 ===> What is it:

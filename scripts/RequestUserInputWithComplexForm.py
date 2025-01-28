@@ -5,7 +5,6 @@ from com.pnfsoftware.jeb.client.api import FormEntry
 from java.util.function import Predicate
 """
 Sample script for JEB Decompiler.
-Requires JEB>=5.12.
 """
 class RequestUserInputWithComplexForm(IScript):
   def run(self, ctx):
