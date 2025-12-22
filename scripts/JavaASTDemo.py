@@ -1,8 +1,7 @@
 #?description=Show how to navigate and dump Java AST trees
 #?shortcut=
-import os
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaClass
 """
 Sample script for JEB Decompiler.
 """
@@ -12,9 +11,10 @@ class JavaASTDemo(IScript):
     assert prj, 'Need a project'
 
     for unit in prj.findUnits(IJavaSourceUnit):
-      c = unit.getClassElement()
-      for m in c.getMethods():
-        self.displayTree(m)
+      elt = unit.getASTElement()
+      if isinstance(elt, IJavaClass):
+        for m in elt.getMethods():
+          self.displayTree(m)
 
   def displayTree(self, e, level=0):
     print('%s%s @ 0x%X' % (level*'  ', e.getElementType(), e.getPhysicalOffset()))
