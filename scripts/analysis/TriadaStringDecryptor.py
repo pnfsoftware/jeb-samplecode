@@ -83,13 +83,13 @@ class TriadaStringDecryptor(IScript):
     targetClassMain = "" # Main taget class
 
     for unit in units:
-      javaClass = unit.getClassElement() # Get a reference to the Java class defined in this unit
+      javaClass = unit.getASTElement() # Get a reference to the Java class defined in this unit
 
       if javaClass.getName() == self.TARGET_CLASS_NAME: # If the current class is the target class, store the target class
         targetClass = javaClass
       if javaClass.getName() == self.TARGET_CLASS_NAME_MAIN: # If the current class is the main target class, store the main target class
         targetClassMain = javaClass
-        self.cstbuilder = unit.getFactories().getConstantFactory()
+        self.cstbuilder = unit.getDecompiler().getHighLevelContext().getConstantFactory()
 
     self.processTargetClass(targetClass)
     if self.dic:

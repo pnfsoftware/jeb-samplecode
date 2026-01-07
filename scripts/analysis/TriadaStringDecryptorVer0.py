@@ -76,11 +76,11 @@ class TriadaStringDecryptorVer0(IScript):
     # IJavaSourceUnit: Definition of a source unit representing a Java class in the form of an Abstract Syntax Tree
 
     for unit in units:
-      javaClass = unit.getClassElement() # Get a reference to the Java class defined in this unit
+      javaClass = unit.getASTElement() # Get a reference to the Java class defined in this unit
       # IJavaClass: Java AST interface to represent a Java class. Class elements contain other classes (inner classes), fields, and methods
 
       if javaClass.getName() == self.TARGET_CLASS_NAME: # If the current class is the target class
-        self.cstbuilder = unit.getFactories().getConstantFactory()
+        self.cstbuilder = unit.getDecompiler().getHighLevelContext().getConstantFactory()
         # getFactories: A collection of Java AST element factories
         # IJavaFactories: A collection of Java AST element factories(methods)
         # IJavaConstantFactory(self.cstbuilder): Builder for Java AST constants

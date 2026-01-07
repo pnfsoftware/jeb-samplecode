@@ -1,7 +1,7 @@
 #?description=Enumerate the IJavaIdentifiers (parameters, local vars) of IJavaMethod objects of a decompiled IJavaClass. Rename some identifiers. List all identifiers.
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaClass
 """
 Sample script for JEB Decompiler.
 
@@ -21,12 +21,13 @@ class JavaListIdentifiers(IScript):
     if not isinstance(unit, IJavaSourceUnit): return
 
     # assume the unit is an IJavaSourceUnit
-    c = unit.getClassElement()
+    elt = unit.getASTElement()
+    if not isinstance(elt, IJavaClass): return
 
     # 1) DEMO: rename some method identifiers
     # enumerate all methods in the class (NOTE: nested classes are not enumerated, this is just a demo script)
     idx = 0
-    for m in c.getMethods():
+    for m in elt.getMethods():
       identifiers = m.getIdentifierManager().getIdentifiers()
       print('METHOD: %s: identifiers=%s' % (m, identifiers))
       for ident in identifiers:

@@ -5,7 +5,7 @@ from com.pnfsoftware.jeb.core import RuntimeProjectUtil
 from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
 from com.pnfsoftware.jeb.core.units.code import ICodeUnit, ICodeItem
 from com.pnfsoftware.jeb.core.output.text import ITextDocument
-from com.pnfsoftware.jeb.core.units.code.java import IJavaConstant
+from com.pnfsoftware.jeb.core.units.code.java import IJavaConstant, IJavaClass
 """
 Sample script for JEB Decompiler.
 
@@ -39,13 +39,15 @@ class JavaASTTags(IScript):
     assert prj, 'Need a project'
 
     for unit in prj.findUnits(IJavaSourceUnit):
-      self.processClassTree(unit.getClassElement())
-      doc = unit.getSourceDocument()
-      javaCode, formattedMarks = self.formatTextDocument(doc)
-      #print(javaCode)
-      if(formattedMarks):
-        print('=> Marks:')
-        print(formattedMarks)
+      elt = unit.getASTElement()
+      if isinstance(elt, IJavaClass):
+        self.processClassTree(elt)
+        doc = unit.getSourceDocument()
+        javaCode, formattedMarks = self.formatTextDocument(doc)
+        #print(javaCode)
+        if(formattedMarks):
+          print('=> Marks:')
+          print(formattedMarks)
 
   def processClassTree(self, e_class):
     for e in e_class.getMethods():

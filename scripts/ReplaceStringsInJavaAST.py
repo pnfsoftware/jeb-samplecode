@@ -2,7 +2,7 @@
 #?shortcut=
 import time
 from com.pnfsoftware.jeb.client.api import IScript
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaConstant
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaClass, IJavaConstant
 """
 Sample script for JEB Decompiler.
 """
@@ -17,9 +17,12 @@ class ReplaceStringsInJavaAST(IScript):
 
     print('Processing %s' % src)
 
+    elt = src.getASTElement()
+    if not isinstance(elt, IJavaClass): return
+
     self.replcnt = 0
-    self.cstbuilder = src.getFactories().getConstantFactory()
-    for m in src.getClassElement().getMethods():
+    self.cstbuilder = src.getDecompiler().getHighLevelContext().getConstantFactory()
+    for m in elt.getMethods():
       self.checkElement(None, m)
 
     print('Replaced %d strings' % self.replcnt)

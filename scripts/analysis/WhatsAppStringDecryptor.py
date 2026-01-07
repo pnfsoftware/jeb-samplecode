@@ -33,11 +33,11 @@ class WhatsAppStringDecryptor(IScript):
 	
     self.dexunit = RuntimeProjectUtil.findUnitsByType(project, IDexUnit, False)[0] # Get dex context, needs >=V2.2.1
     self.currentunit = ctx.getFocusedView().getActiveFragment().getUnit() # Get current Source Tab in Focus
-    javaclass = self.currentunit.getClassElement()  # needs >V2.1.4
+    javaclass = self.currentunit.getASTElement()  # needs >V2.1.4
     curaddr=ctx.getFocusedView().getActiveFragment().getActiveAddress()  # needs 2.1.4
     print('Current class: %s' % javaclass.getName())
     print('Current address: %s' % curaddr)
-    self.cstbuilder = self.currentunit.getFactories().getConstantFactory() # we need a context to cstbuilder to replace strings
+    self.cstbuilder = self.currentunit.getDecompiler().getHighLevelContext().getConstantFactory() # we need a context to cstbuilder to replace strings
     self.processTargetClass(javaclass) #Call our main function
     self.currentunit.notifyListeners(JebEvent(J.UnitChange))
 

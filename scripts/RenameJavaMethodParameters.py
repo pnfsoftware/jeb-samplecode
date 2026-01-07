@@ -3,7 +3,7 @@
 import os
 from com.pnfsoftware.jeb.client.api import IScript
 from com.pnfsoftware.jeb.core import IPlugin
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, JavaElementType
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaClass, JavaElementType
 """
 Sample script for JEB Decompiler.
 
@@ -18,8 +18,10 @@ class RenameJavaMethodParameters(IScript):
 
     # process all Java decompiled source units
     for unit in prj.findUnits(IJavaSourceUnit):
-      for m in unit.getClassElement().getMethods():
-        self.process(unit, m)
+      elt = unit.getASTElement()
+      if isinstance(elt, IJavaClass):
+        for m in elt.getMethods():
+          self.process(unit, m)
 
   def process(self, unit, e):
     if not e.isExternal():

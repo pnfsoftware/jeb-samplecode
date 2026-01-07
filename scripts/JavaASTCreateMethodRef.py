@@ -43,7 +43,7 @@ class JavaASTCreateMethodRef(IScript):
     print('Will replace statement: "%s"' % _stm0)
 
     # IJavaFactories
-    self.jfactory = unit.getFactories()
+    self.jfactory = dexdec.getHighLevelContext()
 
     # now, replace that first method statement by a call to 'new String("...")'
     if self.replaceStatement(_blk, _stm0):

@@ -2,8 +2,7 @@
 #?shortcut=
 from com.pnfsoftware.jeb.client.api import IScript, IGraphicalClientContext
 from com.pnfsoftware.jeb.core.units.code.android.dex import IDexField
-from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit
-from com.pnfsoftware.jeb.core.units.code.java import IJavaInstanceField, IJavaAssignment, IJavaIdentifier
+from com.pnfsoftware.jeb.core.units.code.java import IJavaSourceUnit, IJavaClass, IJavaInstanceField, IJavaAssignment, IJavaIdentifier
 """
 Sample script for JEB Decompiler.
 
@@ -43,8 +42,10 @@ class JavaRenameField1(IScript):
     self.target_field = o
 
     # walk the methods's AST tree, look for assignments to the target field
-    for m in ast_unit.getClassElement().getMethods():
-      self.processASTMethod(None, m)
+    elt = ast_unit.getASTElement()
+    if isinstance(elt, IJavaClass):
+      for m in elt.getMethods():
+        self.processASTMethod(None, m)
 
   def processASTMethod(self, parent, e):
     if isinstance(e, IJavaAssignment) and isinstance(e.getRight(), IJavaIdentifier) and isinstance(e.getLeft(), IJavaInstanceField):

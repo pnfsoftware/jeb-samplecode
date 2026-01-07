@@ -40,13 +40,14 @@ class JavaASTDecryptStrings(IScript):
 
     # enumerate the decompiled classes, find and process the target class
     for unit in prj.findUnits(IJavaSourceUnit):
-      javaClass = unit.getClassElement()
-      if javaClass.getName().find(self.targetClass) >= 0:
-        self.cstbuilder = unit.getFactories().getConstantFactory()
-        if self.processClass(javaClass):
-          # let client code know about those changes
-          unit.notifyGenericChange()
-        break
+      elt = unit.getASTElement()
+      if isinstance(elt, IJavaClass):
+        if elt.getName().find(self.targetClass) >= 0:
+          self.cstbuilder = unit.getDecompiler().getHighLevelContext().getConstantFactory()
+          if self.processClass(elt):
+            # let client code know about those changes
+            unit.notifyGenericChange()
+          break
 
 
   def processClass(self, javaClass):
