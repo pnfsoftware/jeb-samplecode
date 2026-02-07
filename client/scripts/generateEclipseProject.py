@@ -52,8 +52,8 @@ if __name__ == '__main__':
   print('Generated: Eclipse .project file')
 
   jeblibentry = '''<classpathentry kind="lib" path="%s">
-    <attributes><attribute name="javadoc_location" value="jar:file:/%s!/reference"/></attributes>
-  </classpathentry>''' % (jebcorepath, jebdocpath)
+    <attributes><attribute name="javadoc_location" value="jar:file:/%s!/"/></attributes>
+  </classpathentry>''' % (jebcorepath, jebdocpath.replace('\\', '/'))
   if internal:
     # FOR INTERNAL USE
     jeblibentry = '<classpathentry combineaccessrules="false" kind="src" path="/jeb3.core"/>'
