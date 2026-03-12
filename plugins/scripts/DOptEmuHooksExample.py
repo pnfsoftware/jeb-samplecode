@@ -1,3 +1,4 @@
+#?type=dexdec-ir
 from com.pnfsoftware.jeb.core.units.code.android.ir import AbstractDOptimizer, IDEmulatorHooks
 '''
 dexdec IR plugin showing how to set up an emulator hooks for internal dex methods.

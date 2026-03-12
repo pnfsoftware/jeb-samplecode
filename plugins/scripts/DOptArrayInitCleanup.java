@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import com.pnfsoftware.jeb.core.units.code.android.ir.AbstractDOptimizer;
 import com.pnfsoftware.jeb.core.units.code.android.ir.DexDecEvaluationException;
 import com.pnfsoftware.jeb.core.units.code.android.ir.IDVisitor;

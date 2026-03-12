@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import java.util.List;
 
 import com.pnfsoftware.jeb.core.units.code.android.ir.AbstractDOptimizer;

@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import com.pnfsoftware.jeb.core.units.code.android.controlflow.BasicBlock;
 import com.pnfsoftware.jeb.core.units.code.android.ir.IDVisitor;
 import com.pnfsoftware.jeb.core.units.code.android.ir.AbstractDOptimizer;

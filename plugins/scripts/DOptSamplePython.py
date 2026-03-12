@@ -1,12 +1,9 @@
+#?type=dexdec-ir
 from com.pnfsoftware.jeb.core.units.code.android.ir import AbstractDOptimizer
 
 '''
-Sample Intermediate Representation (IR) optimizer plugin for dexdec, JEB's DEX/Dalvik Decompiler.
-
+Skeleton for an Intermediate Representation (IR) optimizer plugin for dexdec, JEB's DEX/Dalvik Decompiler.
 This Python plugin is executed during the decompilation pipeline of a method.
-Needs JEB 4.2 or above.
-
-NOTE: it is recommended to write non-trivial dexdec IR optimizers in Java
 
 How to use:
 - Drop this file in your JEB's coreplugins/scripts/ sub-directory
@@ -16,7 +13,14 @@ For additional information regarding dexdec IR optimizer plugins, refer to:
 - the Manual (www.pnfsoftware.com/jeb/manual)
 - the API documentation: https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/android/ir/package-summary.html
 '''
-class DOptSamplePython(AbstractDOptimizer):  # note that we extend AbstractDOptimizer for convenience, instead of implementing IDOptimizer from scratch
+class DOptSamplePython(AbstractDOptimizer):  # we extend AbstractDOptimizer for convenience, instead of implementing IDOptimizer from scratch
+  # note: Python script optimizers are singleton instances!
+  # the engine will instantiate and provide a single instance for all decompilation threads
+  # therefore, if you are using object attributes, make sure to provide support for concurrency
+  # (this restriction does not apply to Java script optimizers, as well as full-blown jar optimizers;
+  # each decompilation thread has its own unique instance of such optimizer objects)
+  # for this reason (as well as others), moderately complex IR optimizers should be written in Java
+
   def __init__(self):
     # default super constructor is called, will set the plugin type to NORMAL (see DOptimizerType constant)
     self.logger.debug('DexDecIROptimizerSample: instantiated')
@@ -39,15 +43,15 @@ class DOptSamplePython(AbstractDOptimizer):  # note that we extend AbstractDOpti
     #
     # another commonly used class by IR optimizers is DUtil, containing many utitily routines to access and manipulate the IR
 
-    # print the IR CFG
-    self.logger.debug('DexDecIROptimizerSample: executed: %s', self.cfg.format())
+    # UNCOMMENT: message the developer
+    #self.logger.debug('DexDecIROptimizerSample: executed: %s', self.cfg.format())
 
-    # some random work...
-    for blk in self.cfg:  # BasicBlock (of IDInstruction)
-      for insn in blk:  # IDInstruction
-        if insn.isJcond():
-          # we found a JCOND instruction, do something
-          pass
+    # UNCOMMENT: some random work...
+    #for blk in self.cfg:  # BasicBlock (of IDInstruction)
+    #  for insn in blk:  # IDInstruction
+    #    if insn.isJcond():
+    #      # we found a JCOND instruction, do something
+    #      pass
 
     # if a value >0 is returned, the decompiler will assume that IR is being transformed and this IR optimizer will be called again
     return 0  # no optimization is performed

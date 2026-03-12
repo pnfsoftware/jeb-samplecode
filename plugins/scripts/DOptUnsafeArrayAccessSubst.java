@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -40,8 +41,8 @@ import com.pnfsoftware.jeb.core.units.code.java.JavaOperatorType;
  * </pre>
  * 
  * <p>
- * This optimizer is unsafe, it should not be globally enabled, as it is assumed that all
- * detected obfuscated arrays (such as `abc` above) are:<br>
+ * This optimizer is unsafe, it should not be globally enabled, as it is assumed that all detected
+ * obfuscated arrays (such as `abc` above) are:<br>
  * - initialized in their containing class static initializer (&lt;clinit&gt;)<br>
  * - not updated after their initialization (i.e. they are 'effectively' final)<br>
  *
@@ -74,20 +75,23 @@ public class DOptUnsafeArrayAccessSubst extends AbstractDOptimizer {
                         IDOperation op = e.asOperation();
                         IDExpression e1 = op.getLeft();
                         IDExpression e2 = op.getRight();
-                        if(e2.isImm() && e1.isArrayElt()) {
-                            IDArrayElt elt = e1.asArrayElt();
-                            if(elt.getArray().isStaticField() && elt.getIndex().isImm()) {
-                                String field_csig = elt.getArray().asStaticField().getClassSignature();
-                                fieldCsigs.add(field_csig);  // collect the classes containing the "obfuscated arrays"
-                                triggercnt++;
-                                results.interrupt(true);  // done with this instruction
+                        if(e2.isImm()) {
+                            IDArrayElt elt = isLikeArrayElt(e1);
+                            if(elt != null && elt.getIndex().isImm()) {
+                                IDStaticField sfield = isLikeSField(elt.getArray(), insn.getOffset());
+                                if(sfield != null) {
+                                    String field_csig = sfield.getClassSignature();
+                                    fieldCsigs.add(field_csig);  // collect the classes containing the "obfuscated arrays"
+                                    triggercnt++;
+                                    results.interrupt(true);  // done with this instruction
+                                }
                             }
                         }
                     }
                 }
             }, true);
         }
-        if(triggercnt < 2) {
+        if(triggercnt <= 0) {
             return 0;
         }
 
@@ -113,24 +117,24 @@ public class DOptUnsafeArrayAccessSubst extends AbstractDOptimizer {
                 public void process(IDExpression e, IDExpression parent, IVisitResults<IDExpression> results) {
                     if(e.isArrayElt()) {
                         IDArrayElt elt = e.asArrayElt();
-                        if(elt.getArray().isStaticField() && elt.getIndex().isImm()) {
-                            int index = (int)elt.getIndex().asImm().getRawValue();
-
-                            IDStaticField fld = elt.getArray().asStaticField();
-                            String fsig = fld.getNativeField(g).getSignature(false);
-
-                            try {
-                                IDImm _array = state.getStaticField(fsig);
-                                IDImm repl = state.getArrayElement(_array, index);
-                                if(!repl.isRef()) {
-                                    if(parent.replaceSubExpression(e, repl)) {
-                                        results.setReplacedNode(repl);
-                                        replcnt++;
+                        if(elt.getIndex().isImm()) {
+                            IDStaticField sfield = isLikeSField(elt.getArray(), insn.getOffset());
+                            if(sfield != null) {
+                                int index = (int)elt.getIndex().asImm().getRawValue();
+                                String fsig = sfield.getNativeField(g).getSignature(false);
+                                try {
+                                    IDImm _array = state.getStaticField(fsig);
+                                    IDImm repl = state.getArrayElement(_array, index);
+                                    if(!repl.isRef()) {
+                                        if(parent.replaceSubExpression(e, repl)) {
+                                            results.setReplacedNode(repl);
+                                            replcnt++;
+                                        }
                                     }
                                 }
-                            }
-                            catch(DexDecEvaluationException e1) {
-                                results.interrupt(false);
+                                catch(DexDecEvaluationException e1) {
+                                    results.interrupt(false);
+                                }
                             }
                         }
                     }
@@ -141,8 +145,66 @@ public class DOptUnsafeArrayAccessSubst extends AbstractDOptimizer {
         if(replcnt == 0) {
             return 0;
         }
-        // note: no need for cfg.resetDFA(), no IDVar was touched
+        // note: no need for cfg.invalidateDataFlowAnalysis(), no IDVar was touched
 
         return replcnt;
+    }
+
+    /**
+     * Recursively determine whether the provided element is equivalent to an array-element.
+     * <p>
+     * Currently handles two types of expressions:
+     * 
+     * <pre>
+     * array[index]              // basic case where the provided IR expression is an IDArrayElt
+     * (some_cast)array[index]   // the IDArrayElt is cast
+     * </pre>
+     * 
+     * @param e an expression
+     * @return the underlying array-element expression, or null
+     */
+    private IDArrayElt isLikeArrayElt(IDExpression e) {
+        if(e.isArrayElt()) {
+            return (IDArrayElt)e;
+        }
+        if(e.isOperation() && e.asOperation().isCast()) {
+            e = e.asOperation().getRight();
+            return isLikeArrayElt(e);
+        }
+        return null;
+    }
+
+    /**
+     * Recursively determine whether the provided element is an actual static-field reference.
+     * <p>
+     * Data-flow is examined to resolve cases such as:
+     * 
+     * <pre>
+     * int[] var = SomeClass.staticArray2;
+     * ...
+     * int x = var[4];
+     * </pre>
+     * 
+     * @param elt an expression
+     * @param insnAddress the address of the instruction that contains the `elt` IR expression
+     * @return the actual static field expression, or null
+     */
+    private IDStaticField isLikeSField(IDExpression elt, long insnAddress) {
+        if(elt.isStaticField()) {
+            return elt.asStaticField();
+        }
+        if(elt.isVar()) {
+            int varid = elt.asVar().getRegister1();
+            analyzeChains();  // this initializes the `dfa` member field of this optimizer object
+            Long defaddr = dfa.checkSingleDef(insnAddress, varid);
+            if(defaddr != null) {
+                IDInstruction def = cfg.getInstruction(defaddr);
+                if(def != null && def.getAssignDestination().equals(elt)) {
+                    IDExpression defsrc = def.getAssignSource();
+                    return isLikeSField(defsrc, defaddr);
+                }
+            }
+        }
+        return null;
     }
 }

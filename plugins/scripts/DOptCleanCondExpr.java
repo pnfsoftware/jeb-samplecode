@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import com.pnfsoftware.jeb.core.units.code.android.ir.AbstractDOptimizer;
 import com.pnfsoftware.jeb.core.units.code.android.ir.IDVisitor;
 import com.pnfsoftware.jeb.core.units.code.android.ir.IDExpression;

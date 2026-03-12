@@ -1,3 +1,4 @@
+#?type=dexdec-ir
 from com.pnfsoftware.jeb.core.units.code.android.ir import AbstractDOptimizer, IDSandboxHooks
 from com.pnfsoftware.jeb.util.base import Wrapper
 '''

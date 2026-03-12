@@ -1,3 +1,4 @@
+//?type=dexdec-ir
 import java.util.List;
 
 import javax.crypto.SecretKey;

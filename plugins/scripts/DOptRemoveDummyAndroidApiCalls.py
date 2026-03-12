@@ -7,7 +7,6 @@ This JEB's dexdec IR optimizer will attempt to resolve artificial Android librar
 added by app protectors, designed to hamper the string auto-decryption process.
 
 This Python plugin is executed during the decompilation pipeline of a method.
-Needs JEB 4.4 or above.
 
 Example:
  
@@ -42,11 +41,10 @@ For additional information regarding dexdec IR optimizer plugins, refer to:
 - the API documentation: https://www.pnfsoftware.com/jeb/apidoc/reference/com/pnfsoftware/jeb/core/units/code/android/ir/package-summary.html
 '''
 
-class RemoveDummyAndroidApiCalls(AbstractDOptimizer):  # note that we extend AbstractDOptimizer for convenience, instead of implementing IDOptimizer from scratch
+class DOptRemoveDummyAndroidApiCalls(AbstractDOptimizer):
   def perform(self):
     # create our instruction visitor
     vis = AndroidUtilityVisitor(self.ctx)
-
     # visit all the instructions of the IR CFG
     for insn in self.cfg.instructions():
       insn.visitInstruction(vis)
@@ -55,7 +53,6 @@ class RemoveDummyAndroidApiCalls(AbstractDOptimizer):  # note that we extend Abs
     # Counters are used to track emulation successes and failures for methods. Some optimizers may
     # check the counters to avoid attempting to emulate methods for which too many failures were
     # reported. Calling this method resets such counters, allowing emulation to be re-attempted.
-    # (requires JEB 4.4)
     if vis.cnt > 0:
       self.g.resetDeobfuscatorCounters()
 
@@ -198,6 +195,5 @@ class AndroidUtilityVisitor(IDVisitor):
 
     if repl != None and parent.replaceSubExpression(e, repl):
       #print('*** CUSTOM REPLACE *** %s -> %s' % (e, repl))
-      # success (this visitor is pre-order, we need to report the replaced node)
-      results.setReplacedNode(repl)
+      results.setReplacedNode(repl)  # pre-order visit: we need to report the replaced node
       self.cnt += 1
