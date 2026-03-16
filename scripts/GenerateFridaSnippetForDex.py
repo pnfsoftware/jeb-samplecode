@@ -55,8 +55,10 @@ class GenerateFridaSnippetForDex(IScript):
       partypes.append(partype.getSignature(False, False))
       parnames.append("arg%d" % i)  # TODO: retrieve the decompiler-provided param names
 
-    no_return = m.getReturnType().isVoid()
-
+    no_return = False
+    if m.getReturnType().getName() == 'void':
+      no_return = True
+    
     # the tag rendered in the console will use the method's actual names (i.e. the renames if any), not the original names
     tag = "%s.%s" % (m.getClassType().getSignature(True, False, False), m.getName(True))
 
