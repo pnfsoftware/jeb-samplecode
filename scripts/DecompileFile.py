@@ -14,7 +14,6 @@ from com.pnfsoftware.jeb.core.util import DecompilerHelper
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit, DexDecompilerExporter
 from com.pnfsoftware.jeb.core.output.text import TextDocumentUtil
-from com.pnfsoftware.jeb.util.base import ProgressCallbackAdapter
 """
 Sample script for JEB Decompiler.
 - This script decompiles some or all code units of the project
@@ -26,7 +25,18 @@ How to run & options: see usage() below.
 For additional details, refer to:
 https://www.pnfsoftware.com/jeb/manual/faq/#can-i-execute-a-jeb-python-script-from-the-command-line
 """
-class DecompileFile(IScript):
+class DecompileFile:
+  # IMPORTANT NOTE (JEB >=5.40): Notice that this script class does not inherit IScript!
+  #
+  # to allow running the script with "Java Embedded Python" instead of Jython
+  # - advantage: you get to use your cpython (modern Python 3)
+  # - drawback: you cannot create sub-classes of JEB types
+  #
+  # if your script requires the creation of sub-types of JEB types, you have two options:
+  # - have your script extend IScript and revert to using Jython
+  # - or write a full-blown plugin in Java
+  #
+  # The same thing applies to the majority of the sample scripts in this repository.
 
   def usage(self):
     print('''DecompileFile.py -- demo how to use JEB to decompile code for automation purposes.
@@ -183,15 +193,10 @@ Options:
 
     if self.method_timeout > 0:
       exp.setMethodTimeout(self.method_timeout * 1000)
-
-    #exp.setTotalTimeout(...)
-
-    # set a callback to output real-time information about what's being decompiled
-    class DecompCallback(ProgressCallbackAdapter):
-      def message(self, _id, msg):
-        print('%d/%d: %s' % (self.getCurrent(), self.getTotal(), msg))
+    #if ...
+    #  exp.setTotalTimeout(...)
     if self.verbose:
-      exp.setCallback(DecompCallback())
+      exp.setCallback(DecompilerHelper.createProgressLogger())
 
     # decompile & export
     if not exp.export():
