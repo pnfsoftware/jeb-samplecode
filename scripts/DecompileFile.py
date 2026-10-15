@@ -14,6 +14,7 @@ from com.pnfsoftware.jeb.core.util import DecompilerHelper
 from com.pnfsoftware.jeb.core.units.code.asm.decompiler import INativeSourceUnit
 from com.pnfsoftware.jeb.core.units.code.android import IDexUnit, DexDecompilerExporter
 from com.pnfsoftware.jeb.core.output.text import TextDocumentUtil
+from com.pnfsoftware.jeb.util.base import ProgressCallbackAdapter
 """
 Sample script for JEB Decompiler.
 - This script decompiles some or all code units of the project
@@ -25,29 +26,23 @@ How to run & options: see usage() below.
 For additional details, refer to:
 https://www.pnfsoftware.com/jeb/manual/faq/#can-i-execute-a-jeb-python-script-from-the-command-line
 """
-class DecompileFile:
-  # IMPORTANT NOTE (JEB >=5.40): Notice that this script class does not inherit IScript!
-  #
-  # to allow running the script with "Java Embedded Python" instead of Jython
-  # - advantage: you get to use your cpython (modern Python 3)
-  # - drawback: you cannot create sub-classes of JEB types
-  #
-  # if your script requires the creation of sub-types of JEB types, you have two options:
-  # - have your script extend IScript and revert to using Jython
-  # - or write a full-blown plugin in Java
-  #
-  # The same thing applies to the majority of the sample scripts in this repository.
+class DecompileFile(IScript):
 
   def usage(self):
     print('''DecompileFile.py -- demo how to use JEB to decompile code for automation purposes.
 
-How to run:
-  $ <JEB> -c --script=DecompileFile.py -- [options] INPUT_FILE OUTPUT_DIR
+How to run, with --infile=... with JEB>=5.49:
+  $ <JEB> -c --script=DecompileFile.py -- [options]
+Legacy syntax with JEB 5.48:
+  $ <JEB> -c --script=DecompileFile.py -- INPUT_FILE [options]
 
 Options:
   -h            : display help and exit
   -v            : increase verbosity
+  --infile=I    : input file to be decompiled
+  --outdir=O    : output directory for decompilations
   --mtimeout=T  : decompilation timeout for individual methods, in seconds
+  --max-count=N : maximum count of code units to process
   --decompile=L : comma-separated list of targets to decompile, e.g. 'dalvik,arm64'
                   Supported targets:
                   dalvik    : decompile x86 32-bit code
@@ -65,11 +60,13 @@ Options:
     GlobalLog.setCutoffLevel(GlobalLog.LEVEL_WARN);
 
     self.ctx = ctx
+    self.proc_count = 0
 
     self.verbose = False
     self.inputFile = None
-    self.inputDir = None
+    self.outputDir = None
     self.method_timeout = -1
+    self.max_proc_count = -1
     self.decomp_dalvik = False
     self.decomp_x86 = False
     self.decomp_x64 = False
@@ -80,15 +77,22 @@ Options:
     args = ctx.getArguments()
     iarg = 0
     for arg in args:
-      if not arg.startswith('-'):
-        break
       if arg == '-h':
         self.usage()
         return
       elif arg == '-v':
         self.verbose = True
+      elif arg.startswith('--infile='):
+        if self.inputFile:
+          print('An input file was already been provided!')
+          return
+        self.inputFile = arg[9:]
+      elif arg.startswith('--outdir='):
+        self.outputDir = arg[9:]
       elif arg.startswith('--mtimeout='):
         self.method_timeout = int(arg[11:])
+      elif arg.startswith('--max-count='):
+        self.max_proc_count = int(arg[12:])
       elif arg.startswith('--decompile='):
         for elt in arg[12:].split(','):
           elt = elt.strip().lower()
@@ -109,22 +113,13 @@ Options:
             self.usage()
             return
       else:
-        print('Unknown option: %s' % arg)
-        self.usage()
-        return
+        if iarg == 0 or iarg == len(args)-1:
+          self.inputFile = arg  # legacy
+        else:
+          print('Unknown option: %s' % arg)
+          self.usage()
+          return
       iarg += 1
-
-    if iarg >= len(args):
-        print('Provide an input file')
-        return
-    self.inputFile = args[iarg]
-    iarg += 1
-
-    if iarg >= len(args):
-        print('Provide the output folder')
-        return
-    self.outputDir = args[iarg]
-    iarg += 1
 
     if self.method_timeout: print('Method decompilation timeout: %ds' % self.method_timeout)
     if self.decomp_all: print('Decompiling all')
@@ -135,17 +130,23 @@ Options:
     if self.decomp_arm64: print('Decompiling Arm64')
 
     print('Processing file: %s...' % self.inputFile)
-    ctx.open(self.inputFile)
+    if not ctx.getMainProject():
+      if not self.inputFile:
+        print('You must provide an input file with --infile=...')
+        return
+      ctx.open(self.inputFile)
 
     prj = ctx.getMainProject()
     assert prj, 'Need a project'
 
     t0 = time.time()
     for codeUnit in prj.findUnits(ICodeUnit):
+      if self.max_proc_count >= 0 and self.proc_count >= self.max_proc_count:
+        break
       self.decompileCodeUnit(codeUnit)
 
     exectime = time.time() - t0
-    print('Exectime: %f' % exectime)
+    print('Execution time: %f seconds' % exectime)
 
 
   def decompileCodeUnit(self, codeUnit):
@@ -181,25 +182,35 @@ Options:
       print('Skipping code: no decompiler available: %s' % upath)
       return
 
+    self.proc_count += 1
     print('Decompiling code: %s' % upath)
-
-    outdir = os.path.join(self.outputDir, UnitUtil.buildFullyQualifiedUnitPath(codeUnit, True, '_').replace(' ', '-'))
-    print('Output folder: %s' % outdir)  # created only if necessary, i.e. some contents was exported
 
     # DecompilerExporter object
     exp = decomp.getExporter()
 
-    exp.setOutputFolder(IO.createFolder(outdir))
+    if not self.outputDir:
+      print('! No output directory specified, will just decompile')
+    else:
+      outdir = os.path.join(self.outputDir, UnitUtil.buildFullyQualifiedUnitPath(codeUnit, True, '_').replace(' ', '-'))
+      print('Output folder: %s' % outdir)  # created only if necessary, i.e. some contents was exported
+      exp.setOutputFolder(IO.createFolder(outdir))
 
     if self.method_timeout > 0:
       exp.setMethodTimeout(self.method_timeout * 1000)
-    #if ...
-    #  exp.setTotalTimeout(...)
+
+    #exp.setTotalTimeout(...)
+
+    # set a callback to output real-time information about what's being decompiled
+    class DecompCallback(ProgressCallbackAdapter):
+      def message(self, _id, msg):
+        print('%d/%d: %s' % (self.getCurrent(), self.getTotal(), msg))
     if self.verbose:
-      exp.setCallback(DecompilerHelper.createProgressLogger())
+      exp.setCallback(DecompCallback())
 
     # decompile & export
-    if not exp.export():
+    success = exp.export()
+
+    if not success:
       cnt = len(exp.getErrors())
       i = 1
       for sig, err in exp.getErrors().items():
